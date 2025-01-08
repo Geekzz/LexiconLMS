@@ -13,7 +13,7 @@ a, .btn-link {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 .content {
@@ -49,3 +49,41 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+lexicon-background {
+    background-color: #E0E0E0;
+}
+
+lexicon-button {
+    background-color: #D60000;
+}
+
+lexicon-primary {
+    background-color: #FFFFFF;
+}
+
+lexicon-text {
+    color: #5F5F5F;
+}
+
+h1 {
+    font-size: 4.5em;
+}
+
+h2 {
+    font-size: 3.0em;
+}
+
+h3, button-fontsize {
+    font-size: 1.5em;
+}
+
+h4 {
+    font-size: 1.25em;
+}
+
+p, button-fontsize-tiny {
+    font-size: 1.0em;
+}
+
+
