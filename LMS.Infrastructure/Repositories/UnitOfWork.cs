@@ -1,5 +1,4 @@
 ﻿using Domain.Contracts;
-using LMS.Infrastructure.Contracts;
 using LMS.Infrastructure.Data;
 
 namespace LMS.Infrastructure.Repositories;

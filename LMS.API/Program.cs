@@ -1,10 +1,13 @@
+using Domain.Contracts;
 using Domain.Models.Entities;
 using LMS.API.Extensions;
 using LMS.Infrastructure.Data;
-using LMS.Presemtation;
-
+using LMS.Infrastructure.Repositories;
+using LMS.Presentation;
+using LMS.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Services.Contracts;
 using System.Security.Claims;
 
 
@@ -33,6 +36,13 @@ public class Program
         builder.Services.ConfigureRepositories();
         builder.Services.ConfigureJwt(builder.Configuration);
         builder.Services.ConfigureCors();
+
+
+        builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+        builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
+        builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+        builder.Services.AddScoped<IServiceManager, ServiceManager>();
 
         builder.Services.AddIdentityCore<ApplicationUser>(opt =>
             {

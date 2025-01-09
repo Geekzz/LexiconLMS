@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Contracts;
 using Domain.Models.Entities;
-using LMS.Infrastructure.Contracts;
 using LMS.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 

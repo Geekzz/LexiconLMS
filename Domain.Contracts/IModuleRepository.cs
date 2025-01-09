@@ -1,6 +1,6 @@
 ﻿using Domain.Models.Entities;
 
-namespace LMS.Infrastructure.Contracts
+namespace Domain.Contracts
 {
     public interface IModuleRepository
     {
