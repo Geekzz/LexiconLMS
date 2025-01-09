@@ -12,6 +12,9 @@ public class ServiceManager : IServiceManager
 {
 
     private readonly Lazy<IAuthService> authService;
+    //private readonly Lazy<ICourseService> courseService;
+    //private readonly Lazy<IModuleService> moduleService;
+    //private readonly Lazy<IActivityService> activityService;
 
     public IAuthService AuthService => authService.Value;
 

@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Models.Entities;
+using LMS.Infrastructure.Contracts;
 using LMS.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace LMS.Infrastructure.Repositories
 {
-    public class CourseRepository : RepositoryBase<Course>
+    public class CourseRepository : RepositoryBase<Course>, ICourseRepository
     {
         public CourseRepository(LmsContext context) : base(context)
         {
