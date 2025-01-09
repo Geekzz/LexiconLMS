@@ -56,6 +56,8 @@ public static class SeedData
         {
             e.Email = f.Person.Email;
             e.UserName = f.Person.Email;
+            e.FirstName = f.Person.FirstName;
+            e.LastName = f.Person.LastName;
         });
 
         var users = faker.Generate(nrOfUsers);

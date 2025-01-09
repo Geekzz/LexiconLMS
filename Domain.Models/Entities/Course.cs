@@ -14,7 +14,6 @@ namespace Domain.Models.Entities
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        public int DocumentId { get; set; }
-        public Document Document { get; set; }  
+        public CourseDocument CourseDocument { get; set; }  
     }
 }
