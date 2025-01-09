@@ -18,5 +18,6 @@ namespace Domain.Models.Entities
         public Course Course { get; set; }
 
         public List<ModuleDocument> ModuleDocument { get; set; }
+        public List<Activity> Activities { get; set; }
     }
 }

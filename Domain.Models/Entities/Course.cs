@@ -15,5 +15,6 @@ namespace Domain.Models.Entities
         public DateTime EndDate { get; set; }
 
         public List<CourseDocument> CourseDocument { get; set; }  
+        public List<Module> Modules { get; set; }
     }
 }
