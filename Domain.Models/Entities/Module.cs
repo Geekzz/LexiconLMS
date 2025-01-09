@@ -17,6 +17,6 @@ namespace Domain.Models.Entities
         public int CourseId { get; set; }
         public Course Course { get; set; }
 
-        public ModuleDocument ModuleDocument { get; set; }
+        public List<ModuleDocument> ModuleDocument { get; set; }
     }
 }
