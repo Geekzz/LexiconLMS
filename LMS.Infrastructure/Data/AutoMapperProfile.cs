@@ -2,6 +2,7 @@
 using Domain.Models.Entities;
 using LMS.Shared.DTOs.Create;
 using LMS.Shared.DTOs.Read;
+using LMS.Shared.DTOs.Update;
 namespace LMS.Infrastructure.Data;
 
 public class AutoMapperProfile : Profile
@@ -24,6 +25,11 @@ public class AutoMapperProfile : Profile
         CreateMap<ActivityTypeCreateDto, ActivityType>();
         //CreateMap<CourseDto, CourseCreateDto>().ReverseMap();   
 
- 
+        CreateMap<CourseUpdateDto, Course>().ReverseMap();
+        CreateMap<ActivityUpdateDto, Activity>().ReverseMap();
+        CreateMap<ModuleUpdateDto, Module>().ReverseMap();
+
+
+
     }
 }

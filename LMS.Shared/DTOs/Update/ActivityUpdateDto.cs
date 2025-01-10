@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LMS.Shared.DTOs.Create
+namespace LMS.Shared.DTOs.Update
 {
-    public class ModuleCreateDto
-    {   
+    public class ActivityUpdateDto
+    {
         [Required]
         public string Name { get; init; }
 
@@ -20,7 +20,5 @@ namespace LMS.Shared.DTOs.Create
 
         [Required]
         public DateTime EndDate { get; init; }
-
-        public List<ActivityCreateDto> Activities { get; init; }
     }
 }

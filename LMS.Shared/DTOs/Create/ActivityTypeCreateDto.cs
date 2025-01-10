@@ -8,6 +8,6 @@ namespace LMS.Shared.DTOs.Create
 {
     public class ActivityTypeCreateDto
     {
-        public string Type { get; set; }
+        public string Type { get; init; }
     }
 }

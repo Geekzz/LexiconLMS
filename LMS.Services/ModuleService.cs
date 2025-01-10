@@ -8,6 +8,7 @@ using AutoMapper;
 using Domain.Models.Entities;
 using Services.Contracts;
 using LMS.Shared.DTOs.Read;
+using LMS.Shared.DTOs.Create;
 
 namespace LMS.Services
 {
@@ -25,6 +26,17 @@ namespace LMS.Services
         public async Task<ModuleDto> GetModuleByIdAsync(int moduleId)
         {
             Module? module = await _uow.ModuleRepository.GetModuleByIdAsync(moduleId);
+            return _mapper.Map<ModuleDto>(module);
+        }
+
+        public async Task<ModuleDto> CreateModuleAsync(ModuleCreateDto dto)
+        {
+            Module module = _mapper.Map<Module>(dto);
+
+            _uow.ModuleRepository.Create(module);
+
+            await _uow.CompleteAsync();
+
             return _mapper.Map<ModuleDto>(module);
         }
     }

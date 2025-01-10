@@ -7,6 +7,8 @@ using LMS.Shared.DTOs.Create;
 using LMS.Shared.DTOs.Read;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
+using Microsoft.AspNetCore.JsonPatch;
+using LMS.Shared.DTOs.Update;
 
 namespace LMS.Presentation.Controllers
 {
@@ -39,6 +41,21 @@ namespace LMS.Presentation.Controllers
         {
             var createdCourseDto = await _serviceManager.CourseService.CreateCourseAsync(dto);
             return Created();
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> PatchCourse(int id, JsonPatchDocument<CourseUpdateDto> patchDocument)
+        {
+            if (patchDocument is null) return BadRequest();
+
+            var courseToPatch = new CourseUpdateDto(); // Dummy instance for validation
+            patchDocument.ApplyTo(courseToPatch, ModelState);
+
+            if (!ModelState.IsValid) return UnprocessableEntity(ModelState);
+
+            var updatedCourse = await _serviceManager.CourseService.UpdateCourseAsync(id, patchDocument);
+
+            return Ok(updatedCourse);
         }
     }
 }

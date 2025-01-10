@@ -8,6 +8,8 @@ using Domain.Contracts;
 using Domain.Models.Entities;
 using LMS.Shared.DTOs.Create;
 using LMS.Shared.DTOs.Read;
+using LMS.Shared.DTOs.Update;
+using Microsoft.AspNetCore.JsonPatch;
 using Services.Contracts;
 
 namespace LMS.Services
@@ -47,6 +49,20 @@ namespace LMS.Services
             await _uow.CompleteAsync();
 
             return _mapper.Map<CourseDto>(course);
+        }
+
+        public async Task<CourseDto> UpdateCourseAsync(int id, JsonPatchDocument<CourseUpdateDto> patchDocument)
+        {
+            var courseToPatch = await _uow.CourseRepository.GetCourseByIdAsync(id, true);
+            if (courseToPatch == null) throw new KeyNotFoundException($"{id} not found.");
+
+            var course = _mapper.Map<CourseUpdateDto>(courseToPatch);
+            patchDocument.ApplyTo(course);
+
+            _mapper.Map(course, courseToPatch);
+            await _uow.CompleteAsync();
+
+            return _mapper.Map<CourseDto>(courseToPatch);
         }
     }
 }
