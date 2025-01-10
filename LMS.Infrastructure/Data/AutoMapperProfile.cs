@@ -7,13 +7,13 @@ public class AutoMapperProfile : Profile
 {
     public AutoMapperProfile()
     {
-        CreateMap<UserForRegistrationDto, ApplicationUser>();
-        CreateMap<ActivityDto, Activity>();
-        CreateMap<ActivityDocumentDto, ActivityDocument>();
-        CreateMap<ActivityTypeDto, ActivityType>();
-        CreateMap<CourseDto, Course>();
-        CreateMap<CourseDocumentDto, CourseDocument>();
-        CreateMap<ModuleDocumentDto, ModuleDocument>();
-        CreateMap<ModuleDto, Module>();
+        CreateMap<UserForRegistrationDto, ApplicationUser>().ReverseMap();
+        CreateMap<ActivityDto, Activity>().ReverseMap();
+        CreateMap<ActivityDocumentDto, ActivityDocument>().ReverseMap();
+        CreateMap<ActivityTypeDto, ActivityType>().ReverseMap();
+        CreateMap<CourseDto, Course>().ReverseMap();
+        CreateMap<CourseDocumentDto, CourseDocument>().ReverseMap();
+        CreateMap<ModuleDocumentDto, ModuleDocument>().ReverseMap();
+        CreateMap<ModuleDto, Module>().ReverseMap();
     }
 }

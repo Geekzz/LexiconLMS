@@ -24,7 +24,22 @@ namespace LMS.Services
         public async Task<CourseDto> GetCourseByIdAsync(int courseId)
         {
             Course? course = await _uow.CourseRepository.GetCourseByIdAsync(courseId);
+            if (course == null)
+            {
+                // Do something
+            }
             return _mapper.Map<CourseDto>(course);
+
+            //return new CourseDto()
+            //{
+            //    CourseId = courseId,
+            //    Name = course.Name,
+            //    Description = course.Description,
+            //    StartDate = course.StartDate,
+            //    EndDate = course.EndDate,
+            //    CourseDocumentDtos = new List<CourseDocumentDto>(),
+            //    Modules = new List<Module>()
+            //}
         }
     }
 }

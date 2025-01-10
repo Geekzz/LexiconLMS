@@ -31,7 +31,7 @@ public class LmsContext : IdentityDbContext<ApplicationUser, IdentityRole, strin
                 Description = "Lorem ipsum odor amet.",
                 StartDate = new DateTime(2025, 01, 01),
                 EndDate = new DateTime(2025, 01, 29),
-                CourseDocument = null,
+                CourseDocuments = null,
                 Modules = new List<Module>()
             });
         modelBuilder.Entity<Module>().HasData(
@@ -43,7 +43,7 @@ public class LmsContext : IdentityDbContext<ApplicationUser, IdentityRole, strin
                 StartDate = new DateTime(2025, 01, 01),
                 EndDate = new DateTime(2025, 01, 11),
                 CourseId = 1,
-                ModuleDocument = null,
+                ModuleDocuments = null,
                 Activities = new List<Activity>()
             });
         modelBuilder.Entity<ActivityType>().HasData(

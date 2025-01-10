@@ -19,9 +19,10 @@ namespace LMS.Infrastructure.Repositories
         public async Task<Course?> GetCourseByIdAsync(int courseId, bool trackChanges = false)
         {
             return await
-                FindByCondition(c => c.CourseId == courseId, trackChanges)
+                FindByCondition(c => c.CourseId.Equals(courseId), trackChanges)
                 .Include(c => c.Modules)
                 .ThenInclude(m => m.Activities)
+                .ThenInclude(a => a.ActivityType)
                 .FirstOrDefaultAsync();
         }
 

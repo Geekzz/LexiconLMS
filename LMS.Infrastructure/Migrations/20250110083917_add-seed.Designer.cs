@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LMS.Infrastructure.Migrations
 {
     [DbContext(typeof(LmsContext))]
-    [Migration("20250109124040_add-seed")]
+    [Migration("20250110083917_add-seed")]
     partial class addseed
     {
         /// <inheritdoc />
@@ -566,7 +566,7 @@ namespace LMS.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Entities.Course", "Course")
-                        .WithMany("CourseDocument")
+                        .WithMany("CourseDocuments")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -596,7 +596,7 @@ namespace LMS.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Entities.Module", "Module")
-                        .WithMany("ModuleDocument")
+                        .WithMany("ModuleDocuments")
                         .HasForeignKey("ModuleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -664,7 +664,7 @@ namespace LMS.Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Entities.Course", b =>
                 {
-                    b.Navigation("CourseDocument");
+                    b.Navigation("CourseDocuments");
 
                     b.Navigation("Modules");
                 });
@@ -673,7 +673,7 @@ namespace LMS.Infrastructure.Migrations
                 {
                     b.Navigation("Activities");
 
-                    b.Navigation("ModuleDocument");
+                    b.Navigation("ModuleDocuments");
                 });
 #pragma warning restore 612, 618
         }
