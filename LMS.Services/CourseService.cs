@@ -29,17 +29,12 @@ namespace LMS.Services
                 // Do something
             }
             return _mapper.Map<CourseDto>(course);
+        }
 
-            //return new CourseDto()
-            //{
-            //    CourseId = courseId,
-            //    Name = course.Name,
-            //    Description = course.Description,
-            //    StartDate = course.StartDate,
-            //    EndDate = course.EndDate,
-            //    CourseDocumentDtos = new List<CourseDocumentDto>(),
-            //    Modules = new List<Module>()
-            //}
+        public async Task<IEnumerable<CourseDto>> GetAllCoursesAsync()
+        {
+            var courses = await _uow.CourseRepository.GetAllCoursesAsync();
+            return _mapper.Map<IEnumerable<CourseDto>>(courses);
         }
     }
 }

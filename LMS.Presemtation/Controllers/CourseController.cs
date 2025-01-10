@@ -25,5 +25,12 @@ namespace LMS.Presentation.Controllers
             var courseDto = await _serviceManager.CourseService.GetCourseByIdAsync(id);
             return Ok(courseDto);
         }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CourseDto>>> GetAllCourses()
+        {
+            var courseDtos = await _serviceManager.CourseService.GetAllCoursesAsync();
+            return Ok(courseDtos);
+        }
     }
 }
