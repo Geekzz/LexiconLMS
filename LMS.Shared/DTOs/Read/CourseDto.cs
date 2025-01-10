@@ -4,19 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LMS.Shared.DTOs
+namespace LMS.Shared.DTOs.Read
 {
-    public class ActivityDto
+    public class CourseDto
     {
-        public int ActivityId { get; set; }
+        public int CourseId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        public int ActivityTypeId { get; set; }
-        public ActivityTypeDto ActivityType { get; set; }
-
-        public List<ActivityDocumentDto> ActivityDocument { get; set; }
+        public List<CourseDocumentDto> CourseDocuments { get; set; }
+        public List<ModuleDto> Modules { get; set; }
     }
 }

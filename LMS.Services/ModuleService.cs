@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Domain.Contracts;
 using AutoMapper;
 using Domain.Models.Entities;
-using LMS.Shared.DTOs;
 using Services.Contracts;
+using LMS.Shared.DTOs.Read;
 
 namespace LMS.Services
 {

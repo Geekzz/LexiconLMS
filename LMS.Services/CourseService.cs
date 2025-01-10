@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Contracts;
 using Domain.Models.Entities;
-using LMS.Shared.DTOs;
+using LMS.Shared.DTOs.Create;
+using LMS.Shared.DTOs.Read;
 using Services.Contracts;
 
 namespace LMS.Services
@@ -35,6 +36,17 @@ namespace LMS.Services
         {
             var courses = await _uow.CourseRepository.GetAllCoursesAsync();
             return _mapper.Map<IEnumerable<CourseDto>>(courses);
+        }
+
+        public async Task<CourseDto> CreateCourseAsync(CourseCreateDto dto)
+        {
+            Course course = _mapper.Map<Course>(dto);
+
+            _uow.CourseRepository.Create(course);
+
+            await _uow.CompleteAsync();
+
+            return _mapper.Map<CourseDto>(course);
         }
     }
 }

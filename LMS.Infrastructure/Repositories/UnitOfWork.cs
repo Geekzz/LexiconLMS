@@ -23,7 +23,7 @@ public class UnitOfWork : IUnitOfWork
         _courseRepository = new Lazy<ICourseRepository> (() => new CourseRepository(_context));
     }
 
-    public async Task CompleteASync()
+    public async Task CompleteAsync()
     {
         await _context.SaveChangesAsync();
     }

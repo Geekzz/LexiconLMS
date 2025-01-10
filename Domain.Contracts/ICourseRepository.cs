@@ -6,5 +6,8 @@ namespace Domain.Contracts
     {
         Task<List<Course>> GetAllCoursesAsync(bool trackChanges = false);
         Task<Course?> GetCourseByIdAsync(int courseId, bool trackChanges = false);
+        void Create(Course entity);
+        void Update(Course entity);
+        void Delete(Course entity);
     }
 }

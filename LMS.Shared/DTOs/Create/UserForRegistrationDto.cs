@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LMS.Shared.DTOs;
+namespace LMS.Shared.DTOs.Create;
 
 #nullable disable
 public record UserForRegistrationDto

@@ -1,12 +1,13 @@
-﻿namespace LMS.Shared.DTOs
+﻿namespace LMS.Shared.DTOs.Read
 {
-    public class CourseDocumentDto
+    public class ActivityDocumentDto
     {
-        public int CourseDocumentId { get; set; }
+        public int ActivityDocumentId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime UploadedAt { get; set; }
 
         //public Guid FileName { get; set; } // Reference to the actual file saved on the server
+
     }
 }

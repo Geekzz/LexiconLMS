@@ -1,20 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LMS.Shared.DTOs
+namespace LMS.Shared.DTOs.Create
 {
-    public class ModuleDto
-    {
-        public int ModuleId { get; set; }
+    public class ModuleCreateDto
+    {   
+        [Required]
         public string Name { get; set; }
+
+        [Required]
         public string Description { get; set; }
+
+        [Required]
         public DateTime StartDate { get; set; }
+
+        [Required]
         public DateTime EndDate { get; set; }
 
-        public List<ModuleDocumentDto> ModuleDocuments { get; set; }
-        public List<ActivityDto> Activities { get; set; }
+        public List<ActivityCreateDto> Activities { get; set; }
     }
 }

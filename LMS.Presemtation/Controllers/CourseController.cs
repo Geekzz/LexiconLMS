@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LMS.Shared.DTOs;
+using LMS.Shared.DTOs.Create;
+using LMS.Shared.DTOs.Read;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 
@@ -31,6 +32,13 @@ namespace LMS.Presentation.Controllers
         {
             var courseDtos = await _serviceManager.CourseService.GetAllCoursesAsync();
             return Ok(courseDtos);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateCourse(CourseCreateDto dto)
+        {
+            var createdCourseDto = await _serviceManager.CourseService.CreateCourseAsync(dto);
+            return Created();
         }
     }
 }
