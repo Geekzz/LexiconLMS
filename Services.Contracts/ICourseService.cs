@@ -12,5 +12,6 @@ namespace Services.Contracts
         Task<IEnumerable<CourseDto>> GetAllCoursesAsync();
         Task<CourseDto> CreateCourseAsync(CourseCreateDto dto);
         Task<CourseDto> UpdateCourseAsync(int id, JsonPatchDocument<CourseUpdateDto> patchDocument);
+        Task DeleteCourseAsync(int id);
     }
 }

@@ -57,5 +57,11 @@ namespace LMS.Presentation.Controllers
 
             return Ok(updatedCourse);
         }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteCourse(int id)
+        {
+            await _serviceManager.CourseService.DeleteCourseAsync(id);
+            return NoContent();
+        }
     }
 }

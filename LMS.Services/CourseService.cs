@@ -64,5 +64,14 @@ namespace LMS.Services
 
             return _mapper.Map<CourseDto>(courseToPatch);
         }
+
+        public async Task DeleteCourseAsync(int id)
+        {
+            var courseToDelete = await _uow.CourseRepository.GetCourseByIdAsync(id, true);
+            if (courseToDelete == null) throw new KeyNotFoundException($"{id} not found.");
+            _uow.CourseRepository.Delete(courseToDelete);
+
+            await _uow.CompleteAsync();
+        }
     }
 }
