@@ -63,14 +63,26 @@ h1:focus {
     color: white !important;
     width: 180px;
     height: 66px;
-    border-radius: 999px;
+    border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     transition: 0.1s ease-in-out;
 }
 
-.lexicon-button:hover {
+.lexicon-button-tiny {
+    background-color: #D60000;
+    color: white !important;
+    width: 100px;
+    height: 40px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.1s ease-in-out;
+}
+
+.lexicon-button:hover, .lexicon-button-tiny:hover {
     transform: scale(1.05);
     transition: 0.1s ease-in-out;
 }
@@ -104,6 +116,7 @@ h1:focus {
 
 h1 {
     font-size: 4.5em;
+    font-weight: 700;
 }
 
 h2 {
