@@ -7,6 +7,8 @@ using LMS.Presentation;
 using LMS.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Services.Contracts;
 using System.Security.Claims;
 
@@ -27,7 +29,11 @@ public class Program
         {
             configure.ReturnHttpNotAcceptable = true;
         })
-                        .AddNewtonsoftJson()
+                        .AddNewtonsoftJson(options => {
+
+                            options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+
+                        })
                         .AddApplicationPart(typeof(AssemblyReference).Assembly);
 
         builder.Services.ConfigureOpenApi();
@@ -36,6 +42,13 @@ public class Program
         builder.Services.ConfigureRepositories();
         builder.Services.ConfigureJwt(builder.Configuration);
         builder.Services.ConfigureCors();
+    //    builder.Services.AddMvc()
+
+    //.AddNewtonsoftJson(options => {
+
+    //    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+
+    //});
 
 
         builder.Services.AddScoped<ICourseRepository, CourseRepository>();

@@ -16,5 +16,7 @@ namespace Domain.Models.Entities
 
         public List<CourseDocument> CourseDocuments { get; set; }  
         public List<Module> Modules { get; set; }
+
+        public List<ApplicationUser> Users { get; set; }
     }
 }
