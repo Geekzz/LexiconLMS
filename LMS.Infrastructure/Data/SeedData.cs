@@ -11,7 +11,8 @@ public static class SeedData
 {
     private static UserManager<ApplicationUser> userManager = null!;
     private static RoleManager<IdentityRole> roleManager = null!;
-    private const string adminRole = "Admin";
+    private const string adminRole = "Teacher";
+    private const string studentRole = "Student";
 
     public static async Task SeedDataAsync(this IApplicationBuilder builder)
     {
@@ -56,6 +57,9 @@ public static class SeedData
         {
             e.Email = f.Person.Email;
             e.UserName = f.Person.Email;
+            e.FirstName = f.Person.FirstName;
+            e.LastName = f.Person.LastName;
+            e.CourseId = 1;
         });
 
         var users = faker.Generate(nrOfUsers);

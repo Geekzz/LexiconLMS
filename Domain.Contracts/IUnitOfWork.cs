@@ -2,5 +2,8 @@
 
 public interface IUnitOfWork
 {
-    Task CompleteASync();
+    IActivityRepository ActivityRepository { get; }
+    ICourseRepository CourseRepository { get; } 
+    IModuleRepository ModuleRepository { get; } 
+    Task CompleteAsync();
 }
