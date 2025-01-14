@@ -50,12 +50,34 @@ h1:focus {
     border-color: #929292;
 }
 
+.no-padding {
+    padding: 0px !important;
+}
+
 .lexicon-logo {
     max-height: 66px;
+    margin: 0px 20px;
 }
 
 .lexicon-background {
     background-color: #E0E0E0;
+    display: flex;
+    flex-direction: column;
+}
+
+.lexicon-landing-image {
+    background-image: url(Images/classroom.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.lexicon-rounded {
+    border-radius: 20px;
+}
+
+.lexicon-rounded-large {
+    border-radius: 40px;
 }
 
 .lexicon-button {
@@ -95,7 +117,7 @@ h1:focus {
 }
 
 .lexicon-nav:hover {
-    background: grey;
+    background: #cfcfcf;
 }
 
 .navbar-nav {
