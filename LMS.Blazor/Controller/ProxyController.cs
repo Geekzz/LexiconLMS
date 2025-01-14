@@ -33,10 +33,10 @@ public class ProxyController : ControllerBase
         string endpoint = $"api/{resource}";
         var accessToken = await _tokenService.GetAccessTokenAsync(userId);
 
-        //Endpoint for GET Course By UserID
+        //Endpoint to Get course for logged in user, the CourseController in
+        //the API will get the userId, no need to pass it in a querystring.
         if (resource == "courseForUser")
         {
-            //endpoint = endpoint + $"/{userId}";
             endpoint = "api/courses/user";
 
         }
