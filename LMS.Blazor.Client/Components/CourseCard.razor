@@ -1,0 +1,96 @@
+﻿@using LMS.Shared.DTOs.Read
+
+<h2 class="text-center">KURSER</h2>
+<div class="col-md-8 mb-4">
+    <div class="card">
+        <div class="card-body">
+            <h3>@Course.Name | @Course.Description | ID: @Course.CourseId</h3>
+
+            @if (Course.Modules != null && Course.Modules.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Type</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>ID</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var module in Course.Modules)
+                            {
+                                <tr>
+                                    <td><strong>Module</strong></td>
+                                    <td>@module.Name</td>
+                                    <td>@module.Description</td>
+                                    <td>@module.ModuleId</td>
+                                    <td>
+                                        <button class="lexicon-button-tiny">Redigera</button>
+                                    </td>
+                                </tr>
+
+                                @if (module.Activities != null && module.Activities.Any())
+                                {
+                                    @foreach (var activity in module.Activities)
+                                    {
+                                        <tr>
+                                            <td>Activity</td>
+                                            <td>@activity.Name</td>
+                                            <td>@activity.Description</td>
+                                            <td>@activity.ActivityId</td>
+                                            <td>
+                                                <button class="lexicon-button-tiny">Redigera</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-center">No activities available</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p>No modules available.</p>
+            }
+        </div>
+    </div>
+</div>
+
+<h2 class="text-center">ANVÄNDARE</h2>
+@if (Course.Users != null && Course.Users.Any())
+{
+    <div class="col-md-8 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h3>Users for @Course.Name</h3>
+                <UserCard Users="Course.Users" />
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="col-md-8 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h3>Users for @Course.Name</h3>
+                <p>No users available.</p>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public CourseDto Course { get; set; } = default!;
+}
