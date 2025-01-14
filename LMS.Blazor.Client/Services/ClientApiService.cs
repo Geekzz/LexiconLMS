@@ -14,7 +14,7 @@ public class ClientApiService(IHttpClientFactory httpClientFactory, NavigationMa
         { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
     //Generic
-    public async Task<List<T>> CallApiGetAllAsync<T>(string endpoint)
+    public async Task<T> CallApiGetAsync<T>(string endpoint)
     {
         var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"proxy-endpoint/{endpoint}");
         var response = await httpClient.SendAsync(requestMessage);
@@ -27,7 +27,7 @@ public class ClientApiService(IHttpClientFactory httpClientFactory, NavigationMa
 
         response.EnsureSuccessStatusCode();
 
-        var dtos = await JsonSerializer.DeserializeAsync<List<T>>(await response.Content.ReadAsStreamAsync(), _jsonSerializerOptions, CancellationToken.None) ?? [];
+        var dtos = await JsonSerializer.DeserializeAsync<T>(await response.Content.ReadAsStreamAsync(), _jsonSerializerOptions, CancellationToken.None) ?? default;
         return dtos;
     }
 }
