@@ -13,10 +13,10 @@ public class ClientApiService(IHttpClientFactory httpClientFactory, NavigationMa
     private readonly JsonSerializerOptions _jsonSerializerOptions = new ()
         { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
-    //ToDo: Make generic
-    public async Task<IEnumerable<DemoDto>> CallApiAsync()
+    //Generic
+    public async Task<List<T>> CallApiGetAllAsync<T>(string endpoint)
     {
-        var requestMessage = new HttpRequestMessage(HttpMethod.Get, "proxy-endpoint");
+        var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"proxy-endpoint/{endpoint}");
         var response = await httpClient.SendAsync(requestMessage);
 
         if (response.StatusCode == System.Net.HttpStatusCode.Forbidden
@@ -27,7 +27,7 @@ public class ClientApiService(IHttpClientFactory httpClientFactory, NavigationMa
 
         response.EnsureSuccessStatusCode();
 
-        var demoDtos = await JsonSerializer.DeserializeAsync<List<DemoDto>>(await response.Content.ReadAsStreamAsync(), _jsonSerializerOptions, CancellationToken.None) ?? [];
-        return demoDtos;
+        var dtos = await JsonSerializer.DeserializeAsync<List<T>>(await response.Content.ReadAsStreamAsync(), _jsonSerializerOptions, CancellationToken.None) ?? [];
+        return dtos;
     }
 }
