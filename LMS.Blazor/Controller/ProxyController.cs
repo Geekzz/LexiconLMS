@@ -19,14 +19,14 @@ public class ProxyController : ControllerBase
         _tokenService = tokenService;
     }
 
-    [HttpGet]
     //[HttpPost]
     //[HttpPut]
     //[HttpDelete]
     //[HttpPatch]
-    public async Task<IActionResult> Proxy() //ToDo send endpoint uri here!
+    [HttpGet("{resource}")]
+    public async Task<IActionResult> Proxy(string resource) //ToDo send endpoint uri here!
     {
-        string endpoint = "api/demoauth";
+        string endpoint = $"api/{resource}";
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; //Usermanager can be used here! 
 
         if (userId == null)
@@ -49,6 +49,7 @@ public class ProxyController : ControllerBase
         var method = new HttpMethod(Request.Method);
         var requestMessage = new HttpRequestMessage(method, targetUri);
 
+        //Handle POST
         if (method != HttpMethod.Get && Request.ContentLength > 0)
         {
             requestMessage.Content = new StreamContent(Request.Body);
