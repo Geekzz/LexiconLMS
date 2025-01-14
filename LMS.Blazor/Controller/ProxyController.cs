@@ -24,16 +24,22 @@ public class ProxyController : ControllerBase
     //[HttpDelete]
     //[HttpPatch]
     [HttpGet("{resource}")]
-    public async Task<IActionResult> Proxy(string resource) //ToDo send endpoint uri here!
+    public async Task<IActionResult> Proxy(string resource) //ToDo query?
     {
-        string endpoint = $"api/{resource}";
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; //Usermanager can be used here! 
 
         if (userId == null)
             return Unauthorized();
-
-
+        
+        string endpoint = $"api/{resource}";
         var accessToken = await _tokenService.GetAccessTokenAsync(userId);
+
+        ////Endpoint for GET Course By UserID
+        //if (resource == "courses")
+        //{
+        //    endpoint = endpoint + $"/{userId}";
+        //}
+        
 
         //ToDo: Before continue look for expired accesstoken and call refresh enpoint instead.
         //Better with delegatinghandler or separate service to extract this logic!
@@ -49,7 +55,7 @@ public class ProxyController : ControllerBase
         var method = new HttpMethod(Request.Method);
         var requestMessage = new HttpRequestMessage(method, targetUri);
 
-        //Handle POST
+        //Handles POST
         if (method != HttpMethod.Get && Request.ContentLength > 0)
         {
             requestMessage.Content = new StreamContent(Request.Body);
