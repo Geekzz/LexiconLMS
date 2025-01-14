@@ -30,7 +30,7 @@
 </div>
 
 <button class="btn btn-primary" @onclick="CallAPIAsync">Call API</button>
-@if (courses == null)
+@if (course == null)
 {
     <p>API not called yet</p>
 }
@@ -45,8 +45,8 @@ else
         </thead>
         <tbody>
             <tr>
-                <td>@courses.Name</td>
-                <td>@courses.Description</td>
+                <td>@course.Name</td>
+                <td>@course.Description</td>
             </tr>
         </tbody>
     </table>
@@ -59,10 +59,10 @@ else
     [Inject]
     private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
 
-    private CourseDto? courses;
+    private CourseDto? course;
 
     private async Task CallAPIAsync()
     {
-        courses = (await _apiService.CallApiGetAsync<CourseDto>("courses/1"));
+        course = (await _apiService.CallApiGetAsync<CourseDto>("courseForUser"));
     }
 }

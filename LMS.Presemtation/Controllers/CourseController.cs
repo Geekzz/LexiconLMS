@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using Microsoft.AspNetCore.JsonPatch;
 using LMS.Shared.DTOs.Update;
+using System.Security.Claims;
 
 namespace LMS.Presentation.Controllers
 {
@@ -22,10 +23,22 @@ namespace LMS.Presentation.Controllers
             _serviceManager = serviceManager;
         }
 
+
+
         [HttpGet("{id}")]
         public async Task<ActionResult<CourseDto>> GetOneCourse(int id)
         {
             var courseDto = await _serviceManager.CourseService.GetCourseByIdAsync(id);
+            return Ok(courseDto);
+        }
+
+        [HttpGet("user")]
+        public async Task<ActionResult<CourseDto>> GetCourseForCurrentUser()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Unauthorized();
+
+            var courseDto = await _serviceManager.CourseService.GetCourseByUserIdAsync(userId);
             return Ok(courseDto);
         }
 

@@ -9,5 +9,6 @@ namespace Domain.Contracts
         void Create(Course entity);
         void Update(Course entity);
         void Delete(Course entity);
+        Task<Course?> GetCourseByUserIdAsync(string userId, bool trackChanges = false);
     }
 }

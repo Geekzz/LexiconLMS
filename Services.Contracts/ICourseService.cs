@@ -13,5 +13,6 @@ namespace Services.Contracts
         Task<CourseDto> CreateCourseAsync(CourseCreateDto dto);
         Task<CourseDto> UpdateCourseAsync(int id, JsonPatchDocument<CourseUpdateDto> patchDocument);
         Task DeleteCourseAsync(int id);
+        Task<CourseDto> GetCourseByUserIdAsync(string userId);
     }
 }
