@@ -1,94 +1,139 @@
 ﻿@using LMS.Shared.DTOs.Read
 
 <h2 class="text-center">KURSER</h2>
-<div class="col-md-8 mb-4">
-    <div class="card">
-        <div class="card-body">
-            <h3>@Course.Name | @Course.Description | ID: @Course.CourseId</h3>
-
-            @if (Course.Modules != null && Course.Modules.Any())
-            {
+<div class="d-flex justify-content-center flex-column">
+    <!-- Main Course Table Section -->
+    <div class="col-md-8 mb-4 align-self-center">
+        <div class="card lexicon-rounded">
+            <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-borderless">
                         <thead class="table-light">
                             <tr>
-                                <th>Type</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>ID</th>
-                                <th></th>
+                                <th class="align-middle">Type</th>
+                                <th class="align-middle">Name</th>
+                                <th class="align-middle">Description</th>
+                                <th class="align-middle">ID</th>
+                                <th class="align-middle"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var module in Course.Modules)
-                            {
-                                <tr>
-                                    <td><strong>Module</strong></td>
-                                    <td>@module.Name</td>
-                                    <td>@module.Description</td>
-                                    <td>@module.ModuleId</td>
-                                    <td>
-                                        <button class="lexicon-button-tiny">Redigera</button>
-                                    </td>
-                                </tr>
+                            <!-- Course Row -->
+                            <tr>
+                                <td class="align-middle"><strong>Course</strong></td>
+                                <td class="align-middle">@Course.Name</td>
+                                <td class="align-middle">@Course.Description</td>
+                                <td class="align-middle">@Course.CourseId</td>
+                                <td class="d-flex justify-content-center align-items-center">
+                                    <button class="lexicon-button-tiny">Redigera</button>
+                                </td>
+                            </tr>
 
-                                @if (module.Activities != null && module.Activities.Any())
+                            <!-- Divider -->
+                            <tr style="border: none;">
+                                <td colspan="5" style="border: none; padding: 0;">
+                                    <hr class="my-1 border-secondary">
+                                </td>
+                            </tr>
+
+                            <!-- Modules and Activities -->
+                            @if (Course.Modules != null && Course.Modules.Any())
+                            {
+                                @foreach (var module in Course.Modules)
                                 {
-                                    @foreach (var activity in module.Activities)
+                                    <!-- Module Row -->
+                                    <tr>
+                                        <td class="align-middle"><strong>Module</strong></td>
+                                        <td class="align-middle">@module.Name</td>
+                                        <td class="align-middle">@module.Description</td>
+                                        <td class="align-middle">@module.ModuleId</td>
+                                        <td class="d-flex justify-content-center align-items-center">
+                                            <button class="lexicon-button-tiny">Redigera</button>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Activity Rows -->
+                                    @if (module.Activities != null && module.Activities.Any())
+                                    {
+                                        @foreach (var activity in module.Activities)
+                                        {
+                                            <tr>
+                                                <td class="align-middle">Activity</td>
+                                                <td class="align-middle">@activity.Name</td>
+                                                <td class="align-middle">@activity.Description</td>
+                                                <td class="align-middle">@activity.ActivityId</td>
+                                                <td class="d-flex justify-content-center align-items-center">
+                                                    <button class="lexicon-button-tiny">Redigera</button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
                                     {
                                         <tr>
-                                            <td>Activity</td>
-                                            <td>@activity.Name</td>
-                                            <td>@activity.Description</td>
-                                            <td>@activity.ActivityId</td>
-                                            <td>
-                                                <button class="lexicon-button-tiny">Redigera</button>
-                                            </td>
+                                            <td colspan="5" class="text-center align-middle">No activities available</td>
                                         </tr>
                                     }
                                 }
-                                else
-                                {
-                                    <tr>
-                                        <td colspan="5" class="text-center">No activities available</td>
-                                    </tr>
-                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center align-middle">No modules available</td>
+                                </tr>
                             }
                         </tbody>
                     </table>
                 </div>
-            }
-            else
-            {
-                <p>No modules available.</p>
-            }
+
+                <!-- Buttons Section -->
+                <div class="d-flex justify-content-center align-items-center flex-column mt-4">
+                    <button class="lexicon-button-tiny d-block mb-2">Ny aktivitet</button>
+                    <button class="lexicon-button-tiny d-block">Ny modul</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Användare Table Section -->
+    <div class="col-md-8 mb-4 align-self-center">
+        <h2 class="text-center">ANVÄNDARE</h2>
+        <div class="card lexicon-rounded">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="align-middle">Username</th>
+                                <th class="align-middle">First Name</th>
+                                <th class="align-middle">Last Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Course.Users != null && Course.Users.Any())
+                            {
+                                @foreach (var user in Course.Users)
+                                {
+                                    <tr>
+                                        <td class="align-middle">@user.UserName</td>
+                                        <td class="align-middle">@user.FirstName</td>
+                                        <td class="align-middle">@user.LastName</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="3" class="text-center align-middle">No users available</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
-<h2 class="text-center">ANVÄNDARE</h2>
-@if (Course.Users != null && Course.Users.Any())
-{
-    <div class="col-md-8 mb-4">
-        <div class="card">
-            <div class="card-body">
-                <h3>Users for @Course.Name</h3>
-                <UserCard Users="Course.Users" />
-            </div>
-        </div>
-    </div>
-}
-else
-{
-    <div class="col-md-8 mb-4">
-        <div class="card">
-            <div class="card-body">
-                <h3>Users for @Course.Name</h3>
-                <p>No users available.</p>
-            </div>
-        </div>
-    </div>
-}
 
 @code {
     [Parameter]

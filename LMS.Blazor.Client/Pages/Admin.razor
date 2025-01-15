@@ -47,7 +47,7 @@
     private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
 
     private List<CourseDto>? courses;
-    private ModuleDto? moduleDtos;
+    // private ModuleDto? moduleDtos;
 
     protected override async Task OnInitializedAsync()
     {
@@ -59,7 +59,7 @@
         try
         {
             courses = (await _apiService.CallApiGetAsync<List<CourseDto>>("courses")).ToList();
-            moduleDtos = (await _apiService.CallApiGetAsync<ModuleDto>("modules/1")); // <-- currently doesnt work
+            // moduleDtos = (await _apiService.CallApiGetAsync<ModuleDto>("modules/1")); // <-- currently doesnt work
         }
         catch (Exception ex)
         {
