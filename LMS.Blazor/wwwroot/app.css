@@ -137,7 +137,7 @@ h1:focus {
 }
 
 h1 {
-    font-size: 4.5em;
+    font-size: clamp(2em, 12vw, 4.5em);
     font-weight: 700;
 }
 
