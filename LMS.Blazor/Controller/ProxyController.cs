@@ -40,6 +40,16 @@ public class ProxyController : ControllerBase
             endpoint = "api/courses/user";
         }
 
+        if ( resource == "userInfo")
+        {
+            endpoint = $"api/users/{userId}";
+        }
+
+        //if (resource = "userInfo")
+        //{
+        //    endpoint = "api/cou"
+        //}
+
         //ToDo: Before continue look for expired accesstoken and call refresh enpoint instead.
         //Better with delegatinghandler or separate service to extract this logic!
 

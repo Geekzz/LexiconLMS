@@ -28,16 +28,33 @@ namespace LMS.Presentation.Controllers
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _userManager.Users
+
                 .Select(user => new
                 {
                     user.Email,
                     user.FirstName,
-                    user.LastName 
+                    user.LastName
                 })
                 .ToListAsync();
-
             return Ok(users);
         }
+
+        [HttpGet("{targetId}")]
+        [Authorize]
+        public async Task<IActionResult> GetOneUser(string targetId)
+        {
+                var user = await _userManager.Users.Where(u => u.Id == targetId).FirstOrDefaultAsync();
+                return Ok(user);
+        }
+
+
+        //[HttpGet(]
+        //[Authorize]
+        //public async Task<IActionResult> GetOneUser([FromQuery] string targetId)
+        //{
+        //    var user = await _userManager.Users.Where(u => u.UserName == userName).FirstOrDefaultAsync();
+        //    return Ok(user);
+        //}
 
     }
 }

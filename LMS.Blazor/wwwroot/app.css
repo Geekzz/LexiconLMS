@@ -83,7 +83,8 @@ h1:focus {
 .lexicon-button {
     background-color: #D60000;
     color: white !important;
-    width: 180px;
+    min-width: 180px;
+    width: auto;
     height: 66px;
     border-radius: 20px;
     display: flex;
