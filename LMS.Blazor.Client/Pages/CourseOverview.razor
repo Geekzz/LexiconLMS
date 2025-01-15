@@ -39,7 +39,7 @@ else
 
 
 
-<button class="btn btn-primary" @onclick="CallAPIAsync">Call API</button>
+@* <button class="btn btn-primary" @onclick="CallAPIAsync">Call API</button> *@
 
 @if (course == null)
 {
@@ -95,8 +95,8 @@ else
         }
     }
 
-    private async Task CallAPIAsync()
-    {
-        course = (await _apiService.CallApiGetAsync<CourseDto>("courseForUser"));
-    }
+    // private async Task CallAPIAsync()
+    // {
+    //     course = (await _apiService.CallApiGetAsync<CourseDto>("courseForUser"));
+    // }
 }
