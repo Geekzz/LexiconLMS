@@ -1,0 +1,74 @@
+﻿@page "/Profile"
+@rendermode InteractiveWebAssembly
+@using LMS.Blazor.Client.Services
+@using LMS.Shared.DTOs.Read
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+
+@if (courses == null && user == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<div class="container-lg">
+
+		<div class="text-center lexicon-primary d-flex p-2 justify-content-around align-items-center mb-4 mt-4">
+			<div>
+				<h1>@user.FirstName</h1>
+				<h2>@user.Email</h2>user.Email
+			</div>
+			<button class="nav-link btn nav-button lexicon-button button-fontsize" href="">ÄNDRA LÖSENORD</button>
+		</div>
+
+		<div class="text-center lexicon-primary">
+			<div class="row">
+				<div class="col">
+					Column
+				</div>
+				<div class="col">
+					Column
+				</div>
+				<div class="col">
+					Column
+				</div>
+			</div>
+		</div>
+
+	</div>
+}
+
+@code {
+	[Inject]
+	private IApiService _apiService { get; set; } = default!;
+	[Inject]
+	private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+
+
+	private List<CourseDto>? courses;
+	private UserDto? user;
+
+	protected async override Task OnInitializedAsync()
+	{
+		try
+		{
+			// Retrieve user's claims
+			var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+			var claimsPrincipal = authState.User;
+
+			if (claimsPrincipal.Identity?.IsAuthenticated == true) {
+				user = new UserDto {
+						// FirstName = claimsPrincipal.FindFirst(ClaimTypes.FirstName)?.Value ?? "Unknown User",
+						Email = claimsPrincipal.FindFirst(ClaimTypes.Email)?.Value ?? "No Email"
+					};
+			}
+			courses = (await _apiService.CallApiGetAsync<List<CourseDto>>("courses")).ToList();
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Error: {ex.Message}");
+		}
+		// courses = (await _apiService.CallApiGetAsync<List<CourseDto>>("courses"))
+		// 	.ToList();
+	}
+}
