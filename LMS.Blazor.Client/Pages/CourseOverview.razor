@@ -12,7 +12,7 @@
 
 <PageTitle>Course Overview</PageTitle>
 <div class="row mb-1">
-    <h3>Course Overview</h3>
+    <h3>Kursöversikt</h3>
 </div>
 
 @if (course == null)
@@ -23,12 +23,12 @@ else
 {
     <div class="row">
         <Course CourseData="course" />
-        @* <Modules CourseData="course"/> *@
+        <CourseStudents CourseData="course" />
+
     </div>
 
 
     <div class="row">
-   @*      <SelectedModule CourseData="course" /> *@
         <Modules CourseData="course" />
         <Activities CourseData="course" />
     </div>
@@ -39,8 +39,8 @@ else
 }
 
 
-
-@* <button class="btn btn-primary" @onclick="CallAPIAsync">Call API</button> *@
+@* 
+<button class="btn btn-primary" @onclick="CallAPIAsync">Call API</button>
 
 @if (course == null)
 {
@@ -60,19 +60,19 @@ else
                 <td>@course.Name</td>
                 <td>@course.Description</td>
             </tr>
-@*             <tr>
+            <tr>
                 @foreach (var user in course.Users)
                 {
                     <td>@user.FirstName</td>
                     <td>@user.LastName</td>
                 })
-            </tr> *@
+            </tr>
         </tbody>
     </table>
 
 
 }
-
+ *@
 
 @code {
     [Inject]
