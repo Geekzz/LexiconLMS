@@ -1,4 +1,6 @@
-﻿<div class="col-lg-6 col-mb-6 col-sm-12">
+﻿@using LMS.Shared.DTOs.Read
+
+<div class="col-lg-6 col-mb-6 col-sm-12">
     <div class="card mb-4">
         <div class="card-header">
             <h5 class="mb-0">Activities</h5>
@@ -36,5 +38,6 @@
 </div>
 
 @code {
-
+    [Parameter]
+    public CourseDto CourseData { get; set; } = new CourseDto();
 }

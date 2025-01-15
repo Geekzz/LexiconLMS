@@ -23,8 +23,6 @@ namespace LMS.Presentation.Controllers
             _serviceManager = serviceManager;
         }
 
-
-
         [HttpGet("{id}")]
         public async Task<ActionResult<CourseDto>> GetOneCourse(int id)
         {
