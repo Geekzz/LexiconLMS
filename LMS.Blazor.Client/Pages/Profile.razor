@@ -15,8 +15,8 @@ else
 
 		<div class="text-center lexicon-primary d-flex p-2 justify-content-around align-items-center mb-4 mt-4">
 			<div>
-				<h1>@user.FirstName</h1>
-				<h2>@user.Email</h2>user.Email
+				<h1>@user.FirstName @user.LastName</h1>
+				<h2>@user.Email</h2>
 			</div>
 			<button class="nav-link btn nav-button lexicon-button button-fontsize" href="">ÄNDRA LÖSENORD</button>
 		</div>
@@ -56,11 +56,11 @@ else
 			var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 			var claimsPrincipal = authState.User;
 
-			if (claimsPrincipal.Identity?.IsAuthenticated == true) {
-				user = new UserDto {
-						// FirstName = claimsPrincipal.FindFirst(ClaimTypes.FirstName)?.Value ?? "Unknown User",
-						Email = claimsPrincipal.FindFirst(ClaimTypes.Email)?.Value ?? "No Email"
-					};
+			if (claimsPrincipal.Identity?.IsAuthenticated == true)
+			{
+				user = (await _apiService.CallApiGetAsync<UserDto>($"userInfo"));
+
+
 			}
 			courses = (await _apiService.CallApiGetAsync<List<CourseDto>>("courses")).ToList();
 		}

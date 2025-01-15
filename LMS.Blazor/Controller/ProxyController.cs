@@ -1,5 +1,4 @@
 ﻿using LMS.Blazor.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -24,16 +23,32 @@ public class ProxyController : ControllerBase
     //[HttpDelete]
     //[HttpPatch]
     [HttpGet("{resource}")]
-    public async Task<IActionResult> Proxy(string resource) //ToDo send endpoint uri here!
+    public async Task<IActionResult> Proxy(string resource) //ToDo query?
     {
-        string endpoint = $"api/{resource}";
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; //Usermanager can be used here! 
 
         if (userId == null)
             return Unauthorized();
 
-
+        string endpoint = $"api/{resource}";
         var accessToken = await _tokenService.GetAccessTokenAsync(userId);
+
+        //Endpoint to Get course for logged in user, the CourseController in
+        //the API will get the userId, no need to pass it in a querystring.
+        if (resource == "courseForUser")
+        {
+            endpoint = "api/courses/user";
+        }
+
+        if ( resource == "userInfo")
+        {
+            endpoint = $"api/users?targetId={userId}";
+        }
+
+        //if (resource = "userInfo")
+        //{
+        //    endpoint = "api/cou"
+        //}
 
         //ToDo: Before continue look for expired accesstoken and call refresh enpoint instead.
         //Better with delegatinghandler or separate service to extract this logic!
@@ -49,7 +64,7 @@ public class ProxyController : ControllerBase
         var method = new HttpMethod(Request.Method);
         var requestMessage = new HttpRequestMessage(method, targetUri);
 
-        //Handle POST
+        //Handles POST
         if (method != HttpMethod.Get && Request.ContentLength > 0)
         {
             requestMessage.Content = new StreamContent(Request.Body);
