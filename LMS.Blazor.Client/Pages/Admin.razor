@@ -73,7 +73,6 @@
         {
             courses = (await _apiService.CallApiGetAsync<List<CourseDto>>("courses")).ToList();
             users = (await _apiService.CallApiGetAsync<List<UserDto>>("users")).ToList();
-            // jag försökte hämta modules med id här, men på något sätt gick det ej
             // moduleDtos = (await _apiService.CallApiGetAsync<ModuleDto>("modules/1")); // <-- currently doesnt work
         }
         catch (Exception ex)

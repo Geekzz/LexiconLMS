@@ -2,7 +2,6 @@
 
 <h2 class="text-center">KURSER</h2>
 <div class="d-flex justify-content-center flex-column">
-    <!-- Main Course Table Section -->
     <div class="col-md-8 mb-4 align-self-center">
         <div class="card lexicon-rounded">
             <div class="card-body">
@@ -18,7 +17,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Course Row -->
                             <tr>
                                 <td class="align-middle"><strong>Course</strong></td>
                                 <td class="align-middle">@Course.Name</td>
@@ -29,17 +27,15 @@
                                 </td>
                             </tr>
 
-                            <!-- Divider -->
                             <tr style="border: none;">
                                 <td colspan="5" style="border: none; padding: 0;">
                                     <hr class="my-1 border-secondary">
                                 </td>
                             </tr>
 
-                            <!-- Modules and Activities -->
                             @if (Course.Modules != null && Course.Modules.Any())
                             {
-                                @foreach (var module in Course.Modules) // denna har jag en tillfällig lösning, loopar ju genom modules i course
+                                @foreach (var module in Course.Modules) 
                                 {
                                     <!-- Module Row -->
                                     <tr>
@@ -86,7 +82,6 @@
                     </table>
                 </div>
 
-                <!-- Buttons Section -->
                 <div class="d-flex justify-content-center align-items-center flex-column mt-4">
                     <button class="lexicon-button-tiny d-block mb-2">Ny aktivitet</button>
                     <button class="lexicon-button-tiny d-block">Ny modul</button>

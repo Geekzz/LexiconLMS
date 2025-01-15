@@ -27,8 +27,6 @@ namespace LMS.Presentation.Controllers
         [Authorize]
         public async Task<IActionResult> GetAllUsers()
         {
-            // tillfällig lösning med, API hämtar alla users men osäker om detta är bra
-            // authorize stoppar API att hämta users, måste vara authorized... men annars går det hämta på client iaf
             var users = await _userManager.Users
                 .Select(user => new
                 {
