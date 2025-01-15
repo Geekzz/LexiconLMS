@@ -1,5 +1,5 @@
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: "system-ui", Inter, Arial, 'Helvetica Neue', Helvetica, sans-serif;
 }
 
 a, .btn-link {
@@ -13,7 +13,7 @@ a, .btn-link {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 .content {
@@ -49,3 +49,113 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+.no-padding {
+    padding: 0px !important;
+}
+
+.lexicon-logo {
+    max-height: 66px;
+    margin: 0px 20px;
+}
+
+.lexicon-background {
+    background-color: #E0E0E0;
+    display: flex;
+    flex-direction: column;
+}
+
+.lexicon-landing-image {
+    background-image: url(Images/classroom.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.lexicon-rounded {
+    border-radius: 20px;
+}
+
+.lexicon-rounded-large {
+    border-radius: 40px;
+}
+
+.lexicon-button {
+    background-color: #D60000;
+    color: white !important;
+    width: 180px;
+    height: 66px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.1s ease-in-out;
+}
+
+.lexicon-button-tiny {
+    background-color: #D60000;
+    color: white !important;
+    width: 100px;
+    height: 40px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.1s ease-in-out;
+}
+
+.lexicon-button:hover, .lexicon-button-tiny:hover {
+    transform: scale(1.05);
+    transition: 0.1s ease-in-out;
+}
+
+.lexicon-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px 20px !important;
+}
+
+.lexicon-nav:hover {
+    background: #cfcfcf;
+}
+
+.navbar-nav {
+    align-items: center;
+}
+
+.nav-button {
+    margin: 0px 20px;
+}
+
+.lexicon-primary {
+    background-color: #FFFFFF;
+}
+
+.lexicon-text {
+    color: #5F5F5F;
+}
+
+h1 {
+    font-size: clamp(2em, 12vw, 4.5em);
+    font-weight: 700;
+}
+
+h2 {
+    font-size: 3.0em;
+}
+
+h3, .button-fontsize {
+    font-size: 1.5em;
+    font-weight: 700;
+}
+
+h4 {
+    font-size: 1.25em;
+}
+
+p, .button-fontsize-tiny {
+    font-size: 1.0em;
+}
+
+

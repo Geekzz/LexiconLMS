@@ -12,11 +12,20 @@ public class ServiceManager : IServiceManager
 {
 
     private readonly Lazy<IAuthService> authService;
+    private readonly Lazy<ICourseService> courseService;
+    private readonly Lazy<IModuleService> moduleService;
+    private readonly Lazy<IActivityService> activityService;
 
     public IAuthService AuthService => authService.Value;
+    public ICourseService CourseService => courseService.Value;
+    public IModuleService ModuleService => moduleService.Value;
+    public IActivityService ActivityService => activityService.Value;
 
-    public ServiceManager(Lazy<IAuthService> authService)
+    public ServiceManager(Lazy<IAuthService> authService, IUnitOfWork uow, IMapper mapper)
     {
         this.authService = authService;
+        courseService = new Lazy<ICourseService>(() => new CourseService(uow, mapper));
+        moduleService = new Lazy<IModuleService>(() => new ModuleService(uow, mapper));
+        activityService = new Lazy<IActivityService>(() => new ActivityService(uow, mapper));
     }
 }

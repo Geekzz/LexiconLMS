@@ -1,18 +1,63 @@
 ﻿@inherits LayoutComponentBase
-
+@inject NavigationManager NavigationManager
 <div class="page">
-    <div class="sidebar">
+    @* <div class="sidebar">
         <NavMenu />
-    </div>
+    </div> *@
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+    <main class="lexicon-background" style="min-height: 100vh;">
+        <nav class="navbar" style="background-color: white; padding: 0px;">
+            <a class="navbar-brand" href="" style="padding: 0px;">
+                <img class="lexicon-logo" src="Images/lexicon-logo.svg" />
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-expand">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link lexicon-nav button-fontsize" href="" style="color: black;">HOME</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link lexicon-nav button-fontsize" href="Account/Register" style="color: black;">REGISTER</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn nav-button lexicon-button button-fontsize" href="Account/Login">LOGIN</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link lexicon-nav button-fontsize" href="courseoverview" style="color: black;">Course Overview</a>
+                    </li>
+                </ul>
+                <AuthorizeView>
+                    <Authorized>
+                        <div class="nav-item px-2">
+                            <NavLink class="nav-link" href="demoauth">
+                                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> DemoAuth
+                            </NavLink>
+                        </div>
+                        <div class="nav-item px-2">
+                            <NavLink class="nav-link" href="Account/Manage">
+                                <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
+                            </NavLink>
+                        </div>
+                        <div class="nav-item px-2">
+                            <form action="Account/Logout" method="post">
+                                <AntiforgeryToken />
+                                <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+                                <button type="submit" class="nav-link">
+                                    <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
+                                </button>
+                            </form>
+                        </div>
+                    </Authorized>
 
-        <article class="content px-4">
+                </AuthorizeView>
+            </div>
+        </nav>
+
+        <section class="h-100 no-padding">
             @Body
-        </article>
+        </section>
     </main>
 </div>
 
@@ -21,3 +66,24 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+@code {
+    private string? currentUrl;
+    protected override void OnInitialized()
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        // NavigationManager.LocationChanged += OnLocationChanged;
+    }
+
+    // private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    // {
+    //     currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+    //     StateHasChanged();
+    // }
+
+    // public void Dispose()
+    // {
+    //     NavigationManager.LocationChanged -= OnLocationChanged;
+    // }
+
+}

@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using Domain.Models.Configuration;
+using Domain.Models.Entities;
 using LMS.Shared.DTOs;
-using LMS.Shared.User;
+using LMS.Shared.DTOs.Create;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;

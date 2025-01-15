@@ -1,5 +1,5 @@
 ﻿using Bogus;
-using LMS.Shared.User;
+using Domain.Models.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +11,8 @@ public static class SeedData
 {
     private static UserManager<ApplicationUser> userManager = null!;
     private static RoleManager<IdentityRole> roleManager = null!;
-    private const string adminRole = "Admin";
+    private const string adminRole = "Teacher";
+    private const string studentRole = "Student";
 
     public static async Task SeedDataAsync(this IApplicationBuilder builder)
     {
@@ -56,6 +57,9 @@ public static class SeedData
         {
             e.Email = f.Person.Email;
             e.UserName = f.Person.Email;
+            e.FirstName = f.Person.FirstName;
+            e.LastName = f.Person.LastName;
+            e.CourseId = 1;
         });
 
         var users = faker.Generate(nrOfUsers);
@@ -69,7 +73,6 @@ public static class SeedData
         {
             var result = await userManager.CreateAsync(user, passWord);
             if (!result.Succeeded) throw new Exception(string.Join("\n", result.Errors));
-
         }
     }
 }

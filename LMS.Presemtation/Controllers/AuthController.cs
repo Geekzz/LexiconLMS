@@ -1,9 +1,10 @@
 ﻿using LMS.Shared.DTOs;
+using LMS.Shared.DTOs.Create;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 
-namespace LMS.Presemtation.Controllers;
+namespace LMS.Presentation.Controllers;
 [Route("api/auth")]
 [ApiController]
 public class AuthController : ControllerBase
@@ -15,7 +16,7 @@ public class AuthController : ControllerBase
         this.serviceManager = serviceManager;
     }
 
-    [HttpPost]
+    [HttpPost("register")]
     public async Task<ActionResult> RegisterUser(UserForRegistrationDto registrationDto)
     {
         var result = await serviceManager.AuthService.RegisterUserAsync(registrationDto);
