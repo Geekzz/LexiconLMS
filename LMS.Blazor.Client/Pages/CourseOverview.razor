@@ -60,8 +60,17 @@ else
                 <td>@course.Name</td>
                 <td>@course.Description</td>
             </tr>
+@*             <tr>
+                @foreach (var user in course.Users)
+                {
+                    <td>@user.FirstName</td>
+                    <td>@user.LastName</td>
+                })
+            </tr> *@
         </tbody>
     </table>
+
+
 }
 
 
