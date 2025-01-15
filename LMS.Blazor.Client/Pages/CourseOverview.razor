@@ -1,0 +1,112 @@
+﻿@page "/courseoverview"
+@rendermode InteractiveWebAssembly
+
+@using LMS.Blazor.Client.Services
+@using LMS.Shared.DTOs
+@using LMS.Shared.DTOs.Read
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using LMS.Blazor.Client.Components
+
+@attribute [Authorize]
+
+<PageTitle>Course Overview</PageTitle>
+<div class="row mb-1">
+    <h3>Course Overview</h3>
+</div>
+
+@if (course == null)
+{
+    <p>Loading course details...</p>
+}
+else
+{
+    <div class="row">
+        <Course CourseData="course" />
+        @* <Modules CourseData="course"/> *@
+    </div>
+
+
+    <div class="row">
+   @*      <SelectedModule CourseData="course" /> *@
+        <Modules CourseData="course" />
+        <Activities CourseData="course" />
+    </div>
+
+@*     <div class="row">
+        <SelectedActivity CourseData="course" />
+    </div> *@
+}
+
+
+
+@* <button class="btn btn-primary" @onclick="CallAPIAsync">Call API</button> *@
+
+@if (course == null)
+{
+    <p>API not called yet</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@course.Name</td>
+                <td>@course.Description</td>
+            </tr>
+@*             <tr>
+                @foreach (var user in course.Users)
+                {
+                    <td>@user.FirstName</td>
+                    <td>@user.LastName</td>
+                })
+            </tr> *@
+        </tbody>
+    </table>
+
+
+}
+
+
+@code {
+    [Inject]
+    private IApiService _apiService { get; set; } = default!;
+    [Inject]
+    private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+
+    private CourseDto? course;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                if (_apiService != null)
+                {
+                    course = await _apiService.CallApiGetAsync<CourseDto>("courseForUser");
+                    StateHasChanged(); // Trigger UI update after fetching data
+                }
+                else
+                {
+                    Console.WriteLine("ApiService is not initialized.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching course: {ex.Message}");
+            }
+        }
+    }
+
+    // private async Task CallAPIAsync()
+    // {
+    //     course = (await _apiService.CallApiGetAsync<CourseDto>("courseForUser"));
+    // }
+}

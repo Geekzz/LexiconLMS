@@ -1,0 +1,46 @@
+﻿@using LMS.Shared.DTOs.Read
+
+<div class="col-lg-6 col-mb-6 col-sm-12">
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Current Course</h5>
+        </div>
+        <div class="card-body">
+            <p class="card-text"></p>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Course</th>
+                            <td>@CourseData.Name</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Description</th>
+                            <td>@CourseData.Description</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Start Date</th>
+                            <td>@CourseData.StartDate</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">End Date</th>
+                            <td>@CourseData.EndDate</td>
+                        </tr>
+@*                         <tr>
+                            @foreach (var user in CourseData.Users)
+                            {
+                                <td>@$"{user.FirstName}</td>
+                                <td>@user.LastName</td>
+                            })
+                        </tr> *@
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public CourseDto CourseData { get; set; } = new CourseDto();
+}

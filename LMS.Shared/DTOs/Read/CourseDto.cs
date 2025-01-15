@@ -18,6 +18,8 @@ namespace LMS.Shared.DTOs.Read
         public List<CourseDocumentDto> CourseDocuments { get; set; }
         public List<ModuleDto> Modules { get; set; }
 
+        //public List<ActivityDto> Activities { get; set; }
+
         public List<UserDto> Users { get; set; }
     }
 }

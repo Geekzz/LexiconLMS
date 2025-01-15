@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Domain.Contracts;
 using Domain.Models.Entities;
 using LMS.Infrastructure.Data;
+using LMS.Shared.DTOs.Read;
 using Microsoft.EntityFrameworkCore;
 
 namespace LMS.Infrastructure.Repositories
@@ -33,6 +34,18 @@ namespace LMS.Infrastructure.Repositories
                 .Include(c => c.Modules)
                 .ThenInclude(m => m.Activities)
                 .ToListAsync();
+        }
+
+        public async Task<Course?> GetCourseByUserIdAsync(string userId, bool trackChanges = false)
+        {
+            return await 
+                FindByCondition(c => c.Users.Any(u => u.Id == userId), trackChanges)
+                .Include(c => c.Modules)
+                .ThenInclude(m => m.Activities)
+                .ThenInclude(a => a.ActivityType)
+                .Include(c => c.Users) 
+                .FirstOrDefaultAsync();
+
         }
     }
 }
