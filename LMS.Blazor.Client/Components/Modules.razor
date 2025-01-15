@@ -18,18 +18,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>C# objects and operators</td>
-                            <td>lorem ipsum</td>
-                            <td>2025-01-01</td>
-                            <td>2025-01-03</td>
-                        </tr>
-                        <tr>
-                            <td>C# Arrays</td>
-                            <td>lorem ipsum</td>
-                            <td>2025-01-04</td>
-                            <td>2025-01-06</td>
-                        </tr>
+                        @foreach (var module in CourseData.Modules)
+                        {
+                            <tr>
+                                <td>@module.Name</td>
+                                <td>@module.Description</td>
+                                <td>@module.StartDate</td>
+                                <td>@module.EndDate</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>

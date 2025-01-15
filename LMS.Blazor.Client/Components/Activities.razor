@@ -18,6 +18,19 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach (var modules in CourseData.Modules)
+                        {
+                            @foreach (var activity in modules.Activities)
+                            {
+                                <tr>
+                                    <td>@activity.Name</td>
+                                    <td>@activity.Description</td>
+                                    <td>@activity.StartDate</td>
+                                    <td>@activity.EndDate</td>
+                                </tr>
+                            }
+                        }
+
                         <tr>
                             <td>Föreläsning</td>
                             <td>C# objects and operators</td>

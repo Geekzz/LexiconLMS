@@ -22,18 +22,18 @@
 else
 {
     <div class="row">
-        <Course />
-        <Modules />
+        <Course CourseData="course" />
+        <Modules CourseData="course"/>
     </div>
 
 
     <div class="row">
-        <SelectedModule />
-        <Activities />
+        <SelectedModule CourseData="course" />
+        <Activities CourseData="course" />
     </div>
 
     <div class="row">
-        <SelectedActivity />
+        <SelectedActivity CourseData="course" />
     </div>
 }
 
