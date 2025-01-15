@@ -24,30 +24,29 @@ namespace LMS.Presentation.Controllers
         }
 
         [HttpGet]
-        //[Authorize]
-        public async Task<IActionResult> GetAllUsers([FromQuery] string targetId)
+        [Authorize]
+        public async Task<IActionResult> GetAllUsers()
         {
-            // Validate that logged in user is teacher to get all.
-            if (targetId == null)
-            {
-                var users = await _userManager.Users
-                    .Select(user => new
-                    {
-                        user.Email,
-                        user.FirstName,
-                        user.LastName
-                    })
-                    .ToListAsync();
-                return Ok(users);
-            }
-            else
-            {
+            var users = await _userManager.Users
+
+                .Select(user => new
+                {
+                    user.Email,
+                    user.FirstName,
+                    user.LastName
+                })
+                .ToListAsync();
+            return Ok(users);
+        }
+
+        [HttpGet("{targetId}")]
+        [Authorize]
+        public async Task<IActionResult> GetOneUser(string targetId)
+        {
                 var user = await _userManager.Users.Where(u => u.Id == targetId).FirstOrDefaultAsync();
                 return Ok(user);
-            }
-
-
         }
+
 
         //[HttpGet(]
         //[Authorize]

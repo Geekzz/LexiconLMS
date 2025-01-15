@@ -42,7 +42,7 @@ public class ProxyController : ControllerBase
 
         if ( resource == "userInfo")
         {
-            endpoint = $"api/users?targetId={userId}";
+            endpoint = $"api/users/{userId}";
         }
 
         //if (resource = "userInfo")
