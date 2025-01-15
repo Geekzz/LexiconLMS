@@ -73,5 +73,15 @@ namespace LMS.Services
 
             await _uow.CompleteAsync();
         }
+
+        public async Task<CourseDto> GetCourseByUserIdAsync(string userId)
+        {
+            var course = await _uow.CourseRepository.GetCourseByUserIdAsync(userId);
+            if (course == null)
+            {
+                throw new KeyNotFoundException($"not found");
+            }
+            return _mapper.Map<CourseDto>(course);
+        }
     }
 }
