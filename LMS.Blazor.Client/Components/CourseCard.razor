@@ -39,7 +39,7 @@
                             <!-- Modules and Activities -->
                             @if (Course.Modules != null && Course.Modules.Any())
                             {
-                                @foreach (var module in Course.Modules)
+                                @foreach (var module in Course.Modules) // denna har jag en tillfällig lösning, loopar ju genom modules i course
                                 {
                                     <!-- Module Row -->
                                     <tr>
@@ -90,45 +90,6 @@
                 <div class="d-flex justify-content-center align-items-center flex-column mt-4">
                     <button class="lexicon-button-tiny d-block mb-2">Ny aktivitet</button>
                     <button class="lexicon-button-tiny d-block">Ny modul</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Användare Table Section -->
-    <div class="col-md-8 mb-4 align-self-center">
-        <h2 class="text-center">ANVÄNDARE</h2>
-        <div class="card lexicon-rounded">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-borderless">
-                        <thead class="table-light">
-                            <tr>
-                                <th class="align-middle">Username</th>
-                                <th class="align-middle">First Name</th>
-                                <th class="align-middle">Last Name</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Course.Users != null && Course.Users.Any())
-                            {
-                                @foreach (var user in Course.Users)
-                                {
-                                    <tr>
-                                        <td class="align-middle">@user.UserName</td>
-                                        <td class="align-middle">@user.FirstName</td>
-                                        <td class="align-middle">@user.LastName</td>
-                                    </tr>
-                                }
-                            }
-                            else
-                            {
-                                <tr>
-                                    <td colspan="3" class="text-center align-middle">No users available</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>

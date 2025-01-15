@@ -23,11 +23,23 @@
             }
             else
             {
-                <div class="row justify-content-center">
-                    @foreach (var course in courses)
-                    {
-                        <CourseCard Course="course" />
-                    }
+                <div class="d-flex justify-content-center">
+                    <div class="flex-grow-1">
+                        <div class="row justify-content-center">
+                            @foreach (var course in courses)
+                            {
+                                <CourseCard Course="course" />
+                            }
+                        </div>
+                        <div class="row justify-content-center">
+                            <UserCard Users="users" />
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column justify-content-center align-items-center ms-4">
+                        <button class="lexicon-button mb-2">Ny kurs</button>
+                        <button class="lexicon-button">Ny användare</button>
+                    </div>
                 </div>
             }
         </div>
@@ -47,6 +59,7 @@
     private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
 
     private List<CourseDto>? courses;
+    private List<UserDto>? users;
     // private ModuleDto? moduleDtos;
 
     protected override async Task OnInitializedAsync()
@@ -59,6 +72,8 @@
         try
         {
             courses = (await _apiService.CallApiGetAsync<List<CourseDto>>("courses")).ToList();
+            users = (await _apiService.CallApiGetAsync<List<UserDto>>("users")).ToList();
+            // jag försökte hämta modules med id här, men på något sätt gick det ej
             // moduleDtos = (await _apiService.CallApiGetAsync<ModuleDto>("modules/1")); // <-- currently doesnt work
         }
         catch (Exception ex)
