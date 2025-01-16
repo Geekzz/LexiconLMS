@@ -127,6 +127,7 @@ h1:focus {
 
 .nav-button {
     margin: 0px 20px;
+    border: none !important;
 }
 
 .lexicon-primary {
