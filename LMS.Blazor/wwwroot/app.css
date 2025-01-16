@@ -80,15 +80,10 @@ h1:focus {
     border-radius: 40px;
 }
 
-.lexicon-rounded-home {
-    border-radius: 20px 0px 0px 20px;
-}
-
 .lexicon-button {
     background-color: #D60000;
     color: white !important;
-    min-width: 180px;
-    width: auto;
+    width: 180px;
     height: 66px;
     border-radius: 20px;
     display: flex;
@@ -98,12 +93,16 @@ h1:focus {
     border: none !important;
 }
 
+.lexicon-button-special {
+    width: auto;
+}
+
 .lexicon-button-tiny {
     background-color: #D60000;
     color: white !important;
     width: 100px;
     height: 40px;
-    border-radius: 20px;
+    border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;

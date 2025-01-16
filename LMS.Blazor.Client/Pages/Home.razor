@@ -20,13 +20,18 @@
 }
 else
 {
-    <div class="d-flex flex-wrap justify-content-space-between p-5">
-        @if (correctCourse){
+    <div class="d-flex flex-wrap justify-content-evenly p-5">
+        @if (course != null){
             <HomeCourse CourseData="course" />
         }
-
-        <HomeModule CourseData="course" />
-        <HomeActivity CourseData="course" />
+        @if (module != null)
+        {
+            <HomeModule ModuleData="module" />
+        }
+        @if (activity != null)
+        {
+            <HomeActivity ActivityData="activity" />
+        }
     </div>
 }
 
@@ -37,8 +42,9 @@ else
     private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
 
     private CourseDto? course;
+    public ModuleDto? module;
+    public ActivityDto? activity;
     private DateTime checkDate = DateTime.Now;
-    private bool correctCourse = false;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -49,6 +55,28 @@ else
                 if (_apiService != null)
                 {
                     course = await _apiService.CallApiGetAsync<CourseDto>("courseForUser");
+                    if (course.Modules != null)
+                    {
+                        foreach (var item in course.Modules)
+                        {
+                            if (checkDate >= item.StartDate && checkDate < item.EndDate)
+                            {
+                                module = item;
+                            }
+                        }
+                    }
+                    if (module?.Activities != null)
+                    {
+                        foreach (var item in module.Activities)
+                        {
+                            if (checkDate >= item.StartDate && checkDate < item.EndDate)
+                            {
+                                activity = item;
+                            }
+                        }
+                    }
+
+                    StateHasChanged(); // Trigger UI update after fetching data
                 }
                 else
                 {
@@ -60,13 +88,12 @@ else
                 Console.WriteLine($"Error fetching course: {ex.Message}");
             }
 
-            CheckDate();
-            StateHasChanged(); // Trigger UI update after fetching data
+            // CheckDate();
         }
     }
 
-    private void CheckDate()
-    {
-        correctCourse = checkDate >= course.StartDate && checkDate < course.EndDate;
-    }
+    // private void CheckDate()
+    // {
+    //     correctCourse = checkDate >= course.StartDate && checkDate < course.EndDate;
+    // }
 }

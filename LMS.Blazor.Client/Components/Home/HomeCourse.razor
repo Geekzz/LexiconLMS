@@ -1,37 +1,18 @@
 ﻿@using LMS.Shared.DTOs.Read
 
-<div class="lexicon-primary d-flex flex-row p-4 lexicon-rounded">
-    <div class="lexicon-rounded-home" style="background-color: blue; width: 250px;">
-        <p>image box</p>
+<div class="lexicon-primary d-flex flex-row p-5 mb-5 lexicon-rounded">
+    <div class="lexicon-rounded-home me-5 lexicon-landing-image lexicon-rounded" style="width: 300px; height: 300px;">
     </div>
-    <div>
-        <div class="card-header">
-            <h5 class="mb-0">Current Course</h5>
+    <div style="width: 300px;">
+        <div class="text-center">
+            <h3 class="mb-0">KURS: @CourseData.Name</h3>
         </div>
-        <div class="card-body">
-            <p class="card-text"></p>
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <tbody>
-                        <tr>
-                            <th scope="row">Course</th>
-                            <td>@CourseData.Name</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Description</th>
-                            <td>@CourseData.Description</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Start Date</th>
-                            <td>@CourseData.StartDate</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">End Date</th>
-                            <td>@CourseData.EndDate</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <p class="my-2">@truncatedString</p>
+        <div class="d-flex align-items-center flex-column">
+            <p><b>Slutdatum:</b> @CourseData.EndDate.Year-@CourseData.EndDate.Month-@CourseData.EndDate.Day</p>
+            <a href="courseoverview" class="btn lexicon-button-tiny button-fontsize-tiny">
+                LÄS MER
+            </a>
         </div>
     </div>
 </div>
@@ -39,4 +20,19 @@
 @code {
     [Parameter]
     public CourseDto CourseData { get; set; } = new CourseDto();
+
+    public int maxLength = 250;
+    public string truncatedString = "";
+    public DateTime checkDate = DateTime.Now;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Truncate();
+    }
+
+    protected void Truncate()
+    {
+        truncatedString = CourseData.Description.Length > maxLength ? $"{CourseData.Description.Substring(0, maxLength)}..." : CourseData.Description;
+    }
 }

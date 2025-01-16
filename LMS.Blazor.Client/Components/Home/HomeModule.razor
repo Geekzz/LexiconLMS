@@ -1,38 +1,36 @@
 ﻿@using LMS.Shared.DTOs.Read
 
-<div class="lexicon-primary d-flex flex-row p-4 lexicon-rounded">
-    <div class="lexicon-rounded-home" style="background-color: blue; width: 250px;">
-        <p>image box</p>
+<div class="lexicon-primary d-flex flex-row p-5 mb-5 lexicon-rounded">
+    <div class="lexicon-rounded-home me-5 lexicon-landing-image lexicon-rounded" style="width: 300px; height: 300px;">
     </div>
-    <div>
-        <div class="card-header">
-            <h5 class="mb-0">Selected Module</h5>
+    <div style="width: 300px;">
+        <div class="text-center">
+            <h3 class="mb-0">MODUL: @ModuleData.Name</h3>
         </div>
-        <div class="card-body">
-            <p class="card-text"></p>
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <tbody>
-                        <tr>
-                            <th scope="row">Description</th>
-                            <td>C# Language Basics</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Start Date</th>
-                            <td>2025-01-01</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">End Date</th>
-                            <td>2025-01-02</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <p class="my-2">@truncatedString</p>
+        <div class="d-flex align-items-center flex-column">
+            <p><b>Slutdatum:</b> @ModuleData.EndDate.Year-@ModuleData.EndDate.Month-@ModuleData.EndDate.Day</p>
+            <a href="courseoverview" class="btn lexicon-button-tiny button-fontsize-tiny">
+                LÄS MER
+            </a>
         </div>
     </div>
 </div>
 
 @code {
     [Parameter]
-    public CourseDto CourseData { get; set; } = new CourseDto();
+    public ModuleDto ModuleData { get; set; } = new ModuleDto();
+
+    public int maxLength = 250;
+    public string truncatedString = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        Truncate();
+    }
+
+    protected void Truncate()
+    {
+        truncatedString = ModuleData.Description.Length > maxLength ? $"{ModuleData.Description.Substring(0, maxLength)}..." : ModuleData.Description;
+    }
 }
