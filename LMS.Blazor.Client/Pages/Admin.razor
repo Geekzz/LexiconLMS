@@ -15,7 +15,7 @@
         <div class="container mx-auto mt-5">
             @if (courses == null)
             {
-                <p>Loading courses...</p>
+                <LoadingSpinner />
             }
             else if (!courses.Any())
             {
@@ -36,7 +36,6 @@
                         </div>
                     </div>
 
-                    <!-- Fixed buttons -->
                     <div class="position-fixed" style="top: 50%; right: 20px;">
                         <a class="btn lexicon-button mb-2 button-fontsize">Ny kurs</a>
                         <a class="btn lexicon-button button-fontsize">Ny användare</a>
