@@ -80,6 +80,10 @@ h1:focus {
     border-radius: 40px;
 }
 
+.lexicon-rounded-home {
+    border-radius: 20px 0px 0px 20px;
+}
+
 .lexicon-button {
     background-color: #D60000;
     color: white !important;
@@ -91,6 +95,7 @@ h1:focus {
     justify-content: center;
     align-items: center;
     transition: 0.1s ease-in-out;
+    border: none !important;
 }
 
 .lexicon-button-tiny {
@@ -103,6 +108,7 @@ h1:focus {
     justify-content: center;
     align-items: center;
     transition: 0.1s ease-in-out;
+    border: none !important;
 }
 
 .lexicon-button:hover, .lexicon-button-tiny:hover {
@@ -125,9 +131,13 @@ h1:focus {
     align-items: center;
 }
 
+.navbar-brand {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
+
 .nav-button {
     margin: 0px 20px;
-    border: none !important;
 }
 
 .lexicon-primary {
@@ -160,4 +170,63 @@ p, .button-fontsize-tiny {
     font-size: 1.0em;
 }
 
+.loader {
+    width: 40px;
+    aspect-ratio: 1;
+    position: relative;
+}
 
+    .loader:before,
+    .loader:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: -8px 0 0 -8px;
+        width: 16px;
+        aspect-ratio: 1;
+        background: #D60000;
+        animation: l2-1 2s infinite, l2-2 1s infinite;
+    }
+
+    .loader:after {
+        background: #D60000;
+        animation-delay: -1s,0s;
+    }
+
+@keyframes l2-1 {
+    0% {
+        top: 0;
+        left: 0
+    }
+
+    25% {
+        top: 100%;
+        left: 0
+    }
+
+    50% {
+        top: 100%;
+        left: 100%
+    }
+
+    75% {
+        top: 0;
+        left: 100%
+    }
+
+    100% {
+        top: 0;
+        left: 0
+    }
+}
+
+@keyframes l2-2 {
+    40%,50% {
+        transform: rotate(0.25turn) scale(0.5)
+    }
+
+    100% {
+        transform: rotate(0.5turn) scale(1)
+    }
+}

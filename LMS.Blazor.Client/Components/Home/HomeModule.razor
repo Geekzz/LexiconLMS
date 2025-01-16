@@ -1,0 +1,38 @@
+﻿@using LMS.Shared.DTOs.Read
+
+<div class="lexicon-primary d-flex flex-row p-4 lexicon-rounded">
+    <div class="lexicon-rounded-home" style="background-color: blue; width: 250px;">
+        <p>image box</p>
+    </div>
+    <div>
+        <div class="card-header">
+            <h5 class="mb-0">Selected Module</h5>
+        </div>
+        <div class="card-body">
+            <p class="card-text"></p>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Description</th>
+                            <td>C# Language Basics</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Start Date</th>
+                            <td>2025-01-01</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">End Date</th>
+                            <td>2025-01-02</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public CourseDto CourseData { get; set; } = new CourseDto();
+}

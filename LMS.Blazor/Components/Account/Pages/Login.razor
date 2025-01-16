@@ -115,7 +115,7 @@
             await TokenStorage.StoreTokensAsync(user.Id, tokens);
 
             Logger.LogInformation("User logged in.");
-            RedirectManager.RedirectTo(ReturnUrl);
+            RedirectManager.RedirectTo("home");
 
 
         }
