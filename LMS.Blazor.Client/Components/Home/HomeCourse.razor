@@ -1,0 +1,38 @@
+﻿@using LMS.Shared.DTOs.Read
+
+<div class="lexicon-primary d-flex flex-row p-5 mb-5 lexicon-rounded">
+    <div class="lexicon-rounded-home me-5 lexicon-landing-image lexicon-rounded" style="width: 300px; height: 300px;">
+    </div>
+    <div style="width: 300px;">
+        <div class="text-center">
+            <h3 class="mb-0">KURS: @CourseData.Name</h3>
+        </div>
+        <p class="my-2">@truncatedString</p>
+        <div class="d-flex align-items-center flex-column">
+            <p><b>Slutdatum:</b> @CourseData.EndDate.Year-@CourseData.EndDate.Month-@CourseData.EndDate.Day</p>
+            <a href="courseoverview" class="btn lexicon-button-tiny button-fontsize-tiny">
+                LÄS MER
+            </a>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public CourseDto CourseData { get; set; } = new CourseDto();
+
+    public int maxLength = 250;
+    public string truncatedString = "";
+    public DateTime checkDate = DateTime.Now;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Truncate();
+    }
+
+    protected void Truncate()
+    {
+        truncatedString = CourseData.Description.Length > maxLength ? $"{CourseData.Description.Substring(0, maxLength)}..." : CourseData.Description;
+    }
+}
