@@ -1,0 +1,22 @@
+﻿@page "/edit-course/{courseId:int}"
+@using LMS.Blazor.Client.Services
+@using LMS.Shared.DTOs.Read
+@using Microsoft.AspNetCore.Components.Authorization
+
+<h3>Edit course - @CourseId</h3>
+
+@code {
+    [Inject]
+    private IApiService _apiService { get; set; } = default!;
+    [Inject]
+    private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+
+    [Parameter]
+    public int CourseId { get; set; }
+    private CourseDto? course;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var course = (await _apiService.CallApiGetAsync<CourseDto>($"courses/{CourseId}"));
+    }
+}

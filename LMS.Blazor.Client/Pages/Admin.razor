@@ -15,7 +15,9 @@
         <div class="container mx-auto mt-5">
             @if (courses == null)
             {
-                <LoadingSpinner />
+                <div class="d-flex w-100 h-100 justify-content-center align-items-center">
+                    <div class="loader"></div>
+                </div>
             }
             else if (!courses.Any())
             {
