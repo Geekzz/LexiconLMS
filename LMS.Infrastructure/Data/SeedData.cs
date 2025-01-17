@@ -73,6 +73,7 @@ public static class SeedData
         foreach (var user in users)
         {
             var result = await userManager.CreateAsync(user, passWord);
+            if (!result.Succeeded) throw new Exception(string.Join("\n", result.Errors));
         }
 
         for (var i = 0; i < users.Count; i++)

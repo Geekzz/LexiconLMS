@@ -1,6 +1,7 @@
 ﻿@page "/home"
 @rendermode InteractiveWebAssembly
 
+@using LMS.Blazor.Client.Models;
 @using LMS.Blazor.Client.Services
 @using LMS.Shared.DTOs
 @using LMS.Shared.DTOs.Read
@@ -42,7 +43,10 @@ else
                     <HomeActivity ActivityData="activity" />
                 </div>
             }
-            @* @if (user) *@
+            @if (printRole == "Teacher")
+            {
+                <p>I AM ADMIN!!!!!!!</p>
+            }
         </div>
     </div>
 }
@@ -53,10 +57,12 @@ else
     [Inject]
     private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
 
+    private UserInfo? userInfo;
     private CourseDto? course;
-    public ModuleDto? module;
-    public ActivityDto? activity;
+    private ModuleDto? module;
+    private ActivityDto? activity;
     private DateTime checkDate = DateTime.Now;
+    private string printRole;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -66,6 +72,9 @@ else
             {
                 if (_apiService != null)
                 {
+
+
+
                     course = await _apiService.CallApiGetAsync<CourseDto>("courseForUser");
                     if (course.Modules != null)
                     {
@@ -87,7 +96,7 @@ else
                             }
                         }
                     }
-
+                    
                     StateHasChanged(); // Trigger UI update after fetching data
                 }
                 else
