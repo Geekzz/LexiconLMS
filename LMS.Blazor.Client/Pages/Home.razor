@@ -15,106 +15,121 @@
 
 @if (course == null)
 {
-    <div class="d-flex w-100 h-100 justify-content-center align-items-center">
-        <div class="loader"></div>
-    </div>
+	<div class="d-flex w-100 h-100 justify-content-center align-items-center">
+		<div class="loader"></div>
+	</div>
 }
 else
 {
-    <div class="container-fluid m-0 p-5">
-        <div class="row">
-            @if (course != null)
-            {
-                <div class="col-xl-6 d-flex justify-content-center align-items-center">
-                    <HomeCourse CourseData="course" />
-                </div>
-            }
-            @if (module != null)
-            {
-                <div class="col-xl-6 d-flex justify-content-center align-items-center">
-                    <HomeModule ModuleData="module" />
-                </div>
-            }
-        </div>
-        <div class="row">
-            @if (activity != null)
-            {
-                <div class="col-xl-6 d-flex justify-content-center align-items-center">
-                    <HomeActivity ActivityData="activity" />
-                </div>
-            }
-            @if (printRole == "Teacher")
-            {
-                <p>I AM ADMIN!!!!!!!</p>
-            }
-        </div>
-    </div>
+	<div class="container-fluid m-0 p-5">
+		<div class="row">
+			@if (course != null)
+			{
+				<div class="col-xl-6 d-flex justify-content-center align-items-center">
+					<HomeCourse CourseData="course" />
+				</div>
+			}
+			@if (module != null)
+			{
+				<div class="col-xl-6 d-flex justify-content-center align-items-center">
+					<HomeModule ModuleData="module" />
+				</div>
+			}
+		</div>
+		<div class="row">
+			@if (activity != null)
+			{
+				<div class="col-xl-6 d-flex justify-content-center align-items-center">
+					<HomeActivity ActivityData="activity" />
+				</div>
+			}
+			@if (isTeacher)
+			{
+				<p>I AM ADMIN!!!!!!!</p>
+			}
+			@if (isStudent)
+			{
+				<p>I R STUDENT</p>
+			}
+		</div>
+	</div>
 }
 
 @code {
-    [Inject]
-    private IApiService _apiService { get; set; } = default!;
-    [Inject]
-    private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+	[Inject]
+	private IApiService _apiService { get; set; } = default!;
+	[Inject]
+	private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
 
-    private UserInfo? userInfo;
-    private CourseDto? course;
-    private ModuleDto? module;
-    private ActivityDto? activity;
-    private DateTime checkDate = DateTime.Now;
-    private string printRole;
+	private UserInfo? userInfo;
+	private CourseDto? course;
+	private ModuleDto? module;
+	private ActivityDto? activity;
+	private DateTime checkDate = DateTime.Now;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            try
-            {
-                if (_apiService != null)
-                {
+	private bool isTeacher = false;
+	private bool isStudent = false;
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+		var user = authState.User;
+
+		if (user.Identity.IsAuthenticated)
+		{
+			isTeacher = user.IsInRole("Teacher");
+			isStudent = user.IsInRole("Student");
+		}
+
+		if (firstRender)
+		{
+			try
+			{
+				if (_apiService != null)
+				{
 
 
 
-                    course = await _apiService.CallApiGetAsync<CourseDto>("courseForUser");
-                    if (course.Modules != null)
-                    {
-                        foreach (var item in course.Modules)
-                        {
-                            if (checkDate >= item.StartDate && checkDate < item.EndDate)
-                            {
-                                module = item;
-                            }
-                        }
-                    }
-                    if (module?.Activities != null)
-                    {
-                        foreach (var item in module.Activities)
-                        {
-                            if (checkDate >= item.StartDate && checkDate < item.EndDate)
-                            {
-                                activity = item;
-                            }
-                        }
-                    }
-                    
-                    StateHasChanged(); // Trigger UI update after fetching data
-                }
-                else
-                {
-                    Console.WriteLine("ApiService is not initialized.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error fetching course: {ex.Message}");
-            }
+					course = await _apiService.CallApiGetAsync<CourseDto>("courseForUser");
+					if (course.Modules != null)
+					{
+						foreach (var item in course.Modules)
+						{
+							if (checkDate >= item.StartDate && checkDate < item.EndDate)
+							{
+								module = item;
+							}
+						}
+					}
+					if (module?.Activities != null)
+					{
+						foreach (var item in module.Activities)
+						{
+							if (checkDate >= item.StartDate && checkDate < item.EndDate)
+							{
+								activity = item;
+							}
+						}
+					}
 
-            // CheckDate();
-        }
-    }
+					StateHasChanged(); // Trigger UI update after fetching data
+				}
+				else
+				{
+					Console.WriteLine("ApiService is not initialized.");
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Error fetching course: {ex.Message}");
+			}
 
-    // private void CheckDate()
-    // {
-    //     correctCourse = checkDate >= course.StartDate && checkDate < course.EndDate;
-    // }
+			// CheckDate();
+		}
+	}
+
+	// private void CheckDate()
+	// {
+	//     correctCourse = checkDate >= course.StartDate && checkDate < course.EndDate;
+		// }
 }
