@@ -45,7 +45,7 @@
                             </label>
                         </div>
                         <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn w-100 lexicon-button button-fontsize">LOGGA IN</button>
+                            <button type="submit" class="btn w-100 lexicon-button lexicon-button-special button-fontsize">LOGGA IN</button>
                         </div>
                         <div class="text-center pt-3">
                             <p>
@@ -115,7 +115,7 @@
             await TokenStorage.StoreTokensAsync(user.Id, tokens);
 
             Logger.LogInformation("User logged in.");
-            RedirectManager.RedirectTo(ReturnUrl);
+            RedirectManager.RedirectTo("home");
 
 
         }

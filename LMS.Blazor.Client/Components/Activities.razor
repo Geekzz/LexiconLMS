@@ -3,48 +3,38 @@
 <div class="col-lg-6 col-mb-6 col-sm-12">
     <div class="card mb-4">
         <div class="card-header">
-            <h5 class="mb-0">Activities</h5>
+            <h5 class="mb-0">Aktiviteter</h5>
         </div>
         <div class="card-body">
             <p class="card-text"></p>
             <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Activity</th>
-                            <th>Description</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var modules in CourseData.Modules)
-                        {
-                            @foreach (var activity in modules.Activities)
+                @if(SelectedModule.Activities != null){
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Activity</th>
+                                <th>Description</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var activity in SelectedModule.Activities)
                             {
                                 <tr>
                                     <td>@activity.Name</td>
                                     <td>@activity.Description</td>
-                                    <td>@activity.StartDate</td>
-                                    <td>@activity.EndDate</td>
+                                    <td>@activity.StartDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td>@activity.EndDate.ToString("yyyy-MM-dd HH:mm")</td>
                                 </tr>
                             }
-                        }
-
-                        <tr>
-                            <td>Föreläsning</td>
-                            <td>C# objects and operators</td>
-                            <td>2025-01-01 11:00</td>
-                            <td>2025-01-01 15:00</td>
-                        </tr>
-                        <tr>
-                            <td>Övning</td>
-                            <td>C# objects and operators</td>
-                            <td>2025-01-01 15:00</td>
-                            <td>2025-01-03 17:00</td>
-                        </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p>Klicka på en modul</p>
+                }
             </div>
         </div>
     </div>
@@ -52,5 +42,5 @@
 
 @code {
     [Parameter]
-    public CourseDto CourseData { get; set; } = new CourseDto();
+    public ModuleDto? SelectedModule { get; set; }
 }
