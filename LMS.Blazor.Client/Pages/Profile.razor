@@ -13,27 +13,86 @@ else
 {
 	<div class="container-lg">
 
-		<div class="text-center lexicon-primary d-flex p-2 justify-content-around align-items-center mb-4 mt-4">
+		<div class="text-center lexicon-primary d-flex p-2 justify-content-around align-items-center mb-4 mt-4 lexicon-rounded">
 			<div>
-				<h1>@user.FirstName @user.LastName</h1>
-				<h2>@user.Email</h2>
+				<h2>@user.FirstName @user.LastName</h2>
+				<h3>@user.Email</h3>
 			</div>
 			<button class="nav-link btn nav-button lexicon-button button-fontsize" href="">ÄNDRA LÖSENORD</button>
 		</div>
 
-		<div class="text-center lexicon-primary">
+		<div class="text-center lexicon-primary lexicon-rounded mx-4">
+
+			<div class="row">
+				<div class="col">
+					<h4 class="lexicon-text">Kursnamn</h4>
+				</div>
+				<div class="col">
+					<h4 class="lexicon-text">Startdatum</h4>
+				</div>
+				<div class="col">
+					<h4 class="lexicon-text">Slutdatum</h4>
+				</div>
+				<div class="col">
+				</div>
+
+			</div>
+
 			<div class="row">
 				<div class="col">
 					<h3>@course.Name</h3>
 				</div>
 				<div class="col">
-					<h2>@course.StartDate.Year-@course.StartDate.Month-@course.StartDate.Day</h2>
+					<h3>@course.StartDate.ToString("yyyy-MM-dd")</h3>
 				</div>
 				<div class="col">
-					<h2>@course.EndDate</h2>
+					<h3>@course.EndDate.ToString("yyyy-MM-dd")</h3>
+				</div>
+
+				<div class="col">
+					<div class="d-flex justify-content-center align-items-end ">
+						<a class="btn lexicon-button-tiny button-fontsize-tiny" href="courseoverview">Läs mer</a>
+
+					</div>
 				</div>
 			</div>
+
+			<hr />
+
+
+			<div class="row">
+				<div class="col">
+					<h4 class="lexicon-text">Modulnamn</h4>
+				</div>
+				<div class="col">
+					<h4 class="lexicon-text">Startdatum</h4>
+				</div>
+				<div class="col">
+					<h4 class="lexicon-text">Slutdatum</h4>
+				</div>
+				<div class="col">
+				</div>
+			</div>
+
+			@foreach (var module in course.Modules)
+			{
+				<div class="row">
+					<div class="col">
+						<h3>@module.Name</h3>
+					</div>
+					<div class="col">
+						<h3>@module.StartDate.ToString("yyyy-MM-dd")</h3>
+					</div>
+					<div class="col">
+						<h3>@module.EndDate.ToString("yyyy-MM-dd")</h3>
+					</div>
+					<div class="col">
+					</div>
+				</div>
+			}
+
 		</div>
+
 
 	</div>
 }
