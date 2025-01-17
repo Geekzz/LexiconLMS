@@ -1,39 +1,35 @@
 ﻿@using LMS.Shared.DTOs.Read
+@using System.ComponentModel.DataAnnotations
 
 <div class="col-lg-6 col-mb-6 col-sm-12">
     <div class="card mb-4">
         <div class="card-header">
-            <h5 class="mb-0">Nuvarande kurs</h5>
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Nuvarande kurs</h5>
+                <a href="javascript:void(0)" @onclick="HandleDocuments" class="ml-auto">Filhantering</a>
+            </div>
         </div>
         <div class="card-body">
-            <p class="card-text"></p>
-            <div class="table-responsive">
-                <table class="table table-hover">
+            @* <p class="card-text"></p> *@
+            <div class="table-responsive scrollable-container">
+                <table class="table table-hover ">
                     <tbody>
                         <tr>
-                            <th scope="row">Course</th>
+                            <th scope="row">@GetDisplayName(nameof(CourseData.Name))</th>
                             <td>@CourseData.Name</td>
                         </tr>
                         <tr>
-                            <th scope="row">Description</th>
+                            <th scope="row">@GetDisplayName(nameof(CourseData.Description))</th>
                             <td>@CourseData.Description</td>
                         </tr>
                         <tr>
-                            <th scope="row">Start Date</th>
+                            <th scope="row">@GetDisplayName(nameof(CourseData.StartDate))</th>
                             <td>@CourseData.StartDate</td>
                         </tr>
                         <tr>
-                            <th scope="row">End Date</th>
+                            <th scope="row">@GetDisplayName(nameof(CourseData.EndDate))</th>
                             <td>@CourseData.EndDate</td>
                         </tr>
-
-@*                         <tr>
-                            @foreach (var user in CourseData.Users)
-                            {
-                                <td>@$"{user.FirstName}</td>
-                                <td>@user.LastName</td>
-                            })
-                        </tr> *@
                     </tbody>
                 </table>
             </div>
@@ -41,7 +37,44 @@
     </div>
 </div>
 
+<style>
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        height: 250px; 
+    }
+    .scrollable-container {
+        flex-grow: 1;
+        overflow-y: auto; //Vertical scrolling
+        border: 1px solid #ccc; 
+        max-height: 100%; 
+    }
+</style>
+
 @code {
     [Parameter]
     public CourseDto CourseData { get; set; } = new CourseDto();
+
+    public string GetDisplayName(string propertyName)
+    {
+        var property = typeof(CourseDto).GetProperty(propertyName);
+        if (property != null)
+        {
+            var displayAttribute = property.GetCustomAttributes(typeof(DisplayAttribute), true)
+                                           .FirstOrDefault() as DisplayAttribute;
+            if (displayAttribute != null)
+            {
+                return displayAttribute.Name;
+            }
+        }
+        return propertyName; //If no DisplayAttribute is found, return the property name
+    }
+
+
+    private void HandleDocuments()
+    {
+        // 
+    }
+
+
 }
