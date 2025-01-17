@@ -7,6 +7,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using LMS.Blazor.Client.Components
+@using System.ComponentModel.DataAnnotations
 
 @attribute [Authorize]
 
@@ -33,6 +34,7 @@ else
     </div>
 
 }
+
 
 
 @code {
@@ -71,4 +73,6 @@ else
     {
         SelectedModule = selectedModule;
     }
+
+    
 }
