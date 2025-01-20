@@ -19,11 +19,12 @@ public class ProxyController : ControllerBase
         _tokenService = tokenService;
     }
 
-    //[HttpPost]
-    //[HttpPut]
-    //[HttpDelete]
-    //[HttpPatch]
+    // ska man ha {*resource} på dessa? 
     [HttpGet("{*resource}")]
+    [HttpPut("{*resource}")]
+    [HttpPatch("{*resource}")]
+    // [HttpPost("{*resource}")]
+    // [HttpDelete("{*resource}")] 
     public async Task<IActionResult> Proxy(string resource) //ToDo query?
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; //Usermanager can be used here! 
@@ -58,9 +59,11 @@ public class ProxyController : ControllerBase
 
         var targetUri = new Uri($"{client.BaseAddress}{endpoint}{Request.QueryString}");
         var method = new HttpMethod(Request.Method);
-        var requestMessage = new HttpRequestMessage(method, targetUri);
+        var requestMessage = new HttpRequestMessage(method, targetUri); // testa kolla requestMessage, hur den ser ut, så vi vet vad api tar emot
 
-        //Handles POST
+        //Handles POST, detta bör funka med put osv med va? mm
+        // jo, det är väl bara att den används för alla methods med req body (inte get).
+
         if (method != HttpMethod.Get && Request.ContentLength > 0)
         {
             requestMessage.Content = new StreamContent(Request.Body);

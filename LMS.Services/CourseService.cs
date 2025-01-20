@@ -83,5 +83,20 @@ namespace LMS.Services
             }
             return _mapper.Map<CourseDto>(course);
         }
+
+        public async Task<CourseDto> PutCourseAsync(int id, CourseUpdateDto course)
+        {
+            var courseToUpdate = await _uow.CourseRepository.GetCourseByIdAsync(id, true);
+            if (courseToUpdate == null) throw new KeyNotFoundException($"{id} not found.");
+
+            courseToUpdate.Name = course.Name;
+            courseToUpdate.Description = course.Description;
+            courseToUpdate.StartDate = course.StartDate;
+            courseToUpdate.EndDate = course.EndDate;
+
+            await _uow.CompleteAsync();
+
+            return _mapper.Map<CourseDto>(courseToUpdate);
+        }
     }
 }
