@@ -1,9 +1,25 @@
-﻿@page "/edit-course/{courseId:int}"
+﻿@page "/edit-course"
+@page "/edit-course/{courseId:int}"
+@rendermode InteractiveWebAssembly
 @using LMS.Blazor.Client.Services
 @using LMS.Shared.DTOs.Read
+@using LMS.Shared.DTOs.Update
 @using Microsoft.AspNetCore.Components.Authorization
+@using LMS.Shared.DTOs
+@using Microsoft.AspNetCore.Authorization
+@using LMS.Blazor.Client.Components.Home
 
-<h3>Edit course - @CourseId</h3>
+@if (course == null)
+{
+    <div class="d-flex w-100 h-100 justify-content-center align-items-center">
+        <div class="loader"></div>
+    </div>
+}
+else
+{
+    <h3>Edit course - @CourseId</h3>
+    <p>@course.Name</p>
+}
 
 @code {
     [Inject]
@@ -15,8 +31,26 @@
     public int CourseId { get; set; }
     private CourseDto? course;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var course = (await _apiService.CallApiGetAsync<CourseDto>($"courses/{CourseId}"));
+        if (firstRender)
+        {
+            try
+            {
+                if (_apiService != null)
+                {
+                    course = await _apiService.CallApiGetAsync<CourseDto>($"courses/{CourseId}");
+                    StateHasChanged();
+                }
+                else
+                {
+                    Console.WriteLine("ApiService is not initialized.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error while fetching courses: {ex.Message}");
+            }
+        }
     }
 }

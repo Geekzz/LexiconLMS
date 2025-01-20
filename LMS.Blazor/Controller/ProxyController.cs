@@ -22,7 +22,7 @@ public class ProxyController : ControllerBase
     //[HttpPut]
     //[HttpDelete]
     //[HttpPatch]
-    [HttpGet("{resource}")]
+    [HttpGet("{*resource}")]
     public async Task<IActionResult> Proxy(string resource) //ToDo query?
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; //Usermanager can be used here! 
