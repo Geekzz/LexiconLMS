@@ -17,18 +17,41 @@
 }
 else
 {
-    <h3>Edit course - @CourseId</h3>
-    <p>@course.Name</p>
-}
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="col-md-6">
+            <div class="card lexicon-rounded p-4">
+                <div class="card-body text-center">
+                    <h4 class="mb-4">Course id: @CourseId</h4>
+                    <form>
+                        <div class="form-group mb-4 text-start">
+                            <label for="courseName" class="form-label">Namn</label>
+                            <input id="courseName" type="text" class="form-control" @bind="course.Name" placeholder="Ange kursnamn" />
+                        </div>
 
-@if(@course != null) {
-    <h2>@course.Name</h2>
-}
-else {
-    <h2>NULL</h2>
-}
+                        <div class="form-group mb-4 text-start">
+                            <label for="courseDescription" class="form-label">Beskrivning</label>
+                            <textarea id="courseDescription" class="form-control" @bind="course.Description" placeholder="Ange kursbeskrivning"></textarea>
+                        </div>
 
-<h2>hej</h2>
+                        <div class="form-group mb-4 text-start">
+                            <label for="startDate" class="form-label">Start datum</label>
+                            <input id="startDate" type="datetime-local" class="form-control" @bind="course.StartDate" />
+                        </div>
+
+                        <div class="form-group mb-4 text-start">
+                            <label for="endDate" class="form-label">Slut datum</label>
+                            <input id="endDate" type="datetime-local" class="form-control" @bind="course.EndDate" />
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn lexicon-button button-fontsize">Redigera</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 @code {
     [Inject]
@@ -58,7 +81,7 @@ else {
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error while fetching courses: {ex.Message}");
+                Console.WriteLine($"Error while fetching course: {ex.Message}");
             }
         }
     }
