@@ -23,7 +23,7 @@ public class ProxyController : ControllerBase
     //[HttpPut]
     //[HttpDelete]
     //[HttpPatch]
-    [HttpGet("{resource}")]
+    [HttpGet("{*resource}")]
     [Authorize]
     public async Task<IActionResult> Proxy(string resource) //ToDo query?
     {

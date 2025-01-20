@@ -17,52 +17,49 @@
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Register</PageTitle>
+<PageTitle>Registrera</PageTitle>
 
-<h1>Register</h1>
-
-<div class="row">
-    <div class="col-md-4">
-        <StatusMessage Message="@Message" />
-        <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
-            <DataAnnotationsValidator />
-            <h2>Create a new account.</h2>
-            <hr />
-            <ValidationSummary class="text-danger" role="alert" />
-            <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label for="email">Email</label>
-                <ValidationMessage For="() => Input.Email" class="text-danger" />
+<div class="no-padding container-fluid w-100 h-100 d-flex justify-content-center align-items-center">
+    <div class="lexicon-primary px-4 py-5 m-4 d-flex justify-content-center align-items-center flex-column lexicon-rounded-large col-md-6">
+        <h1 class="px-2">REGISTRERA</h1>
+        <div class="row d-flex justify-content-center align-items-center col-md-10">
+            <div class="col-md-8">
+                <section>
+                    <StatusMessage Message="@Message" />
+                    <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
+                        <DataAnnotationsValidator />
+                        <hr />
+                        <ValidationSummary class="text-danger" role="alert" />
+                        <div class="form-floating mb-3">
+                            <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                            <label for="email">E-post</label>
+                            <ValidationMessage For="() => Input.Email" class="text-danger" />
+                        </div>
+                        <div class="form-floating mb-3">
+                            <InputText @bind-Value="Input.FirstName" class="form-control" autocomplete="given-name" aria-required="true" placeholder="First Name" />
+                            <label for="FirstName">Förnamn</label>
+                            @* <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" /> *@
+                        </div>
+                        <div class="form-floating mb-3">
+                            <InputText @bind-Value="Input.LastName" class="form-control" autocomplete="family-name" aria-required="true" placeholder="Last Name" />
+                            <label for="LastName">Efternamn</label>
+                            @* <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" /> *@
+                        </div>
+                        <div class="form-floating mb-3">
+                            <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                            <label for="password">Lösenord</label>
+                            <ValidationMessage For="() => Input.Password" class="text-danger" />
+                        </div>
+                        <div class="form-floating mb-3">
+                            <InputText type="password" @bind-Value="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                            <label for="confirm-password">Upprepa Lösenord</label>
+                            <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
+                        </div>
+                        <button type="submit" class="btn w-100 lexicon-button lexicon-button-special button-fontsize">REGISTRERA</button>
+                    </EditForm>
+                </section>
             </div>
-            <div class="form-floating mb-3">
-                <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label for="password">Password</label>
-                <ValidationMessage For="() => Input.Password" class="text-danger" />
-            </div>
-            <div class="form-floating mb-3">
-                <InputText type="password" @bind-Value="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label for="confirm-password">Confirm Password</label>
-                <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
-            </div>
-            <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.FirstName" class="form-control" autocomplete="given-name" aria-required ="true" placeholder="First Name" />
-                <label for="FirstName">First Name</label>
-@*                 <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" /> *@
-            </div>
-            <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.LastName" class="form-control" autocomplete="family-name" aria-required="true" placeholder="Last Name" />
-                <label for="LastName">Last Name</label>
-@*                 <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" /> *@
-            </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </EditForm>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            <ExternalLoginPicker />
-        </section>
+        </div>
     </div>
 </div>
 
@@ -81,7 +78,7 @@
     {
         var httpClient = HttpClientFactory.CreateClient("LmsAPIClient");
         var registerDto = new UserForRegistrationDto { Email = Input.Email, Password = Input.Password, UserName=Input.Email, FirstName = Input.FirstName, LastName = Input.LastName};
-        
+
         var response = await httpClient.PostAsJsonAsync("api/auth/register", registerDto);
         // var user = CreateUser();
 
@@ -147,6 +144,12 @@
         [Display(Name = "Email")]
         public string Email { get; set; } = "";
 
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; } = "";
+
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; } = "";
+
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
@@ -157,10 +160,5 @@
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; } = "";
-        [Display(Name = "First Name")]
-        public string FirstName { get; set; }
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; }
-
     }
 }

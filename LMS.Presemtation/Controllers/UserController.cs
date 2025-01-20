@@ -1,4 +1,5 @@
 ﻿using Domain.Models.Entities;
+using LMS.Shared.DTOs.Create;
 using LMS.Shared.DTOs.Read;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -46,7 +47,6 @@ namespace LMS.Presentation.Controllers
                 var user = await _userManager.Users.Where(u => u.Id == targetId).FirstOrDefaultAsync();
                 return Ok(user);
         }
-
 
         //[HttpGet(]
         //[Authorize]
