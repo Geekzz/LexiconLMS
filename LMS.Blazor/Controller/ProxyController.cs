@@ -1,4 +1,5 @@
 ﻿using LMS.Blazor.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -44,11 +45,6 @@ public class ProxyController : ControllerBase
         {
             endpoint = $"api/users/{userId}";
         }
-
-        //if (resource = "userInfo")
-        //{
-        //    endpoint = "api/cou"
-        //}
 
         //ToDo: Before continue look for expired accesstoken and call refresh enpoint instead.
         //Better with delegatinghandler or separate service to extract this logic!

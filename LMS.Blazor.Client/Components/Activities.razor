@@ -6,16 +6,18 @@
             <h5 class="mb-0">Aktiviteter</h5>
         </div>
         <div class="card-body">
-            <p class="card-text"></p>
+            @* <p class="card-text"></p> *@
             <div class="table-responsive">
-                @if(SelectedModule.Activities != null){
+                @if (SelectedModule?.Activities != null && SelectedModule.Activities.Any())
+                {
                     <table class="table table-hover">
                         <thead class="table-light">
                             <tr>
-                                <th>Activity</th>
-                                <th>Description</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
+                                <th>Aktivitet</th>
+                                <th>Beskrivning</th>
+                                <th>Start</th>
+                                <th>Slut</th>
+                                <th>Filhantering</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -26,6 +28,7 @@
                                     <td>@activity.Description</td>
                                     <td>@activity.StartDate.ToString("yyyy-MM-dd HH:mm")</td>
                                     <td>@activity.EndDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td><a href="javascript:void(0)" @onclick="HandleDocuments">Filer</a></td>
                                 </tr>
                             }
                         </tbody>
@@ -43,4 +46,9 @@
 @code {
     [Parameter]
     public ModuleDto? SelectedModule { get; set; }
+
+    private void HandleDocuments()
+    {
+        //
+    }
 }

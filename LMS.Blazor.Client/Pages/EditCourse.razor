@@ -21,6 +21,15 @@ else
     <p>@course.Name</p>
 }
 
+@if(@course != null) {
+    <h2>@course.Name</h2>
+}
+else {
+    <h2>NULL</h2>
+}
+
+<h2>hej</h2>
+
 @code {
     [Inject]
     private IApiService _apiService { get; set; } = default!;

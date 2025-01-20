@@ -5,8 +5,8 @@
             <h5 class="mb-0">Kursdeltagare</h5>
         </div>
         <div class="card-body">
-            <p class="card-text"></p>
-            <div class="table-responsive">
+            @* <p class="card-text"></p> *@
+            <div class="table-responsive scrollable-container">
                 <table class="table table-hover">
                     <thead class="table-light">
                         <tr>
@@ -30,6 +30,21 @@
         </div>
     </div>
 </div>
+
+<style>
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        height: 250px;
+    }
+
+    .scrollable-container {
+        flex-grow: 1;
+        overflow-y: auto;
+        //Vertical scrolling border: 1px solid #ccc;
+        max-height: 100%;
+    }
+</style>
 
 @code {
     [Parameter]
