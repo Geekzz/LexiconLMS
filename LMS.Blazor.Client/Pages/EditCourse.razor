@@ -1,9 +1,21 @@
-﻿@page "/edit-course/{courseId:int}"
+﻿@page "/edit-course"
+@page "/edit-course/{courseId:int}"
+@rendermode InteractiveWebAssembly
 @using LMS.Blazor.Client.Services
 @using LMS.Shared.DTOs.Read
+@using LMS.Shared.DTOs.Update
 @using Microsoft.AspNetCore.Components.Authorization
 
 <h3>Edit course - @CourseId</h3>
+
+@if(@course != null) {
+    <h2>@course.Name</h2>
+}
+else {
+    <h2>NULL</h2>
+}
+
+<h2>hej</h2>
 
 @code {
     [Inject]
@@ -17,6 +29,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var course = (await _apiService.CallApiGetAsync<CourseDto>($"courses/{CourseId}"));
+        try
+        {
+            course = await _apiService.CallApiGetAsync<CourseDto>($"courses/{CourseId}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error while fetching courses: {ex.Message}");
+        }
     }
 }
