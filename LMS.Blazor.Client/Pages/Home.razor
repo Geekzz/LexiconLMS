@@ -81,7 +81,7 @@ else
 			{
 				if (_apiService != null)
 				{
-					course = await _apiService.CallApiGetAsync<CourseDto>("courseForUser");
+					course = await _apiService.GetAsync<CourseDto>("courseForUser");
 					if (course.Modules != null)
 					{
 						foreach (var item in course.Modules)
