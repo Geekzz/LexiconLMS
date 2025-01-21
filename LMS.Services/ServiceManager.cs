@@ -15,11 +15,13 @@ public class ServiceManager : IServiceManager
     private readonly Lazy<ICourseService> courseService;
     private readonly Lazy<IModuleService> moduleService;
     private readonly Lazy<IActivityService> activityService;
+    private readonly Lazy<IUserService> userService;
 
     public IAuthService AuthService => authService.Value;
     public ICourseService CourseService => courseService.Value;
     public IModuleService ModuleService => moduleService.Value;
     public IActivityService ActivityService => activityService.Value;
+    public IUserService UserService => userService.Value;
 
     public ServiceManager(Lazy<IAuthService> authService, IUnitOfWork uow, IMapper mapper)
     {
@@ -27,5 +29,6 @@ public class ServiceManager : IServiceManager
         courseService = new Lazy<ICourseService>(() => new CourseService(uow, mapper));
         moduleService = new Lazy<IModuleService>(() => new ModuleService(uow, mapper));
         activityService = new Lazy<IActivityService>(() => new ActivityService(uow, mapper));
+        userService = new Lazy<IUserService>(() => new UserService(uow, mapper));
     }
 }

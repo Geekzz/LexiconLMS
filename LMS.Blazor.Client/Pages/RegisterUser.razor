@@ -29,7 +29,7 @@ else
             <div class="row d-flex justify-content-center align-items-center col-md-10">
                 <div class="col-md-8">
                     <section>
-                        <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
+                        <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUserAsync" FormName="register">
                             <DataAnnotationsValidator />
                             <hr />
                             <ValidationSummary class="text-danger" role="alert" />
@@ -142,7 +142,7 @@ else
         }
     }
 
-    public async Task RegisterUser(EditContext editContext)
+    public async Task RegisterUserAsync(EditContext editContext)
     {
         var httpClient = HttpClientFactory.CreateClient("LmsAPIClient");
 

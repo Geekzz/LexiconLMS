@@ -1,22 +1,25 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace LMS.Shared.DTOs.Read
 {
     public class UserDto
     {
-        public string UserName { get; init; }
+        public IdentityUser<Guid> Id { get; set; }
+        public string UserName { get; set; }
 
-        public string Email { get; init; }
+        public string Email { get; set; }
 
-        public string FirstName { get; init; }
+        public string FirstName { get; set; }
 
-        public string LastName { get; init; }
+        public string LastName { get; set; }
 
-        public CourseDto Course { get; init; }
+        public CourseDto Course { get; set; }
     }
 }

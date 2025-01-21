@@ -1,6 +1,7 @@
 ﻿using Domain.Models.Entities;
 using LMS.Shared.DTOs.Create;
 using LMS.Shared.DTOs.Read;
+using LMS.Shared.DTOs.Update;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +19,12 @@ namespace LMS.Presentation.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly IServiceManager _serviceManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        public UserController(UserManager<ApplicationUser> userManager)
+        public UserController(UserManager<ApplicationUser> userManager, IServiceManager serviceManager)
         {
             _userManager = userManager;
+            _serviceManager = serviceManager;
         }
 
         [HttpGet]
@@ -46,6 +49,15 @@ namespace LMS.Presentation.Controllers
         {
                 var user = await _userManager.Users.Where(u => u.Id == targetId).FirstOrDefaultAsync();
                 return Ok(user);
+        }
+
+        [HttpPut("{targetId}")]
+        public async Task<ActionResult> PutCourse(string targetId, UserUpdateDto userUpdateDto)
+        {
+            if (userUpdateDto is null) return BadRequest();
+
+            var updatedCourse = await _serviceManager.UserService.PutUserAsync(targetId, userUpdateDto);
+            return Ok(updatedCourse);
         }
 
         //[HttpGet(]

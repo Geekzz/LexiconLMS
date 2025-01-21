@@ -1,10 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 <div class="page">
-    @* <div class="sidebar">
-        <NavMenu />
-    </div> *@
-
     <main class="lexicon-background" style="min-height: 100vh;">
         <nav class="navbar" style="background-color: white; padding: 0px;">
             <a class="navbar-brand" href="home">
@@ -42,16 +38,6 @@
                                 </form>
                             </li>
                         </ul>
-                        @* <div class="nav-item px-2">
-                            <NavLink class="nav-link" href="demoauth">
-                                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> DemoAuth
-                            </NavLink>
-                        </div>
-                        <div class="nav-item px-2">
-                            <NavLink class="nav-link" href="Account/Manage">
-                                <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
-                            </NavLink>
-                        </div> *@
                     </div>
                 </Authorized>
             </AuthorizeView>
@@ -87,5 +73,4 @@
     // {
     //     NavigationManager.LocationChanged -= OnLocationChanged;
     // }
-
 }
