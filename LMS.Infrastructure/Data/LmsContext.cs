@@ -14,10 +14,11 @@ public class LmsContext : IdentityDbContext<ApplicationUser, IdentityRole, strin
     public DbSet<ActivityType> ActivityTypes { get; set; }
     public DbSet<Course> Courses { get; set; }
     public DbSet<Module> Modules { get; set; }
+    public DbSet<UserFile> UserFiles { get; set; }
 
-    public DbSet<ActivityDocument> ActivityDocuments { get; set; }
-    public DbSet<CourseDocument> CourseDocuments { get; set; }
-    public DbSet<ModuleDocument> ModuleDocuments { get; set; }
+    //public DbSet<ActivityDocument> ActivityDocuments { get; set; }
+    //public DbSet<CourseDocument> CourseDocuments { get; set; }
+    //public DbSet<ModuleDocument> ModuleDocuments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -31,7 +32,7 @@ public class LmsContext : IdentityDbContext<ApplicationUser, IdentityRole, strin
                 Description = "Lorem ipsum odor amet.",
                 StartDate = new DateTime(2025, 01, 01),
                 EndDate = new DateTime(2025, 01, 29),
-                CourseDocuments = null,
+                //CourseDocuments = null,
                 Modules = new List<Module>()
             });
         modelBuilder.Entity<Module>().HasData(
@@ -43,7 +44,7 @@ public class LmsContext : IdentityDbContext<ApplicationUser, IdentityRole, strin
                 StartDate = new DateTime(2025, 01, 01),
                 EndDate = new DateTime(2025, 01, 11),
                 CourseId = 1,
-                ModuleDocuments = null,
+                //ModuleDocuments = null,
                 Activities = new List<Activity>()
             });
         modelBuilder.Entity<ActivityType>().HasData(
@@ -65,7 +66,7 @@ public class LmsContext : IdentityDbContext<ApplicationUser, IdentityRole, strin
                 EndDate = new DateTime(2025, 01, 09, 15, 0, 0),
                 ActivityTypeId = 1,
                 ModuleId = 1,
-                ActivityDocument = null
+                //ActivityDocument = null
             },
             new Activity
             {
@@ -76,7 +77,7 @@ public class LmsContext : IdentityDbContext<ApplicationUser, IdentityRole, strin
                 EndDate = new DateTime(2025, 01, 10, 15, 0, 0),
                 ActivityTypeId = 1,
                 ModuleId = 1,
-                ActivityDocument = null
+                //ActivityDocument = null
             }
 
         );

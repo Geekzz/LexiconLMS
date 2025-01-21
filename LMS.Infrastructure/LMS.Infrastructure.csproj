@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="AppData\Files\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

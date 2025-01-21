@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LMS.Infrastructure.Migrations
 {
     [DbContext(typeof(LmsContext))]
-    [Migration("20250110083917_add-seed")]
-    partial class addseed
+    [Migration("20250121095507_Files")]
+    partial class Files
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,41 +82,6 @@ namespace LMS.Infrastructure.Migrations
                             Name = "Föreläsning - Java",
                             StartDate = new DateTime(2025, 1, 10, 11, 0, 0, 0, DateTimeKind.Unspecified)
                         });
-                });
-
-            modelBuilder.Entity("Domain.Models.Entities.ActivityDocument", b =>
-                {
-                    b.Property<int>("ActivityDocumentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ActivityDocumentId"));
-
-                    b.Property<int>("ActivityId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UploadedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ActivityDocumentId");
-
-                    b.HasIndex("ActivityId");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.ToTable("ActivityDocuments");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.ActivityType", b =>
@@ -264,41 +229,6 @@ namespace LMS.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Models.Entities.CourseDocument", b =>
-                {
-                    b.Property<int>("CourseDocumentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseDocumentId"));
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UploadedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("CourseDocumentId");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("CourseId");
-
-                    b.ToTable("CourseDocuments");
-                });
-
             modelBuilder.Entity("Domain.Models.Entities.Module", b =>
                 {
                     b.Property<int>("ModuleId")
@@ -342,39 +272,57 @@ namespace LMS.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Models.Entities.ModuleDocument", b =>
+            modelBuilder.Entity("Domain.Models.Entities.UserFile", b =>
                 {
-                    b.Property<int>("ModuleDocumentId")
+                    b.Property<Guid>("UserFileId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ModuleDocumentId"));
+                    b.Property<int?>("ActivityId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ApplicationUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Description")
+                    b.Property<int?>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Extension")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ModuleId")
+                    b.Property<bool>("IsShared")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModuleId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("Size")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("UploadedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ModuleDocumentId");
+                    b.HasKey("UserFileId");
+
+                    b.HasIndex("ActivityId");
 
                     b.HasIndex("ApplicationUserId");
 
+                    b.HasIndex("CourseId");
+
                     b.HasIndex("ModuleId");
 
-                    b.ToTable("ModuleDocuments");
+                    b.ToTable("UserFiles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -529,49 +477,11 @@ namespace LMS.Infrastructure.Migrations
                     b.Navigation("Module");
                 });
 
-            modelBuilder.Entity("Domain.Models.Entities.ActivityDocument", b =>
-                {
-                    b.HasOne("Domain.Models.Entities.Activity", "Activity")
-                        .WithMany("ActivityDocument")
-                        .HasForeignKey("ActivityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Models.Entities.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Activity");
-
-                    b.Navigation("ApplicationUser");
-                });
-
             modelBuilder.Entity("Domain.Models.Entities.ApplicationUser", b =>
                 {
                     b.HasOne("Domain.Models.Entities.Course", "Course")
-                        .WithMany()
+                        .WithMany("Users")
                         .HasForeignKey("CourseId");
-
-                    b.Navigation("Course");
-                });
-
-            modelBuilder.Entity("Domain.Models.Entities.CourseDocument", b =>
-                {
-                    b.HasOne("Domain.Models.Entities.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Models.Entities.Course", "Course")
-                        .WithMany("CourseDocuments")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Course");
                 });
@@ -587,21 +497,31 @@ namespace LMS.Infrastructure.Migrations
                     b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("Domain.Models.Entities.ModuleDocument", b =>
+            modelBuilder.Entity("Domain.Models.Entities.UserFile", b =>
                 {
+                    b.HasOne("Domain.Models.Entities.Activity", "Activity")
+                        .WithMany("Files")
+                        .HasForeignKey("ActivityId");
+
                     b.HasOne("Domain.Models.Entities.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Models.Entities.Course", "Course")
+                        .WithMany("UserFiles")
+                        .HasForeignKey("CourseId");
+
                     b.HasOne("Domain.Models.Entities.Module", "Module")
-                        .WithMany("ModuleDocuments")
-                        .HasForeignKey("ModuleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Files")
+                        .HasForeignKey("ModuleId");
+
+                    b.Navigation("Activity");
 
                     b.Navigation("ApplicationUser");
+
+                    b.Navigation("Course");
 
                     b.Navigation("Module");
                 });
@@ -659,21 +579,23 @@ namespace LMS.Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Entities.Activity", b =>
                 {
-                    b.Navigation("ActivityDocument");
+                    b.Navigation("Files");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.Course", b =>
                 {
-                    b.Navigation("CourseDocuments");
-
                     b.Navigation("Modules");
+
+                    b.Navigation("UserFiles");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.Module", b =>
                 {
                     b.Navigation("Activities");
 
-                    b.Navigation("ModuleDocuments");
+                    b.Navigation("Files");
                 });
 #pragma warning restore 612, 618
         }

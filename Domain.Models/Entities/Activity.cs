@@ -20,6 +20,6 @@ namespace Domain.Models.Entities
         public int ModuleId { get; set; }
         public Module Module { get; set; }
 
-        public List<ActivityDocument> ActivityDocument { get; set; }
+        public List<UserFile> Files { get; set; }
     }
 }

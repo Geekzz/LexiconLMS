@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Services.Contracts;
+using System.Configuration;
 using System.Security.Claims;
 
 
@@ -42,14 +43,17 @@ public class Program
         builder.Services.ConfigureRepositories();
         builder.Services.ConfigureJwt(builder.Configuration);
         builder.Services.ConfigureCors();
-    //    builder.Services.AddMvc()
+        //    builder.Services.AddMvc()
 
-    //.AddNewtonsoftJson(options => {
+        //.AddNewtonsoftJson(options => {
 
-    //    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        //    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 
-    //});
+        //});
+        //builder.Services.Configure<FileStorageSettings>(Configuration.GetSection("FileStorage"));
+        //builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 
+        builder.Services.AddScoped<IFileRepository, FileRepository>();
 
         builder.Services.AddScoped<ICourseRepository, CourseRepository>();
         builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
@@ -67,26 +71,45 @@ public class Program
                 .AddDefaultTokenProviders();
 
         builder.Services.Configure<PasswordHasherOptions>(options => options.IterationCount = 10000);
-
-        var app = builder.Build();
-
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
+        try
         {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-            await app.SeedDataAsync();
+            var app = builder.Build();
+            // Ensure FileStorage path exists
+            var basePath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory())?.FullName, "LMS.Infrastructure");
+            var fileStoragePath = Path.Combine(basePath, "AppData", "Files");
+
+            Console.WriteLine($"Current Directory: {Directory.GetCurrentDirectory()}");
+            Console.WriteLine($"Base Path: {basePath}");
+            Console.WriteLine($"Resolved File Storage Path: {fileStoragePath}");
+            if (!Directory.Exists(fileStoragePath))
+            {
+                Directory.CreateDirectory(fileStoragePath);
+            }
+
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+                await app.SeedDataAsync();
+            }
+
+            app.UseHttpsRedirection();
+
+            app.UseCors("AllowAll");
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.MapControllers();
+
+            app.Run();
+
         }
-
-        app.UseHttpsRedirection();
-
-        app.UseCors("AllowAll");
-
-        app.UseAuthentication();
-        app.UseAuthorization();
-
-        app.MapControllers();
-
-        app.Run();
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            Console.WriteLine(ex.StackTrace);
+        }
     }
 }
