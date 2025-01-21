@@ -1,0 +1,116 @@
+﻿@page "/edit-course"
+@page "/edit-course/{courseId:int}"
+@rendermode InteractiveWebAssembly
+@using LMS.Blazor.Client.Services
+@using LMS.Shared.DTOs.Read
+@using LMS.Shared.DTOs.Update
+@using Microsoft.AspNetCore.Components.Authorization
+@using LMS.Shared.DTOs
+@using Microsoft.AspNetCore.Authorization
+@using LMS.Blazor.Client.Components.Home
+
+@if (course == null)
+{
+    <div class="d-flex w-100 h-100 justify-content-center align-items-center">
+        <div class="loader"></div>
+    </div>
+}
+else
+{
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="col-md-6">
+            <div class="card lexicon-rounded p-4">
+                <div class="card-body text-center">
+                    <h4 class="mb-4">Course id: @CourseId</h4>
+                    <form @onsubmit="SaveCourse" PreventDefault="true"> <!--här när man trycker redigera så sparar man-->
+                        <div class="form-group mb-4 text-start">
+                            <label for="courseName" class="form-label">Namn</label>
+                            <input id="courseName" type="text" class="form-control" @bind="course.Name" placeholder="Ange kursnamn" required />
+                        </div>
+
+                        <div class="form-group mb-4 text-start">
+                            <label for="courseDescription" class="form-label">Beskrivning</label>
+                            <textarea id="courseDescription" class="form-control" @bind="course.Description" placeholder="Ange kursbeskrivning" required></textarea>
+                        </div>
+
+                        <div class="form-group mb-4 text-start">
+                            <label for="startDate" class="form-label">Start datum</label>
+                            <input id="startDate" type="datetime-local" class="form-control" @bind="course.StartDate" required />
+                        </div>
+
+                        <div class="form-group mb-4 text-start">
+                            <label for="endDate" class="form-label">Slut datum</label>
+                            <input id="endDate" type="datetime-local" class="form-control" @bind="course.EndDate" required />
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn lexicon-button button-fontsize">Redigera</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Inject]
+    private IApiService _apiService { get; set; } = default!;
+
+    [Parameter]
+    public int CourseId { get; set; }
+
+    private CourseDto? course;
+
+    // Fetch course details on render
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                if (_apiService != null)
+                {
+                    course = await _apiService.GetAsync<CourseDto>($"courses/{CourseId}");
+                    StateHasChanged();
+                }
+                else
+                {
+                    Console.WriteLine("ApiService is not initialized.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error while fetching course: {ex.Message}");
+            }
+        }
+    }
+
+    // Save course details
+    private async Task SaveCourse()
+    {
+        if (course != null && _apiService != null)
+        {
+            try
+            {
+                // kalla på CallApiPatchAsync när redigera button är klickad
+                var updatedCourse = await _apiService.PutAsync<CourseDto, CourseDto>($"courses/{CourseId}", course);
+
+                if (updatedCourse != null) // Check if the course was successfully updated
+                {
+                    Console.WriteLine("Course updated successfully.");
+                    // You can further process the updatedCourse object if needed.
+                }
+                else
+                {
+                    Console.WriteLine("Failed to update the course.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error while saving course: {ex.Message}");
+            }
+        }
+    }
+
+}

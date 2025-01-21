@@ -1,5 +1,6 @@
 ﻿using LMS.Blazor.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -19,13 +20,10 @@ public class ProxyController : ControllerBase
         _tokenService = tokenService;
     }
 
-    //[HttpPost]
-    //[HttpPut]
-    //[HttpDelete]
-    //[HttpPatch]
-    [HttpGet("{resource}")]
+
+    [Route("{*resource}")]
     [Authorize]
-    public async Task<IActionResult> Proxy(string resource) //ToDo query?
+    public async Task<IActionResult> Proxy(string resource)
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; //Usermanager can be used here! 
 
@@ -33,16 +31,14 @@ public class ProxyController : ControllerBase
             return Unauthorized();
 
         string endpoint = $"api/{resource}";
-        var accessToken = await _tokenService.GetAccessTokenAsync(userId);
 
-        //Endpoint to Get course for logged in user, the CourseController in
-        //the API will get the userId, no need to pass it in a querystring.
+        var accessToken = await _tokenService.GetAccessTokenAsync(userId);
         if (resource == "courseForUser")
         {
             endpoint = "api/courses/user";
         }
 
-        if ( resource == "userInfo")
+        if (resource == "userInfo")
         {
             endpoint = $"api/users/{userId}";
         }
@@ -61,10 +57,16 @@ public class ProxyController : ControllerBase
         var method = new HttpMethod(Request.Method);
         var requestMessage = new HttpRequestMessage(method, targetUri);
 
-        //Handles POST
         if (method != HttpMethod.Get && Request.ContentLength > 0)
         {
+
             requestMessage.Content = new StreamContent(Request.Body);
+
+            if (!string.IsNullOrWhiteSpace(Request.ContentType))
+            {
+                requestMessage.Content.Headers.ContentType
+                    = MediaTypeHeaderValue.Parse(Request.ContentType);
+            }
         }
 
         foreach (var header in Request.Headers)
@@ -75,12 +77,18 @@ public class ProxyController : ControllerBase
             }
         }
 
-
         var response = await client.SendAsync(requestMessage);
 
         if (!response.IsSuccessStatusCode)
-            return Unauthorized();
+            return Unauthorized(); //ToDo pass correct statuscode to caller
 
-        return StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
+        Response.StatusCode = (int)response.StatusCode;
+        Response.ContentType = response.Content.Headers.ContentType?.ToString() ?? "application/json";
+
+        var stream = await response.Content.ReadAsStreamAsync();
+        await stream.CopyToAsync(Response.Body);
+
+        return new EmptyResult();
+
     }
 }
