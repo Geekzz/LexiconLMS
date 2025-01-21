@@ -33,7 +33,6 @@ namespace LMS.Services
             var fileExtension = Path.GetExtension(file.FileName);
             var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(file.FileName);
 
-            //var uniqueFileName = $"{fileNameWithoutExtension}_{Guid.NewGuid()}{fileExtension}";
             var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
 
             var filePath = Path.Combine(fileStoragePath, uniqueFileName);
@@ -43,11 +42,8 @@ namespace LMS.Services
                 await file.CopyToAsync(stream);
             }
 
-            //var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
-
             var userFile = new UserFile
             {
-                //UserFileId = Guid.NewGuid(),
                 Name = fileNameWithoutExtension,
                 Path = filePath,
                 Extension = Path.GetExtension(file.FileName),
@@ -70,7 +66,8 @@ namespace LMS.Services
             if (file == null) throw new KeyNotFoundException("File not found.");
 
             var fileContent = await File.ReadAllBytesAsync(file.Path);
-            return (fileContent, "application/octet-stream", file.Name);
+            var fileNameWithExtension = $"{file.Name}{file.Extension}";
+            return (fileContent, "application/octet-stream", fileNameWithExtension);
         }
 
         public async Task DeleteFileAsync(Guid fileId, string userId)
