@@ -67,15 +67,11 @@ namespace LMS.Presentation.Controllers
             var updatedCourse = await _serviceManager.CourseService.UpdateCourseAsync(id, patchDocument);
 
             return Ok(updatedCourse);
-        }
-
-        // ska man sätta en put här? mm ,mmm ok
-        // bara kopiera rad 29  
+        } 
 
         [HttpPut("{id}")]
         public async Task<ActionResult> PutCourse(int id, CourseUpdateDto courseUpdateDto)
         {
-            // borde va ok // mm tror det
             if (courseUpdateDto is null) return BadRequest();
 
             var updatedCourse = await _serviceManager.CourseService.PutCourseAsync(id, courseUpdateDto);
