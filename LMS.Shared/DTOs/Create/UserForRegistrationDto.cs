@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace LMS.Shared.DTOs.Create;
 
@@ -17,6 +18,11 @@ public record UserForRegistrationDto
 
     [Required(ErrorMessage = "Password is required")]
     public string FirstName { get; set; }
+
     [Required(ErrorMessage = "Password is required")]
     public string LastName { get; set; }
+
+    public int CourseId { get; init; }
+
+    public string Role { get; init; }
 }
