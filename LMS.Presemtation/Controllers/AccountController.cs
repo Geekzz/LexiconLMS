@@ -39,6 +39,6 @@ public class AccountController : ControllerBase
 
         if (!result.Succeeded) return BadRequest();
 
-        return Ok();
+        return NoContent();
     }
 }
