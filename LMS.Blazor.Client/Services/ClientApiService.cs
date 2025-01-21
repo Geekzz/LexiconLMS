@@ -2,7 +2,8 @@
 using LMS.Shared.DTOs;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http;
-using System.Text;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace LMS.Blazor.Client.Services;
@@ -11,14 +12,54 @@ public class ClientApiService(IHttpClientFactory httpClientFactory, NavigationMa
 {
     private readonly HttpClient httpClient = httpClientFactory.CreateClient("BffClient");
 
-    private readonly JsonSerializerOptions _jsonSerializerOptions = new ()
-        { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+    private readonly JsonSerializerOptions _jsonSerializerOptions = new()
+    { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
-    //Generic
-    public async Task<T> CallApiGetAsync<T>(string endpoint)
+
+    public async Task<TResponse?> GetAsync<TResponse>(string endpoint)
     {
-        var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"proxy-endpoint/{endpoint}");
-        var response = await httpClient.SendAsync(requestMessage);
+        return await CallApiAsync<object?, TResponse>(
+            endpoint,
+            HttpMethod.Get,
+            null
+        );
+    }
+
+    public async Task<TResponse?> PostAsync<TRequest, TResponse>(
+        string endpoint,
+        TRequest dto)
+    {
+        return await CallApiAsync<TRequest, TResponse>(
+            endpoint,
+            HttpMethod.Post,
+            dto
+        );
+    }
+
+    public async Task<TResponse?> PutAsync<TRequest, TResponse>(
+    string endpoint,
+    TRequest dto)
+    {
+        return await CallApiAsync<TRequest, TResponse>(
+            endpoint,
+            HttpMethod.Put,
+            dto
+        );
+    }
+
+    private async Task<TResponse?> CallApiAsync<TRequest, TResponse>(string endpoint, HttpMethod httpMethod, TRequest? dto)
+    {
+        var request = new HttpRequestMessage(httpMethod, $"proxy-endpoint/{endpoint}");
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+        if (httpMethod != HttpMethod.Get && dto is not null)
+        {
+            var serialized = JsonSerializer.Serialize(dto);
+            request.Content = new StringContent(serialized);
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+        }
+
+        var response = await httpClient.SendAsync(request);
 
         if (response.StatusCode == System.Net.HttpStatusCode.Forbidden
            || response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
@@ -28,65 +69,7 @@ public class ClientApiService(IHttpClientFactory httpClientFactory, NavigationMa
 
         response.EnsureSuccessStatusCode();
 
-        var dtos = await JsonSerializer.DeserializeAsync<T>(await response.Content.ReadAsStreamAsync(), _jsonSerializerOptions, CancellationToken.None) ?? default;
-        return dtos;
-    }
-
-    // Generic PATCH
-    public async Task<T> CallApiPatchAsync<T>(string endpoint, T data)
-    {
-        // vi gör om till patch, men är denna kod block rätt? 
-        var jsonContent = JsonSerializer.Serialize(data, _jsonSerializerOptions);
-        var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-        var requestMessage = new HttpRequestMessage(HttpMethod.Patch, $"proxy-endpoint/{endpoint}")
-        {
-            Content = content
-        };
-
-        // här får jag unauthorized av response av nån anledning
-        var response = await httpClient.SendAsync(requestMessage);
-
-        if (response.StatusCode == System.Net.HttpStatusCode.Forbidden
-            || response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-        {
-            navigationManager.NavigateTo("AccessDenied");
-        }
-
-        response.EnsureSuccessStatusCode();
-
-        // Deserialize the response content into type T
-        var responseContent = await response.Content.ReadAsStringAsync();
-        var result = JsonSerializer.Deserialize<T>(responseContent, _jsonSerializerOptions);
-
-        return result;
-    }
-
-    // Generic PUT
-    public async Task<T> CallApiPutAsync<T>(string endpoint, T data)
-    { 
-        var jsonContent = JsonSerializer.Serialize(data, _jsonSerializerOptions);
-        var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-        var requestMessage = new HttpRequestMessage(HttpMethod.Put, $"proxy-endpoint/{endpoint}")
-        {
-            Content = content
-        };
-
-        var response = await httpClient.SendAsync(requestMessage);
-
-        if (response.StatusCode == System.Net.HttpStatusCode.Forbidden
-            || response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-        {
-            navigationManager.NavigateTo("AccessDenied");
-        }
-
-        response.EnsureSuccessStatusCode();
-
-        // Deserialize the response content into type T
-        var responseContent = await response.Content.ReadAsStringAsync();
-        var result = JsonSerializer.Deserialize<T>(responseContent, _jsonSerializerOptions);
-
-        return result;
+        var res = await JsonSerializer.DeserializeAsync<TResponse>(await response.Content.ReadAsStreamAsync(), _jsonSerializerOptions, CancellationToken.None);
+        return res;
     }
 }

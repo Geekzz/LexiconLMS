@@ -71,7 +71,7 @@ else
             {
                 if (_apiService != null)
                 {
-                    course = await _apiService.CallApiGetAsync<CourseDto>($"courses/{CourseId}");
+                    course = await _apiService.GetAsync<CourseDto>($"courses/{CourseId}");
                     StateHasChanged();
                 }
                 else
@@ -94,7 +94,7 @@ else
             try
             {
                 // kalla på CallApiPatchAsync när redigera button är klickad
-                var updatedCourse = await _apiService.CallApiPutAsync<CourseDto>($"courses/{CourseId}", course);
+                var updatedCourse = await _apiService.PutAsync<CourseDto, CourseDto>($"courses/{CourseId}", course);
 
                 if (updatedCourse != null) // Check if the course was successfully updated
                 {
