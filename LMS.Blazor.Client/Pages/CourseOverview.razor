@@ -54,7 +54,7 @@ else
             {
                 if (_apiService != null)
                 {
-                    course = await _apiService.CallApiGetAsync<CourseDto>("courseForUser");
+                    course = await _apiService.GetAsync<CourseDto>("courseForUser");
                     StateHasChanged(); // Trigger UI update after fetching data
                 }
                 else
