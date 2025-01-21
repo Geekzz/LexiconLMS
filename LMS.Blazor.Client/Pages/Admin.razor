@@ -38,7 +38,7 @@
 
                     <div class="position-fixed" style="top: 50%; right: 20px;">
                         <a class="btn lexicon-button mb-2 button-fontsize">Ny kurs</a>
-                        <a class="btn lexicon-button button-fontsize">Ny användare</a>
+                        <a class="btn lexicon-button button-fontsize" href="Account/Register">Ny användare</a>
                     </div>
                 </div>
             }
@@ -69,8 +69,8 @@
     {
         try
         {
-            courses = (await _apiService.CallApiGetAsync<List<CourseDto>>("courses")).ToList();
-            users = (await _apiService.CallApiGetAsync<List<UserDto>>("users")).ToList();
+            courses = (await _apiService.GetAsync<List<CourseDto>>("courses")).ToList();
+            users = (await _apiService.GetAsync<List<UserDto>>("users")).ToList();
         }
         catch (Exception ex)
         {
