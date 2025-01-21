@@ -117,8 +117,8 @@ else
 
 			if (claimsPrincipal.Identity?.IsAuthenticated == true)
 			{
-				user = (await _apiService.CallApiGetAsync<UserDto>($"userInfo"));
-				course = await _apiService.CallApiGetAsync<CourseDto>("courseForUser");
+				user = (await _apiService.GetAsync<UserDto>($"userInfo"));
+				course = await _apiService.GetAsync<CourseDto>("courseForUser");
 			}
 		}
 		catch (Exception ex)

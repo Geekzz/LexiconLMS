@@ -59,7 +59,7 @@ else
 
     private async Task CallAPIAsync()
     {
-        courses = (await _apiService.CallApiGetAsync<List<CourseDto>>("courses"))
+        courses = (await _apiService.GetAsync<List<CourseDto>>("courses"))
             .ToList();
     } 
 
