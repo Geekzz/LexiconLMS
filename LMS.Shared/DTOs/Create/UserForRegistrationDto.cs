@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace LMS.Shared.DTOs.Create;
 
@@ -22,4 +23,6 @@ public record UserForRegistrationDto
     public string LastName { get; set; }
 
     public int CourseId { get; init; }
+
+    public string Role { get; init; }
 }

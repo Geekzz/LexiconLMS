@@ -103,6 +103,8 @@ public class AuthService : IAuthService
 
         var result = await userManager.CreateAsync(user, registrationDto.Password!);
 
+        await userManager.AddToRoleAsync(user, registrationDto.Role);
+
         return result;
     }
 

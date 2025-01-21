@@ -1,5 +1,5 @@
 ﻿@page "/Account/Register"
-@rendermode InteractiveWebAssembly
+@rendermode InteractiveServer
 
 @using System.ComponentModel.DataAnnotations
 @using System.Text
@@ -7,18 +7,11 @@
 @using LMS.Blazor.Client.Services
 @using LMS.Shared.DTOs.Create
 @using LMS.Shared.DTOs.Read
+@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Identity
-@using Microsoft.AspNetCore.WebUtilities
-@using LMS.Blazor.Data
 
-@inject UserManager<ApplicationUser> UserManager
 @inject IHttpClientFactory HttpClientFactory
-@inject IUserStore<ApplicationUser> UserStore
-@inject SignInManager<ApplicationUser> SignInManager
-@inject IEmailSender<ApplicationUser> EmailSender
-@inject ILogger<Register> Logger
 @inject NavigationManager NavigationManager
-@inject IdentityRedirectManager RedirectManager
 
 <PageTitle>Registrera</PageTitle>
 
@@ -36,33 +29,30 @@ else
             <div class="row d-flex justify-content-center align-items-center col-md-10">
                 <div class="col-md-8">
                     <section>
-                        <StatusMessage Message="@Message" />
                         <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
                             <DataAnnotationsValidator />
                             <hr />
                             <ValidationSummary class="text-danger" role="alert" />
-                            <div class="dropwdown-wrapper d-flex">
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option selected>Välj kurs...</option>
-                                        @foreach (var course in courses)
-                                        {
-                                            <option value="@course.CourseId">@course.Name</option>
-                                        }
-                                    </select>
-                                @* @if (courses != null)
-                                {
-                                    <div class="dropdown">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            @SecondDropdown
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            @foreach (var course in courses)
-                                            {
-                                                <li><a value="@course.CourseId" class="dropdown-item" onclick="SetCourse()">@course.Name</a></li>
-                                            }
-                                        </ul>
-                                    </div>
-                                } *@
+                            <div class="dropwdown-wrapper d-flex flex-column">
+                                <select class="form-select" aria-label="Select Course" @bind="Input.SecondDropdown">
+                                    <option value="0" selected>Välj kurs...</option>
+                                    @foreach (var course in courses)
+                                    {
+                                        <option value="@course.CourseId">@course.Name</option>
+                                    }
+                                </select>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        Default radio
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                                    <label class="form-check-label" for="flexRadioDefault2">
+                                        Default checked radio
+                                    </label>
+                                </div>
                             </div>
                             <div class="form-floating mb-3">
                                 <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
@@ -112,11 +102,45 @@ else
     private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
 
     private List<CourseDto>? courses;
-
-    private string FirstDropdown { get; set; } = "Elev/Lärare...";
-    private string SecondDropdown { get; set; } = "Kurs...";
+    private static UserManager<UserForRegistrationDto> userManager = null!;
 
     private string? Message => identityErrors is null ? null : $"Error: {string.Join(", ", identityErrors.Select(error => error.Description))}";
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     try
+    //     {
+    //         if (_apiService != null)
+    //         {
+    //             courses = (await _apiService.GetAsync<List<CourseDto>>("api/courses")).ToList();
+    //             StateHasChanged(); // Trigger UI update after fetching data
+    //         }
+    //         else
+    //         {
+    //             Console.WriteLine("ApiService is not initialized.");
+    //         }
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         Console.WriteLine($"Error fetching course: {ex.Message}");
+    //     }
+    // }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchCoursesAsync();
+    }
+    private async Task FetchCoursesAsync()
+    {
+        try
+        {
+            courses = (await _apiService.GetAsync<List<CourseDto>>("courses")).ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error while fetching courses: {ex.Message}");
+        }
+    }
 
     // protected override async Task OnAfterRenderAsync(bool firstRender)
     // {
@@ -126,7 +150,7 @@ else
     //         {
     //             if (_apiService != null)
     //             {
-    //                 courses = (await _apiService.CallApiGetAsync<List<CourseDto>>("courses")).ToList();
+    //                 courses = (await _apiService.GetAsync<List<CourseDto>>("courses")).ToList();
     //                 StateHasChanged(); // Trigger UI update after fetching data
     //             }
     //             else
@@ -141,97 +165,51 @@ else
     //     }
     // }
 
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            if (_apiService != null)
-            {
-                courses = (await _apiService.CallApiGetAsync<List<CourseDto>>("courses")).ToList();
-                StateHasChanged(); // Trigger UI update after fetching data
-            }
-            else
-            {
-                Console.WriteLine("ApiService is not initialized.");
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error fetching course: {ex.Message}");
-        }
-    }
-
-    // public async Task SetCourse()
-    // {
-        
-    // }
-
     public async Task RegisterUser(EditContext editContext)
     {
         var httpClient = HttpClientFactory.CreateClient("LmsAPIClient");
-        var registerDto = new UserForRegistrationDto { Email = Input.Email, Password = Input.Password, UserName=Input.Email, FirstName = Input.FirstName, LastName = Input.LastName};
 
-        var response = await httpClient.PostAsJsonAsync("api/auth/register", registerDto);
+        var registerDto = new UserForRegistrationDto
+        {
+            CourseId = Input.SecondDropdown,
+            Email = Input.Email,
+            Password = Input.Password,
+            UserName = Input.Email,
+            FirstName = Input.FirstName,
+            LastName = Input.LastName
+        };
 
-        // var user = CreateUser();
-
-        // await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-        // var emailStore = GetEmailStore();
-        // await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-        // var result = await UserManager.CreateAsync(user, Input.Password);
-
-        // if (!result.Succeeded)
-        // {
-        //     identityErrors = result.Errors;
-        //     return;
-        // }
-
-        // Logger.LogInformation("User created a new account with password.");
-
-        // var userId = await UserManager.GetUserIdAsync(user);
-        // var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
-        // code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-        // var callbackUrl = NavigationManager.GetUriWithQueryParameters(
-        //     NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
-        //     new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code, ["returnUrl"] = ReturnUrl });
-
-        // await EmailSender.SendConfirmationLinkAsync(user, Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
-
-        // if (UserManager.Options.SignIn.RequireConfirmedAccount)
-        // {
-        //     RedirectManager.RedirectTo(
-        //         "Account/RegisterConfirmation",
-        //         new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
-        // }
-
-        // await SignInManager.SignInAsync(user, isPersistent: false);
-        RedirectManager.RedirectTo("/register-user-complete");
-    }
-
-    private ApplicationUser CreateUser()
-    {
         try
         {
-            return Activator.CreateInstance<ApplicationUser>();
+            registerDto = await _apiService.PostAsync<UserForRegistrationDto, UserForRegistrationDto>("auth/register", registerDto);
         }
-        catch
+        catch (Exception ex)
         {
-            throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'. " +
-                $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor.");
+            Console.WriteLine($"Error: {ex.Message}");
         }
+
+        // await userManager.CreateAsync(registerDto, Input.Password);
+
+        // var result = await userManager.AddToRoleAsync(registerDto, "Student");
+
+        // if (!result.Succeeded) throw new Exception(string.Join("\n", result.Errors));
+
+        NavigationManager.NavigateTo("/register-user-complete");
     }
 
-    private IUserEmailStore<ApplicationUser> GetEmailStore()
+    private static async Task AddUserToRoleAsync(UserForRegistrationDto user, string roleName)
     {
-        if (!UserManager.SupportsUserEmail)
+        if (!await userManager.IsInRoleAsync(user, roleName))
         {
-            throw new NotSupportedException("The default UI requires a user store with email support.");
+            var result = await userManager.AddToRoleAsync(user, roleName);
+            if (!result.Succeeded) throw new Exception(string.Join(", ", result.Errors.Select(x => "Code " + x.Code + " Description" + x.Description)));
         }
-        return (IUserEmailStore<ApplicationUser>)UserStore;
     }
 
     private sealed class InputModel
     {
+        public int SecondDropdown { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

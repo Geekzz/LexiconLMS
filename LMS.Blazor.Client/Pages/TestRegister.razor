@@ -33,28 +33,28 @@ else
                             <DataAnnotationsValidator />
                             <hr />
                             <ValidationSummary class="text-danger" role="alert" />
-                            <div class="dropwdown-wrapper d-flex">
-                                <select class="form-select" aria-label="Select Course" @bind="Input.SecondDropdown">
-                                    <option selected>Välj kurs...</option>
-                                    @foreach (var course in courses)
-                                    {
-                                        <option value="@course.CourseId">@course.Name</option>
-                                    }
-                                </select>
-                                @* @if (courses != null)
-                                {
-                                    <div class="dropdown">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            @SecondDropdown
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            @foreach (var course in courses)
-                                            {
-                                                <li><a value="@course.CourseId" class="dropdown-item" onclick="SetCourse()">@course.Name</a></li>
-                                            }
-                                        </ul>
-                                    </div>
-                                } *@
+                            <div class="dropwdown-wrapper d-flex flex-column">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="roleNumber" id="roleNumber1" checked @onchange="(() => UpdateRole(1))">
+                                    <label class="form-check-label" for="roleNumber1" value="1">
+                                        Student
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="roleNumber" id="roleNumber2" value="2" @onchange="(() => UpdateRole(2))">
+                                    <label class="form-check-label" for="roleNumber2">
+                                        Lärare
+                                    </label>
+                                </div>
+                                <div class="form-floating mb-3 mt-2">
+                                    <select class="form-select pt-0 pb-0" aria-label="Select Course" @bind="Input.DropdownValue">
+                                        <option value="0" selected>Välj kurs...</option>
+                                        @foreach (var course in courses)
+                                        {
+                                            <option value="@course.CourseId">@course.Name</option>
+                                        }
+                                    </select>
+                                </div>
                             </div>
                             <div class="form-floating mb-3">
                                 <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
@@ -104,6 +104,9 @@ else
     private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
 
     private List<CourseDto>? courses;
+    private int roleNumber = 0;
+    private const string adminRole = "Teacher";
+    private const string studentRole = "Student";
 
     private string? Message => identityErrors is null ? null : $"Error: {string.Join(", ", identityErrors.Select(error => error.Description))}";
 
@@ -127,12 +130,25 @@ else
         }
     }
 
+    public void UpdateRole(int role)
+    {
+        if (role == 2)
+        {
+            roleNumber = 2;
+        }
+        else
+        {
+            roleNumber = 1;
+        }
+    }
+
     public async Task RegisterUser(EditContext editContext)
     {
         var httpClient = HttpClientFactory.CreateClient("LmsAPIClient");
 
         var registerDto = new UserForRegistrationDto { 
-            CourseId = Input.SecondDropdown,
+            Role = roleNumber == 2 ? adminRole : studentRole,
+            CourseId = Input.DropdownValue,
             Email = Input.Email, 
             Password = Input.Password, 
             UserName = Input.Email, 
@@ -140,55 +156,22 @@ else
             LastName = Input.LastName 
         };
 
-        // var response = await httpClient.PostAsJsonAsync("https://localhost:7044/api/auth/register", registerDto);
-
         try
         {
-            registerDto = await _apiService.PostAsync<UserForRegistrationDto>("api/auth/register");
+            registerDto = await _apiService.PostAsync<UserForRegistrationDto, UserForRegistrationDto>("auth/register", registerDto);
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error: {ex.Message}");
         }
 
-        // var user = CreateUser();
-
-        // await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-        // var emailStore = GetEmailStore();
-        // await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-        // var result = await UserManager.CreateAsync(user, Input.Password);
-
-        // if (!result.Succeeded)
-        // {
-        //     identityErrors = result.Errors;
-        //     return;
-        // }
-
-        // Logger.LogInformation("User created a new account with password.");
-
-        // var userId = await UserManager.GetUserIdAsync(user);
-        // var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
-        // code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-        // var callbackUrl = NavigationManager.GetUriWithQueryParameters(
-        //     NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
-        //     new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code, ["returnUrl"] = ReturnUrl });
-
-        // await EmailSender.SendConfirmationLinkAsync(user, Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
-
-        // if (UserManager.Options.SignIn.RequireConfirmedAccount)
-        // {
-        //     RedirectManager.RedirectTo(
-        //         "Account/RegisterConfirmation",
-        //         new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
-        // }
-
-        // await SignInManager.SignInAsync(user, isPersistent: false);
         NavigationManager.NavigateTo("/register-user-complete");
     }
 
     private sealed class InputModel
     {
-        public int SecondDropdown { get; set; }
+        public string? Role { get; set; }
+        public int DropdownValue { get; set; }
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
