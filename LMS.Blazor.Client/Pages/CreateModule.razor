@@ -1,0 +1,84 @@
+﻿@page "/create-module/{CourseId:int}"
+
+@using LMS.Blazor.Client.Services
+@using LMS.Shared.DTOs.Create
+@using LMS.Shared.DTOs.Read
+@rendermode InteractiveWebAssembly
+@inject NavigationManager NavigationManager
+
+<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="card lexicon-rounded" >
+        <div class="card-body">
+            <h4 class="card-title">Create New Module for Course ID: @CourseId</h4>
+            <EditForm Model="NewModule" OnValidSubmit="AddModule" FormName="createModuleForm">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="mb-3">
+                    <label for="moduleName" class="form-label">Module Name</label>
+                    <InputText id="moduleName" class="form-control" @bind-Value="NewModule.Name" />
+                    <ValidationMessage For="@(() => NewModule.Name)" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="moduleDescription" class="form-label">Description</label>
+                    <InputTextArea id="moduleDescription" class="form-control" @bind-Value="NewModule.Description" />
+                    <ValidationMessage For="@(() => NewModule.Description)" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="startDate" class="form-label">Start Date</label>
+                    <InputDate id="startDate" class="form-control" @bind-Value="NewModule.StartDate" />
+                    <ValidationMessage For="@(() => NewModule.StartDate)" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="endDate" class="form-label">End Date</label>
+                    <InputDate id="endDate" class="form-control" @bind-Value="NewModule.EndDate" />
+                    <ValidationMessage For="@(() => NewModule.EndDate)" />
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn lexicon-button button-fontsize">Create Module</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int CourseId { get; set; }
+
+    [Inject]
+    private IApiService _apiService { get; set; } = default!;
+
+    private ModuleCreateDto NewModule { get; set; } = new ModuleCreateDto();
+
+    // protected override void OnInitialized()
+    // {
+    //     NewModule.CourseId = CourseId;
+    //     NewModule.StartDate = DateTime.Now;
+    //     NewModule.EndDate = DateTime.Now;
+    // }
+
+    protected override async Task OnInitializedAsync()
+    {
+        NewModule.CourseId = CourseId;
+        NewModule.StartDate = DateTime.Now;
+        NewModule.EndDate = DateTime.Now;
+    }
+
+    private async Task AddModule()
+    {
+        try
+        {
+            NewModule = await _apiService.PostAsync<ModuleCreateDto, ModuleCreateDto>($"modules", NewModule);
+            NavigationManager.NavigateTo("/module-completed");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+}
