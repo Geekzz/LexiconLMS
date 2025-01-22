@@ -101,7 +101,22 @@ p, .button-fontsize-tiny {
 
 /* Lexicon standard CSS */
 .lexicon-page-height {
-    min-height: calc(100vh - 86px)
+    min-height: 100vh;
+    padding-top: 86px !important;
+}
+
+.lexicon-subpage-height {
+    min-height: calc(100vh - 86px);
+}
+
+@media (max-width: 600px) {
+    .lexicon-page-height {
+        padding-top: 66px !important;
+    }
+
+    .lexicon-subpage-height {
+        min-height: calc(100vh - 66px);
+    }
 }
 
 .lexicon-background {
@@ -162,9 +177,24 @@ p, .button-fontsize-tiny {
     }
 
 /* Lexicon navbar*/
+nav {
+    width: 100%;
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    background-color: white;
+    z-index: 1;
+}
+
 .lexicon-logo {
     max-height: 66px;
     margin: 0px 20px;
+}
+
+@media (max-width: 600px) {
+    .lexicon-logo {
+        max-height: 46px;
+    }
 }
 
 .lexicon-nav {
@@ -172,14 +202,41 @@ p, .button-fontsize-tiny {
     justify-content: center;
     align-items: center;
     padding: 25px 20px !important;
+    color: black;
 }
 
     .lexicon-nav:hover {
         background: #cfcfcf;
     }
 
+.lexicon-nav-helper {
+    flex-basis: auto;
+    flex-grow: 0;
+}
+
 .navbar-nav {
     align-items: center;
+}
+
+@media (max-width: 900px) {
+    .lexicon-nav-helper {
+        flex-basis: 100%;
+        flex-grow: 1;
+    }
+
+    .navbar-expand ul {
+        flex-direction: column !important;
+    }
+
+    .nav-item {
+        width: 100%;
+    }
+
+    .nav-button-helper {
+        display: flex;
+        padding-bottom: 25px;
+        padding-top: 25px;
+    }
 }
 
 .navbar-brand {
@@ -340,5 +397,62 @@ p, .button-fontsize-tiny {
 
     100% {
         transform: rotate(0.5turn) scale(1)
+    }
+}
+
+/* Mobile header */
+.navbar-toggler {
+    display: none;
+    box-shadow: none !important;
+}
+
+@media (max-width: 900px) {
+    .navbar-toggler {
+        display: block;
+    }
+}
+
+.navbar-toggler hr {
+    -webkit-transition: 0.4s ease-in-out;
+    -o-transition: 0.4s ease-in-out;
+    transition: 0.4s ease-in-out;
+    width: 50px;
+    height: 5px;
+    margin: 5px 0px;
+    border-radius: 9999px;
+    background-color: black;
+    border: none;
+    opacity: 1;
+}
+
+    .navbar-toggler[aria-expanded="true"] hr:first-child {
+        -webkit-transition: 0.4s ease-in-out;
+        -o-transition: 0.4s ease-in-out;
+        transition: 0.4s ease-in-out;
+        transform: rotate(45deg) translate(0px, 15px);
+    }
+
+    .navbar-toggler[aria-expanded="true"] hr:nth-child(2) {
+        -webkit-transition: 0.4s ease-in-out;
+        -o-transition: 0.4s ease-in-out;
+        transition: 0.4s ease-in-out;
+        opacity: 0;
+        width: 0px;
+    }
+
+    .navbar-toggler[aria-expanded="true"] hr:last-child {
+        -webkit-transition: 0.4s ease-in-out;
+        -o-transition: 0.4s ease-in-out;
+        transition: 0.4s ease-in-out;
+        transform: rotate(-45deg) translate(0px, -15px);
+    }
+
+.collapse:not(.show) {
+    display: flex !important;
+}
+
+@media (max-width: 900px) {
+    .collapse:not(.show) {
+        display: none !important;
     }
 }
