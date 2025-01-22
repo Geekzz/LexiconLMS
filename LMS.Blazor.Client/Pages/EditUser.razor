@@ -30,6 +30,39 @@ else
 
                     <EditForm Model="user" OnValidSubmit="SaveUser">
                         <DataAnnotationsValidator />
+                        @if (user.Role == "Student"){
+                            <div class="dropwdown-wrapper d-flex flex-column">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="roleNumber" id="roleNumber1" checked @onchange="(() => UpdateRole(1))">
+                                    <label class="form-check-label" for="roleNumber1">
+                                        Student
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="roleNumber" id="roleNumber2" @onchange="(() => UpdateRole(2))">
+                                    <label class="form-check-label" for="roleNumber2">
+                                        Lärare
+                                    </label>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="dropwdown-wrapper d-flex flex-column">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="roleNumber" id="roleNumber1" @onchange="(() => UpdateRole(1))">
+                                    <label class="form-check-label" for="roleNumber1">
+                                        Student
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="roleNumber" id="roleNumber2" checked @onchange="(() => UpdateRole(2))">
+                                    <label class="form-check-label" for="roleNumber2">
+                                        Lärare
+                                    </label>
+                                </div>
+                            </div>
+                        }
 
                         <div class="form-group mb-4 text-start">
                             <label for="userEmail" class="form-label">E-post</label>
@@ -67,7 +100,12 @@ else
     [Parameter]
     public string targetId { get; set; } = "";
 
+    private int roleNumber = 0;
+    private const string adminRole = "Teacher";
+    private const string studentRole = "Student";
+
     private UserDto? user;
+    private UserUpdateDto? updatedUser;
 
     // Fetch course details on render
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -93,6 +131,18 @@ else
         }
     }
 
+    public void UpdateRole(int role)
+    {
+        if (role == 2)
+        {
+            roleNumber = 2;
+        }
+        else
+        {
+            roleNumber = 1;
+        }
+    }
+
     // Save course details
     private async Task SaveUser()
     {
@@ -100,9 +150,11 @@ else
         {
             try
             {
-                var updatedCourse = await _apiService.PutAsync<UserDto, UserUpdateDto>($"courses/{targetId}", user);
+                user.Role = roleNumber == 2 ? adminRole : studentRole;
 
-                if (updatedCourse != null) // Check if the course was successfully updated
+                updatedUser = await _apiService.PutAsync<UserDto, UserUpdateDto>($"users/{targetId}", user);
+
+                if (updatedUser != null) // Check if the course was successfully updated
                 {
                     NavigationManager.NavigateTo("/admin");
                 }

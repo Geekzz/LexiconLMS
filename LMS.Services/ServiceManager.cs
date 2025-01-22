@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Contracts;
+using Domain.Models.Entities;
+using Microsoft.AspNetCore.Identity;
 using Services.Contracts;
 using System;
 using System.Collections.Generic;
@@ -23,12 +25,12 @@ public class ServiceManager : IServiceManager
     public IActivityService ActivityService => activityService.Value;
     public IUserService UserService => userService.Value;
 
-    public ServiceManager(Lazy<IAuthService> authService, IUnitOfWork uow, IMapper mapper)
+    public ServiceManager(Lazy<IAuthService> authService, UserManager<ApplicationUser> userManager, IUnitOfWork uow, IMapper mapper)
     {
         this.authService = authService;
         courseService = new Lazy<ICourseService>(() => new CourseService(uow, mapper));
         moduleService = new Lazy<IModuleService>(() => new ModuleService(uow, mapper));
         activityService = new Lazy<IActivityService>(() => new ActivityService(uow, mapper));
-        userService = new Lazy<IUserService>(() => new UserService(uow, mapper));
+        userService = new Lazy<IUserService>(() => new UserService(userManager ,uow, mapper));
     }
 }

@@ -35,9 +35,11 @@ namespace LMS.Presentation.Controllers
 
                 .Select(user => new
                 {
+                    user.Id,
                     user.Email,
                     user.FirstName,
-                    user.LastName
+                    user.LastName,
+                    user.Role
                 })
                 .ToListAsync();
             return Ok(users);
@@ -52,12 +54,12 @@ namespace LMS.Presentation.Controllers
         }
 
         [HttpPut("{targetId}")]
-        public async Task<ActionResult> PutCourse(string targetId, UserUpdateDto userUpdateDto)
+        public async Task<ActionResult> PutUser(string targetId, UserUpdateDto userUpdateDto)
         {
             if (userUpdateDto is null) return BadRequest();
 
-            var updatedCourse = await _serviceManager.UserService.PutUserAsync(targetId, userUpdateDto);
-            return Ok(updatedCourse);
+            var updatedUser = await _serviceManager.UserService.PutUserAsync(targetId, userUpdateDto);
+            return Ok(updatedUser);
         }
 
         //[HttpGet(]

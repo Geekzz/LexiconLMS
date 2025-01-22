@@ -14,6 +14,6 @@ namespace LMS.Shared.DTOs.Update
 
         public string LastName { get; init; }
 
-        public string Role { get; init; }
+        public string Role { get; set; }
     }
 }

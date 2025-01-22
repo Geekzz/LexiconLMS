@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Domain.Contracts;
+using Domain.Models.Entities;
 using LMS.Shared.DTOs.Read;
 using LMS.Shared.DTOs.Update;
+using Microsoft.AspNetCore.Identity;
 using Services.Contracts;
 using System;
 using System.Collections.Generic;
@@ -13,13 +15,17 @@ namespace LMS.Services
 {
     public class UserService : IUserService
     {
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
-        public UserService(IUnitOfWork uow, IMapper mapper)
+
+        public UserService(UserManager<ApplicationUser> userManager, IUnitOfWork uow, IMapper mapper)
         {
+            _userManager = userManager;
             _uow = uow;
             _mapper = mapper;
         }
+
         public async Task<UserDto> PutUserAsync(string id, UserUpdateDto userUpdateDto)
         {
             var userToUpdate = await _uow.UserRepository.GetUserByIdAsync(id, true);
@@ -28,6 +34,11 @@ namespace LMS.Services
             userToUpdate.Email = userUpdateDto.Email;
             userToUpdate.FirstName = userUpdateDto.FirstName;
             userToUpdate.LastName = userUpdateDto.LastName;
+            userToUpdate.Role = userUpdateDto.Role;
+
+            await _userManager.RemoveFromRolesAsync(userToUpdate, ["Teacher", "Student"]);
+
+            await _userManager.AddToRoleAsync(userToUpdate, userToUpdate.Role);
 
             await _uow.CompleteAsync();
 

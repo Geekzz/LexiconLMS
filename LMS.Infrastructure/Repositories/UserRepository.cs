@@ -17,9 +17,7 @@ namespace LMS.Infrastructure.Repositories
         }
         public async Task<ApplicationUser?> GetUserByIdAsync(string userId, bool trackChanges = false)
         {
-            return await
-                FindByCondition(c => c.Id == userId, trackChanges).FirstOrDefaultAsync();
-
+            return await FindByCondition(c => c.Id == userId, trackChanges).FirstOrDefaultAsync();
         }
     }
 }

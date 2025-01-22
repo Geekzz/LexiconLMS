@@ -11,7 +11,8 @@ namespace LMS.Shared.DTOs.Read
 {
     public class UserDto
     {
-        public IdentityUser<Guid> Id { get; set; }
+        public string Id { get; set; }
+
         public string UserName { get; set; }
 
         public string Email { get; set; }
@@ -21,5 +22,7 @@ namespace LMS.Shared.DTOs.Read
         public string LastName { get; set; }
 
         public CourseDto Course { get; set; }
+
+        public string Role { get; set; }
     }
 }
