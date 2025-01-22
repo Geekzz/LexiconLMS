@@ -21,33 +21,23 @@
 }
 else
 {
-	<div class="container-fluid m-0 p-5">
-		<div class="row">
-			@if (course != null)
-			{
-				<div class="col-xl-6 d-flex justify-content-center align-items-center">
-					<HomeCourse CourseData="course" />
-				</div>
-			}
-			@if (module != null)
-			{
-				<div class="col-xl-6 d-flex justify-content-center align-items-center">
-					<HomeModule ModuleData="module" />
-				</div>
-			}
-			@if (activity != null)
-			{
-				<div class="col-xl-6 d-flex justify-content-center align-items-center">
-					<HomeActivity ActivityData="activity" />
-				</div>
-			}
-			@if (isTeacher)
-			{
-				<div class="col-xl-6 d-flex justify-content-center align-items-center">
-					<HomeAdmin />
-				</div>
-			}
-		</div>
+	<div class="d-flex flex-wrap flex-row justify-content-evenly m-0 home-padding">
+		@if (course != null)
+		{
+			<HomeCourse CourseData="course" />
+		}
+		@if (module != null)
+		{
+			<HomeModule ModuleData="module" />
+		}
+		@if (activity != null)
+		{
+			<HomeActivity ActivityData="activity" />
+		}
+		@if (isTeacher)
+		{
+			<HomeAdmin />
+		}
 	</div>
 }
 
