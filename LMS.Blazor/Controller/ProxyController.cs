@@ -24,7 +24,7 @@ public class ProxyController : ControllerBase
     [Route("{*resource}")]
     [Authorize]
     public async Task<IActionResult> Proxy(string resource)
-    {
+        {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; //Usermanager can be used here! 
 
         if (userId == null)

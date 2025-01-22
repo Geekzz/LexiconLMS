@@ -1,6 +1,7 @@
 ﻿using LMS.Blazor.Client.Models;
 using LMS.Shared.DTOs;
 using Microsoft.AspNetCore.Components;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -69,7 +70,30 @@ public class ClientApiService(IHttpClientFactory httpClientFactory, NavigationMa
 
         response.EnsureSuccessStatusCode();
 
+        if (response.Content.Headers.ContentLength == 0 || response.StatusCode == HttpStatusCode.NoContent)
+        {
+            return default;
+        }
+
         var res = await JsonSerializer.DeserializeAsync<TResponse>(await response.Content.ReadAsStreamAsync(), _jsonSerializerOptions, CancellationToken.None);
         return res;
+    }
+
+    // Used when no ResponseBody is needed (for NoContent response from API etc) and only a boolean for verification is needed.
+    public async Task<bool> PutAsync<TRequest>(string endpoint, TRequest? dto)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Put, $"proxy-endpoint/{endpoint}");
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+        if (dto is not null)
+        {
+            var serialized = JsonSerializer.Serialize(dto);
+            request.Content = new StringContent(serialized);
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+        }
+
+        var response = await httpClient.SendAsync(request);
+
+        return response.IsSuccessStatusCode;
     }
 }

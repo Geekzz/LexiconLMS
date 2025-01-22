@@ -30,6 +30,7 @@ public class AutoMapperProfile : Profile
         CreateMap<ModuleUpdateDto, Module>().ReverseMap();
 
         CreateMap<ApplicationUser, UserDto>().ReverseMap();
+        CreateMap<UserUpdateDto, ApplicationUser>().ReverseMap();
 
 
 

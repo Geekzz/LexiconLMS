@@ -1,10 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 <div class="page">
-    @* <div class="sidebar">
-        <NavMenu />
-    </div> *@
-
     <main class="lexicon-background" style="min-height: 100vh;">
         <nav class="navbar" style="background-color: white; padding: 0px;">
             <a class="navbar-brand" href="home">
@@ -20,9 +16,9 @@
                             <li class="nav-item">
                                 <a class="nav-link lexicon-nav button-fontsize" href="home" style="color: black;">HEM</a>
                             </li>
-                            @* <li class="nav-item">
-                                <a class="nav-link lexicon-nav button-fontsize" href="Account/Register" style="color: black;">REGISTER</a>
-                            </li> *@
+                            <li class="nav-item">
+                                <a class="nav-link lexicon-nav button-fontsize" href="register" style="color: black;">REGISTER</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link lexicon-nav button-fontsize" href="courseoverview" style="color: black;">KURSÖVERSIKT</a>
                             </li>
@@ -32,9 +28,6 @@
                             <li class="nav-item">
                                 <a class="nav-link lexicon-nav button-fontsize" href="admin" style="color: black;">ADMIN</a>
                             </li>
-                            @* <li class="nav-item">
-                                <a class="nav-link btn nav-button lexicon-button button-fontsize" href="Account/Logout">LOGIN</a>
-                            </li> *@
                             <li class="nav-item">
                                 <form action="Account/Logout" method="post">
                                     <AntiforgeryToken />
@@ -45,16 +38,6 @@
                                 </form>
                             </li>
                         </ul>
-                        @* <div class="nav-item px-2">
-                            <NavLink class="nav-link" href="demoauth">
-                                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> DemoAuth
-                            </NavLink>
-                        </div>
-                        <div class="nav-item px-2">
-                            <NavLink class="nav-link" href="Account/Manage">
-                                <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
-                            </NavLink>
-                        </div> *@
                     </div>
                 </Authorized>
             </AuthorizeView>
@@ -90,5 +73,4 @@
     // {
     //     NavigationManager.LocationChanged -= OnLocationChanged;
     // }
-
 }

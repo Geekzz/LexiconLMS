@@ -61,14 +61,18 @@ public static class SeedData
             e.FirstName = f.Person.FirstName;
             e.LastName = f.Person.LastName;
             e.CourseId = 1;
+            e.Role = "Student";
         });
 
         var users = faker.Generate(nrOfUsers);
 
+        // Show that the first user is a teacher
+        users[1].Role = "Teacher";
+
         //ToDo: Add to user.secrets
         var passWord = "BytMig123!";
         if (string.IsNullOrEmpty(passWord))
-            throw new Exception("password nor found");
+            throw new Exception("password not found");
 
         foreach (var user in users)
         {
