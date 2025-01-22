@@ -82,6 +82,17 @@ public class ProxyController : ControllerBase
         if (!response.IsSuccessStatusCode)
             return Unauthorized(); //ToDo pass correct statuscode to caller
 
+        // Copy all response headers from the proxied response to the current response
+        foreach (var header in response.Headers)
+        {
+            Response.Headers[header.Key] = header.Value.ToArray();
+        }
+
+        foreach (var header in response.Content.Headers)
+        {
+            Response.Headers[header.Key] = header.Value.ToArray();
+        }
+
         Response.StatusCode = (int)response.StatusCode;
         Response.ContentType = response.Content.Headers.ContentType?.ToString() ?? "application/json";
 

@@ -1,5 +1,7 @@
-﻿using Domain.Contracts;
+﻿using AutoMapper;
+using Domain.Contracts;
 using Domain.Models.Entities;
+using LMS.Shared.DTOs.Read;
 using Microsoft.AspNetCore.Http;
 using Services.Contracts;
 using System;
@@ -14,10 +16,12 @@ namespace LMS.Services
     public class FileService : IFileService
     {
         private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
-        public FileService(IUnitOfWork uow)
+        public FileService(IUnitOfWork uow, IMapper mapper)
         {
             _uow = uow;
+            _mapper = mapper;
         }
 
         public async Task<UserFile> UploadFileAsync(IFormFile file, int? courseId, string userId)
@@ -78,6 +82,14 @@ namespace LMS.Services
             if (fileToDelete.ApplicationUserId != userId) throw new UnauthorizedAccessException("You are not authorized to delete this file.");
             _uow.FileRepository.Delete(fileToDelete);
             await _uow.CompleteAsync();
+        }
+
+        public async Task<IEnumerable<UserFileReadDto>> GetFilesByCourseIdAsync(int courseId, string userId)
+        {
+            var files = await _uow.FileRepository.GetFilesByCourseIdAsync(courseId, userId);
+
+
+            return _mapper.Map<IEnumerable<UserFileReadDto>>(files);
         }
     }
 

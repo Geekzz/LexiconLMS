@@ -18,6 +18,7 @@ public class ClientApiService(IHttpClientFactory httpClientFactory, NavigationMa
 
     public async Task<TResponse?> GetAsync<TResponse>(string endpoint)
     {
+        Console.WriteLine($"Calling GetAsync with endpoint: {endpoint}");
         return await CallApiAsync<object?, TResponse>(
             endpoint,
             HttpMethod.Get,
@@ -47,8 +48,44 @@ public class ClientApiService(IHttpClientFactory httpClientFactory, NavigationMa
         );
     }
 
+    public async Task PostAsync(string endpoint, HttpContent content)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Post, $"proxy-endpoint/{endpoint}")
+        {
+            Content = content
+        };
+
+        var response = await httpClient.SendAsync(request);
+
+        if (response.StatusCode == System.Net.HttpStatusCode.Forbidden
+           || response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        {
+            navigationManager.NavigateTo("AccessDenied");
+        }
+
+        response.EnsureSuccessStatusCode();
+    }
+
+    public async Task<HttpResponseMessage> GetFileAsync(string endpoint)
+    {
+        Console.WriteLine($"Calling GetFileAsync with endpoint: {endpoint}");
+        var request = new HttpRequestMessage(HttpMethod.Get, $"proxy-endpoint/{endpoint}");
+        var response = await httpClient.SendAsync(request);
+
+        if (response.StatusCode == System.Net.HttpStatusCode.Forbidden
+           || response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        {
+            navigationManager.NavigateTo("AccessDenied");
+        }
+
+        response.EnsureSuccessStatusCode();
+        return response;
+    }
+
+
     private async Task<TResponse?> CallApiAsync<TRequest, TResponse>(string endpoint, HttpMethod httpMethod, TRequest? dto)
     {
+        Console.WriteLine($"Calling CallApiAsync with endpoint: {endpoint} and method: {httpMethod}");
         var request = new HttpRequestMessage(httpMethod, $"proxy-endpoint/{endpoint}");
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -64,7 +101,17 @@ public class ClientApiService(IHttpClientFactory httpClientFactory, NavigationMa
         if (response.StatusCode == System.Net.HttpStatusCode.Forbidden
            || response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
         {
-            navigationManager.NavigateTo("AccessDenied");
+            // Handle 401 Unauthorized error
+            Console.Error.WriteLine("Unauthorized access. Please check your credentials.");
+
+            return default;
+        }
+
+        if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+            // Handle 404 Not Found error
+            Console.Error.WriteLine("Resource not found.");
+            return default;
         }
 
         response.EnsureSuccessStatusCode();

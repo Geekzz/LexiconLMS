@@ -21,10 +21,14 @@ namespace LMS.Infrastructure.Repositories
             return await FindByCondition(f => f.UserFileId == userFileId, trackChanges).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<UserFile>> GetFilesByCourseIdAsync(int courseId, bool trackChanges = false)
+        public async Task<IEnumerable<UserFile>> GetFilesByCourseIdAsync(int courseId, string userId, bool trackChanges = false)
         {
-            return await FindByCondition(f => f.CourseId == courseId, trackChanges).ToListAsync();
+            return await FindByCondition(f => f.CourseId == courseId &&
+                                                (f.ApplicationUserId == userId || f.IsShared),
+                                                trackChanges).ToListAsync();
         }
+
+
     }
 
 

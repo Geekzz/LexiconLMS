@@ -31,7 +31,7 @@ public class AutoMapperProfile : Profile
 
         CreateMap<ApplicationUser, UserDto>().ReverseMap();
 
-
+        CreateMap<UserFile, UserFileReadDto>().ReverseMap();
 
     }
 }

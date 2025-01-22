@@ -10,6 +10,6 @@ namespace Domain.Contracts
     public interface IFileRepository: IRepositoryBase<UserFile>
     {
         Task<UserFile?> GetFileByIdAsync(Guid fileId, bool trackChanges = false);
-        Task<IEnumerable<UserFile>> GetFilesByCourseIdAsync(int courseId, bool trackChanges = false);
+        Task<IEnumerable<UserFile>> GetFilesByCourseIdAsync(int courseId, string userId,  bool trackChanges = false);
     }
 }

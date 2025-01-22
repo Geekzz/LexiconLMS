@@ -29,7 +29,7 @@ public class ServiceManager : IServiceManager
         courseService = new Lazy<ICourseService>(() => new CourseService(uow, mapper));
         moduleService = new Lazy<IModuleService>(() => new ModuleService(uow, mapper));
         activityService = new Lazy<IActivityService>(() => new ActivityService(uow, mapper));
-        fileService = new Lazy<IFileService>(() => new FileService(uow));
+        fileService = new Lazy<IFileService>(() => new FileService(uow, mapper));
     }
 }
 

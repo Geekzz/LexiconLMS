@@ -1,4 +1,5 @@
 ﻿using Domain.Models.Entities;
+using LMS.Shared.DTOs.Read;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -14,5 +15,6 @@ namespace Services.Contracts
         Task<(byte[] FileContent, string ContentType, string FileName)> DownloadFileAsync(Guid userFileId);
         Task DeleteFileAsync(Guid fileId, string userId);
 
+        Task<IEnumerable<UserFileReadDto>> GetFilesByCourseIdAsync(int courseId, string userId);
     }
 }
