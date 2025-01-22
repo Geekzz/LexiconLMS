@@ -1,3 +1,4 @@
+/* Built in base CSS */
 html, body {
     font-family: "system-ui", Inter, Arial, 'Helvetica Neue', Helvetica, sans-serif;
 }
@@ -50,13 +51,47 @@ h1:focus {
     border-color: #929292;
 }
 
+/* Force remove padding */
 .no-padding {
     padding: 0px !important;
 }
 
-.lexicon-logo {
-    max-height: 66px;
-    margin: 0px 20px;
+.special-margin {
+    margin: 1.5rem !important;
+}
+
+@media (max-width: 690px) {
+    .special-margin {
+        margin: 0px 0px 0px 0px !important;
+    }
+}
+
+/* Lexicon Fonts*/
+h1 {
+    font-size: clamp(2em, 10vw, 4.5em);
+    font-weight: 700;
+}
+
+h2 {
+    font-size: 3.0em;
+}
+
+h3, .button-fontsize {
+    font-size: 1.5em;
+    font-weight: 700;
+}
+
+h4 {
+    font-size: 1.25em;
+}
+
+p, .button-fontsize-tiny {
+    font-size: 1.0em;
+}
+
+/* Lexicon standard CSS */
+.lexicon-page-height {
+    height: calc(100vh - 86px)
 }
 
 .lexicon-background {
@@ -65,11 +100,12 @@ h1:focus {
     flex-direction: column;
 }
 
-.lexicon-landing-image {
-    background-image: url(Images/classroom.jpg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+.lexicon-primary {
+    background-color: #FFFFFF;
+}
+
+.lexicon-text {
+    color: #5F5F5F;
 }
 
 .lexicon-rounded {
@@ -78,13 +114,6 @@ h1:focus {
 
 .lexicon-rounded-large {
     border-radius: 40px;
-}
-
-.lexicon-image-home {
-    border-radius: 20px;
-    width: 300px;
-    height: 300px;
-    margin-right: 3rem !important;
 }
 
 .lexicon-button {
@@ -117,9 +146,15 @@ h1:focus {
     border: none !important;
 }
 
-.lexicon-button:hover, .lexicon-button-tiny:hover {
-    transform: scale(1.05);
-    transition: 0.1s ease-in-out;
+    .lexicon-button:hover, .lexicon-button-tiny:hover {
+        transform: scale(1.05);
+        transition: 0.1s ease-in-out;
+    }
+
+/* Lexicon navbar*/
+.lexicon-logo {
+    max-height: 66px;
+    margin: 0px 20px;
 }
 
 .lexicon-nav {
@@ -129,9 +164,9 @@ h1:focus {
     padding: 25px 20px !important;
 }
 
-.lexicon-nav:hover {
-    background: #cfcfcf;
-}
+    .lexicon-nav:hover {
+        background: #cfcfcf;
+    }
 
 .navbar-nav {
     align-items: center;
@@ -146,12 +181,42 @@ h1:focus {
     margin: 0px 20px;
 }
 
-.lexicon-primary {
-    background-color: #FFFFFF;
+/* Lexicon Landing Page */
+.lexicon-landing-image {
+    background-image: url(Images/classroom.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
-.lexicon-text {
-    color: #5F5F5F;
+.special-margin-button {
+    margin: 1.5rem !important;
+}
+
+@media (max-width: 690px) {
+    .special-margin-button {
+        margin: 1.5rem 0px 0px 0px !important;
+    }
+}
+
+/* Lexicon Login Page */
+
+@media (max-width: 850px) {
+    .login-width-mobile {
+        width: 80% !important;
+    }
+
+    .login-width-mobile .login-info {
+        width: 100% !important;
+    }
+}
+
+/* Lexicon Home Page*/
+.lexicon-image-home {
+    border-radius: 20px;
+    width: 300px;
+    height: 300px;
+    margin-right: 3rem !important;
 }
 
 .lexicon-home-box {
@@ -168,28 +233,7 @@ h1:focus {
     }
 }
 
-h1 {
-    font-size: clamp(2em, 12vw, 4.5em);
-    font-weight: 700;
-}
-
-h2 {
-    font-size: 3.0em;
-}
-
-h3, .button-fontsize {
-    font-size: 1.5em;
-    font-weight: 700;
-}
-
-h4 {
-    font-size: 1.25em;
-}
-
-p, .button-fontsize-tiny {
-    font-size: 1.0em;
-}
-
+/* Loader Anim CSS*/
 .loader {
     width: 40px;
     aspect-ratio: 1;
