@@ -1,0 +1,152 @@
+﻿@page "/create-course"
+@rendermode InteractiveWebAssembly
+@using LMS.Blazor.Client.Services
+@using LMS.Shared.DTOs.Create
+@using LMS.Shared.DTOs.Read
+
+
+
+<!-- Modal för att lägga till ny modul -->
+@if (isModalVisible)
+{
+	<div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0, 0, 0, 0.5);" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered lexicon-rounded">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Registrera ny modul</h4>
+					<button type="button" class="btn-close" @onclick="ToggleModalVisibility" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group mb-3">
+						<label for="moduleName" class="form-label">Namn</label>
+						<input type="text" id="moduleName" class="form-control" @bind="NewModule.Name" required />
+					</div>
+					<div class="form-group mb-3">
+						<label for="moduleDescription" class="form-label">Beskrivning</label>
+						<textarea id="moduleDescription" class="form-control" @bind="NewModule.Description" required></textarea>
+					</div>
+					<div class="form-group mb-3">
+						<label for="startDate" class="form-label">Startdatum</label>
+						<input type="date" id="startDate" class="form-control" @bind="NewModule.StartDate" required />
+					</div>
+					<div class="form-group mb-3">
+						<label for="endDate" class="form-label">Slutdatum</label>
+						<input type="date" id="endDate" class="form-control" @bind="NewModule.EndDate" required />
+					</div>
+				</div>
+				<div class="modal-footer d-flex justify-content-end">
+					<button type="button" class="btn lexicon-button button-fontsize" @onclick="AddModule">Registrera modul</button>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+	<div class="card lexicon-rounded">
+		<div class="card-body">
+			<h4 class="card-title">Registrera ny kurs</h4>
+			<EditForm Model="NewCourse" OnValidSubmit="AddCourse" FormName="createModuleForm">
+				<DataAnnotationsValidator />
+				<ValidationSummary />
+
+				<div class="mb-3">
+					<label for="courseName" class="form-label">Namn</label>
+					<InputText id="courseName" class="form-control" @bind-Value="NewCourse.Name" />
+					<ValidationMessage For="@(() => NewCourse.Name)" />
+				</div>
+
+				<div class="mb-3">
+					<label for="courseDescription" class="form-label">Beskrivning</label>
+					<InputTextArea id="courseDescription" class="form-control" @bind-Value="NewCourse.Description" />
+					<ValidationMessage For="@(() => NewCourse.Description)" />
+				</div>
+
+				<div class="mb-3">
+					<label for="startDate" class="form-label">Startdatum</label>
+					<InputDate id="startDate" class="form-control" @bind-Value="NewCourse.StartDate" />
+					<ValidationMessage For="@(() => NewCourse.StartDate)" />
+				</div>
+
+				<div class="mb-3">
+					<label for="endDate" class="form-label">End Date</label>
+					<InputDate id="endDate" class="form-control" @bind-Value="NewCourse.EndDate" />
+					<ValidationMessage For="@(() => NewCourse.EndDate)" />
+				</div>
+
+
+
+				<div class="d-flex justify-content-center flex-column	">
+					<button type="button" class="btn lexicon-button button-fontsize" @onclick="ToggleModalVisibility">
+						Lägg till ny modul
+					</button>
+					<div>
+						<ul>
+							@foreach (ModuleCreateDto module in NewCourse.Modules)
+							{
+								<li>@module.Name</li>
+							}
+						</ul>
+					</div>
+
+				</div>
+				<button type="submit" class="btn lexicon-button button-fontsize">
+					Registrera Kurs
+				</button>
+
+			</EditForm>
+		</div>
+	</div>
+</div>
+
+<!-- Display the course and its modules -->
+@code {
+	[Inject]
+	private IApiService _apiService { get; set; } = default!;
+
+	[Parameter]
+	public int CourseId { get; set; }
+
+	private CourseCreateDto NewCourse { get; set; } = new CourseCreateDto
+		{
+			Modules = new List<ModuleCreateDto>()
+		};
+
+	private ModuleCreateDto NewModule { get; set; } = new ModuleCreateDto();
+
+	private bool isModalVisible = false;
+
+	private void ToggleModalVisibility()
+	{
+		isModalVisible = !isModalVisible;
+	}
+
+	private void ResetModal()
+	{
+		NewModule = new ModuleCreateDto();
+		NewModule.StartDate = DateTime.Now;
+		NewModule.EndDate = DateTime.Now;
+	}
+
+	private void AddModule()
+	{
+		NewCourse.Modules.Add(NewModule);
+
+		ResetModal();
+		isModalVisible = false;
+	}
+
+	private async Task AddCourse()
+	{
+		try
+		{
+			await _apiService.PostAsync<CourseCreateDto, CourseCreateDto>($"courses", NewCourse);
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Error: {ex.Message}");
+		}
+
+		// NavigationManager.NavigateTo("/admin");
+	}
+}
