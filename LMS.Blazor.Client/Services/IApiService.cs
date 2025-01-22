@@ -8,6 +8,7 @@ public interface IApiService
     Task<TResponse?> GetAsync<TResponse>(string endpoint);
     Task<TResponse?> PostAsync<TRequest, TResponse>(string endpoint, TRequest dto);
     Task<TResponse?> PutAsync<TRequest, TResponse>(string endpoint, TRequest dto);
+    Task<bool> PutAsync<TRequest>(string endpoint, TRequest? dto);
     Task PostAsync(string endpoint, HttpContent content);
     Task<HttpResponseMessage> GetFileAsync(string endpoint);
 }
