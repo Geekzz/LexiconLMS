@@ -4,6 +4,7 @@
 @using LMS.Shared.DTOs.Create
 @using LMS.Shared.DTOs.Read
 @rendermode InteractiveWebAssembly
+@inject NavigationManager NavigationManager
 
 <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
     <div class="card lexicon-rounded" >
@@ -73,13 +74,11 @@
         try
         {
             NewModule = await _apiService.PostAsync<ModuleCreateDto, ModuleCreateDto>($"modules", NewModule);
-            // registerDto = await _apiService.PostAsync<UserForRegistrationDto, UserForRegistrationDto>("auth/register", registerDto);
+            NavigationManager.NavigateTo("/module-completed");
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error: {ex.Message}");
         }
-
-        // NavigationManager.NavigateTo("/admin");
     }
 }
