@@ -14,7 +14,7 @@
 @inject IHttpClientFactory HttpClientFactory
 @inject ITokenStorage TokenStorage
 
-<PageTitle>Log in</PageTitle>
+<PageTitle>Logga in</PageTitle>
 
 <div class="no-padding container-fluid w-100 h-100 d-flex justify-content-center align-items-center">
     <div class="lexicon-primary px-4 py-5 m-4 d-flex justify-content-center align-items-center flex-column lexicon-rounded-large col-md-6">
@@ -30,12 +30,12 @@
                         @* <ValidationSummary class="text-danger" role="alert" /> *@
                         <div class="form-floating mb-3">
                             <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                            <label for="email" class="form-label">Email</label>
+                            <label for="email" class="form-label">E-post</label>
                             <ValidationMessage For="() => Input.Email" class="text-danger" />
                         </div>
                         <div class="form-floating mb-3">
                             <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                            <label for="password" class="form-label">Password</label>
+                            <label for="password" class="form-label">Lösenord</label>
                             <ValidationMessage For="() => Input.Password" class="text-danger" />
                         </div>
                         <div class="checkbox mb-3">
@@ -55,13 +55,6 @@
                     </EditForm>
                 </section>
             </div>
-            @* <div class="col-md-6 col-md-offset-2">
-                <section>
-                    <h3>Use another service to log in.</h3>
-                    <hr />
-                    <ExternalLoginPicker />
-                </section>
-            </div> *@
         </div>
     </div>
 </div>

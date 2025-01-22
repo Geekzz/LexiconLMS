@@ -38,19 +38,19 @@
 						</div>
 					</div>
 
-					<div class="position-fixed" style="top: 50%; right: 20px;">
-						<a class="btn lexicon-button mb-2 button-fontsize">Ny kurs</a>
-						<a class="btn lexicon-button button-fontsize">Ny användare</a>
-					</div>
-				</div>
-			}
-		</div>
-	</Authorized>
-	<NotAuthorized>
-		<div class="container text-center mt-5">
-			<p>You are not authorized to view this page.</p>
-		</div>
-	</NotAuthorized>
+                    <div class="position-fixed" style="top: 50%; right: 20px;">
+                        <a class="btn lexicon-button mb-2 button-fontsize">Ny kurs</a>
+                        <a class="btn lexicon-button button-fontsize" href="Account/Register">Ny användare</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="container text-center mt-5">
+            <p>You are not authorized to view this page.</p>
+        </div>
+    </NotAuthorized>
 </AuthorizeView>
 
 @code {
