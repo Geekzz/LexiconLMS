@@ -117,6 +117,16 @@ else
                 if (_apiService != null)
                 {
                     user = await _apiService.GetAsync<UserDto>($"users/{targetId}");
+
+                    if (user.Role == adminRole)
+                    {
+                        roleNumber = 2;
+                    }
+                    else
+                    {
+                        roleNumber = 1;
+                    }
+
                     StateHasChanged();
                 }
                 else
