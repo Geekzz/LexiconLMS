@@ -7,93 +7,70 @@
 
 @if (course == null && user == null)
 {
-	<p><em>Loading...</em></p>
+	<div class="d-flex w-100 h-100 justify-content-center align-items-center">
+		<div class="loader"></div>
+	</div>
 }
 else
 {
-	<div class="container-lg">
-
-		<div class="text-center lexicon-primary d-flex p-2 justify-content-around align-items-center mb-4 mt-4 lexicon-rounded">
+    <div class="no-padding container-fluid w-100 h-100 d-flex flex-column align-items-center lexicon-subpage-height">
+		<div class="col-md-8 lexicon-primary p-5 m-4 d-flex justify-content-between align-items-center flex-row lexicon-rounded-large login-width-mobile profile-flex">
 			<div>
 				<h2>@user.FirstName @user.LastName</h2>
-				<h3>@user.Email</h3>
+				<h4>@user.Email</h4>
 			</div>
-			<a class="nav-link btn nav-button lexicon-button lexicon-button-special button-fontsize" href="account/update-password">ÄNDRA LÖSENORD</a>
+			<a class="nav-link btn nav-button lexicon-button lexicon-button-special button-fontsize profile-flex-button" href="account/update-password">ÄNDRA LÖSENORD</a>
 		</div>
 
-		<div class="text-center lexicon-primary lexicon-rounded mx-4">
-
-			<div class="row">
-				<div class="col">
+		<div class="col-md-8 lexicon-primary px-4 py-5 m-4 mt-0 d-flex flex-column lexicon-rounded-large login-width-mobile">
+			<div class="row profile-row">
+				<div class="col-4 profile-name">
 					<h4 class="lexicon-text">Kursnamn</h4>
-				</div>
-				<div class="col">
-					<h4 class="lexicon-text">Startdatum</h4>
-				</div>
-				<div class="col">
-					<h4 class="lexicon-text">Slutdatum</h4>
-				</div>
-				<div class="col">
-				</div>
-
-			</div>
-
-			<div class="row">
-				<div class="col">
 					<h3>@course.Name</h3>
 				</div>
-				<div class="col">
-					<h3>@course.StartDate.ToString("yyyy-MM-dd")</h3>
+				<hr class="vertical-hr" />
+				<div class="col d-flex justify-content-center align-items-center flex-column">
+					<h4 class="lexicon-text">Startdatum</h4>
+					<h4><b>@course.StartDate.ToString("yyyy-MM-dd")</b></h4>
 				</div>
-				<div class="col">
-					<h3>@course.EndDate.ToString("yyyy-MM-dd")</h3>
+				<hr class="vertical-hr" />
+				<div class="col d-flex justify-content-center align-items-center flex-column">
+					<h4 class="lexicon-text">Slutdatum</h4>
+					<h4><b>@course.EndDate.ToString("yyyy-MM-dd")</b></h4>
 				</div>
-
-				<div class="col">
+				<hr class="vertical-hr" />
+				<div class="col d-flex justify-content-center align-items-center">
 					<div class="d-flex justify-content-center align-items-end ">
 						<a class="btn lexicon-button-tiny button-fontsize-tiny" href="courseoverview">Läs mer</a>
-
 					</div>
 				</div>
 			</div>
 
-			<hr />
-
-
-			<div class="row">
-				<div class="col">
-					<h4 class="lexicon-text">Modulnamn</h4>
-				</div>
-				<div class="col">
-					<h4 class="lexicon-text">Startdatum</h4>
-				</div>
-				<div class="col">
-					<h4 class="lexicon-text">Slutdatum</h4>
-				</div>
-				<div class="col">
-				</div>
-			</div>
+			<hr class="mb-0"/>
 
 			@foreach (var module in course.Modules)
 			{
-				<div class="row">
-					<div class="col">
+				<div class="row mt-4 profile-row">
+					<div class="col-4 profile-name">
+						<h4 class="lexicon-text">Modulnamn</h4>
 						<h3>@module.Name</h3>
 					</div>
-					<div class="col">
-						<h3>@module.StartDate.ToString("yyyy-MM-dd")</h3>
+					<hr class="vertical-hr" />
+					<div class="col d-flex justify-content-center align-items-center flex-column">
+						<h4 class="lexicon-text">Startdatum</h4>
+						<h4><b>@module.StartDate.ToString("yyyy-MM-dd")</b></h4>
 					</div>
-					<div class="col">
-						<h3>@module.EndDate.ToString("yyyy-MM-dd")</h3>
+					<hr class="vertical-hr" />
+					<div class="col d-flex justify-content-center align-items-center flex-column">
+						<h4 class="lexicon-text">Slutdatum</h4>
+						<h4><b>@module.EndDate.ToString("yyyy-MM-dd")</b></h4>
 					</div>
-					<div class="col">
+					<hr class="vertical-hr" />
+					<div class="col d-flex justify-content-center align-items-center">
 					</div>
 				</div>
 			}
-
 		</div>
-
-
 	</div>
 }
 
