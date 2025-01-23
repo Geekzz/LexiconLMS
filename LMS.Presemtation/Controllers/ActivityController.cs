@@ -9,6 +9,7 @@ using Services.Contracts;
 using Microsoft.AspNetCore.JsonPatch;
 using Domain.Models.Entities;
 using LMS.Shared.DTOs.Update;
+using LMS.Shared.DTOs.Create;
 
 
 namespace LMS.Presentation.Controllers
@@ -45,6 +46,13 @@ namespace LMS.Presentation.Controllers
 
             var updatedActivity = await _serviceManager.ActivityService.PutActivityAsync(id, activityUpdateDto);
             return Ok(updatedActivity);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateActivity(ActivityCreateDto dto)
+        {
+            var createdActivityDto = await _serviceManager.ActivityService.CreateActivityAsync(dto);
+            return Created();
         }
     }
 }

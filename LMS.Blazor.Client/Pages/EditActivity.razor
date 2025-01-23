@@ -1,0 +1,137 @@
+﻿@page "/edit-activity/{activityId:int}"
+@using LMS.Blazor.Client.Services
+@using LMS.Shared.DTOs.Update
+@using LMS.Shared.DTOs.Create
+@using LMS.Shared.DTOs.Read
+@rendermode InteractiveWebAssembly
+@inject NavigationManager NavigationManager
+
+@if (activity == null)
+{
+	<div class="d-flex w-100 h-100 justify-content-center align-items-center">
+		<div class="loader"></div>
+	</div>
+}
+else
+{
+	<div class="d-flex justify-content-center align-items-center vh-100">
+		<div class="col-md-6">
+			<div class="card lexicon-rounded p-4">
+				<div class="card-body text-center">
+					<h4 class="mb-4">Activity ID: @ActivityId</h4>
+
+
+					<EditForm Model="activity" OnValidSubmit="SaveActivity">
+
+						<!-- saknas nog activitytypeid i prop på updatedto, oh wow. lets go my boy -->
+						<div class="row mb-3">
+							<label for="activityType" class="col-form-label col-md-3">Aktivitet: </label>
+							<div class="col-md-8">
+								<InputSelect id="activityType" class="form-control" @bind-Value="activity.ActivityTypeId">
+									<option value="">Typ av aktivitet</option>
+									@foreach (var activityType in ActivityTypes)
+									{
+										<option value="@activityType.ActivityTypeId">@activityType.Type</option>
+									}
+								</InputSelect>
+							</div>
+						</div>
+
+						<div class="form-group mb-4 text-start">
+							<label for="activityName" class="form-label">Namn</label>
+							<InputText id="activityName" class="form-control" @bind-Value="activity.Name" />
+							<ValidationMessage For="() => activity.Name" />
+						</div>
+
+						<div class="form-group mb-4 text-start">
+							<label for="activityDescription" class="form-label">Beskrivning</label>
+							<InputTextArea id="activityDescription" class="form-control" @bind-Value="activity.Description" />
+							<ValidationMessage For="() => activity.Description" />
+						</div>
+
+						<div class="form-group mb-4 text-start">
+							<label for="startDate" class="form-label">Start datum</label>
+							<InputDate id="startDate" class="form-control" @bind-Value="activity.StartDate" />
+							<ValidationMessage For="() => activity.StartDate" />
+						</div>
+
+						<div class="form-group mb-4 text-start">
+							<label for="endDate" class="form-label">Slut datum</label>
+							<InputDate id="endDate" class="form-control" @bind-Value="activity.EndDate" />
+							<ValidationMessage For="() => activity.EndDate" />
+						</div>
+
+						<div class="d-flex justify-content-center">
+							<button type="submit" class="btn lexicon-button button-fontsize">Redigera</button>
+						</div>
+					</EditForm>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+@code {
+	[Inject]
+	private IApiService _apiService { get; set; } = default!;
+
+	[Parameter]
+	public int ActivityId { get; set; }
+
+	private ActivityUpdateDto? activity;
+
+	private List<ActivityTypeDto> ActivityTypes { get; set; } = new();
+
+
+	// Fetch activity details on render
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			try
+			{
+				if (_apiService != null)
+				{
+					ActivityTypes = (await _apiService.GetAsync<List<ActivityTypeDto>>("activities/types")).ToList();
+					var fetchedActivity = await _apiService.GetAsync<ActivityUpdateDto>($"activities/{ActivityId}");
+					activity = fetchedActivity ?? new ActivityUpdateDto();
+
+					StateHasChanged();
+				}
+				else
+				{
+					Console.WriteLine("ApiService is not initialized.");
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Error while fetching activity: {ex.Message}");
+			}
+		}
+	}
+
+	// Save activity details
+	private async Task SaveActivity()
+	{
+		if (activity != null && _apiService != null)
+		{
+			try
+			{
+				var updatedActivity = await _apiService.PutAsync<ActivityUpdateDto, ActivityUpdateDto>($"activities/{ActivityId}", activity);
+
+				if (updatedActivity != null) // Check if the activity was successfully updated
+				{
+					NavigationManager.NavigateTo("/admin");
+				}
+				else
+				{
+					Console.WriteLine("Failed to update the activity.");
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Error while saving activity: {ex.Message}");
+			}
+		}
+	}
+}

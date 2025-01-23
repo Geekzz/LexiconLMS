@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Contracts;
 using Domain.Models.Entities;
+using LMS.Shared.DTOs.Create;
 using LMS.Shared.DTOs.Read;
 using LMS.Shared.DTOs.Update;
 using Services.Contracts;
@@ -48,6 +49,18 @@ namespace LMS.Services
             await _uow.CompleteAsync();
 
             return _mapper.Map<ActivityDto>(activityToUpdate);
+        }
+
+        public async Task<ActivityDto> CreateActivityAsync(ActivityCreateDto dto)
+        {
+            // detta la jag till, så en activity kan skapas som kopplas t moduleid
+            Activity activity = _mapper.Map<Activity>(dto);
+
+            _uow.ActivityRepository.Create(activity);
+
+            await _uow.CompleteAsync();
+
+            return _mapper.Map<ActivityDto>(activity);
         }
     }
 }
