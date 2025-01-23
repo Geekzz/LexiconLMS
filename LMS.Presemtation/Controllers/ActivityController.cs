@@ -36,5 +36,12 @@ namespace LMS.Presentation.Controllers
             var activityTypeDtos = await _serviceManager.ActivityService.GetAllActivityTypes();
             return Ok(activityTypeDtos);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteActivity(int id)
+        {
+            await _serviceManager.ActivityService.DeleteActivityAsync(id);
+            return NoContent();
+        }
     }
 }

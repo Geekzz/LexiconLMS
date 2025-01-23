@@ -3,6 +3,7 @@
 @using LMS.Blazor.Client.Services
 @using LMS.Shared.DTOs.Create
 @using LMS.Shared.DTOs.Read
+@inject NavigationManager NavigationManager
 
 <!-- Modal för att lägga till ny modul -->
 @if (showModal)
@@ -109,25 +110,21 @@
 							<label for="courseName">Kurs namn</label>
 							<ValidationMessage For="@(() => NewCourse.Name)" class="text-danger" />
 						</div>
-
 						<div class="form-floating mb-3">
 							<InputTextArea id="courseDescription" class="form-control" aria-required="true" placeholder="Kurs namn" @bind-Value="NewCourse.Description" />
 							<label for="courseDescription">Beskrivning</label>
 							<ValidationMessage For="@(() => NewCourse.Description)" class="text-danger" />
 						</div>
-
 						<div class="form-floating mb-3">
 							<InputDate id="startDate" class="form-control" aria-required="true" placeholder="Kurs namn" @bind-Value="NewCourse.StartDate" />
 							<label for="startDate">Startdatum</label>
 							<ValidationMessage For="@(() => NewCourse.StartDate)" class="text-danger" />
 						</div>
-
 						<div class="form-floating mb-3">
 							<InputDate id="endDate" class="form-control" aria-required="true" placeholder="Kurs namn" @bind-Value="NewCourse.EndDate" />
 							<label for="endDate">End Date</label>
 							<ValidationMessage For="@(() => NewCourse.EndDate)" class="text-danger" />
 						</div>
-
 						<div class="d-flex flex-column align-items-center">
 							<div class="d-flex justify-content-center align-items-center">
 								<button type="button" class="btn lexicon-plus" @onclick="ToggleModalVisibility">
@@ -162,10 +159,9 @@
 	private List<ActivityTypeDto> ActivityTypes { get; set; } = new();
 
 	private CourseCreateDto NewCourse { get; set; } = new CourseCreateDto
-		{
-			Modules = new List<ModuleCreateDto>()
-		};
-
+	{
+		Modules = new List<ModuleCreateDto>()
+	};
 	private ModuleCreateDto NewModule { get; set; } = new();
 	private ActivityCreateDto NewActivity { get; set; } = new();
 
@@ -239,13 +235,11 @@
 		try
 		{
 			await _apiService.PostAsync<CourseCreateDto, CourseCreateDto>($"courses", NewCourse);
+			NavigationManager.NavigateTo("/create-course-success");
 		}
 		catch (Exception ex)
 		{
 			Console.WriteLine($"Error: {ex.Message}");
 		}
-
-		// NavigationManager.NavigateTo("/admin");
 	}
-
 }

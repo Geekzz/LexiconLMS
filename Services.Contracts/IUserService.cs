@@ -11,5 +11,6 @@ namespace Services.Contracts
     public interface IUserService
     {
         Task<UserDto> PutUserAsync(string id, UserUpdateDto userUpdateDto);
+        Task DeleteUserAsync(string id);
     }
 }

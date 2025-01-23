@@ -46,5 +46,12 @@ namespace LMS.Presentation.Controllers
             var createdModuleDto = await _serviceManager.ModuleService.CreateModuleAsync(dto);
             return Created();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteModule(int id)
+        {
+            await _serviceManager.ModuleService.DeleteModuleAsync(id);
+            return NoContent();
+        }
     }
 }

@@ -45,5 +45,14 @@ namespace LMS.Services
 
             return _mapper.Map<UserDto>(userToUpdate);
         }
+
+        public async Task DeleteUserAsync(string id)
+        {
+            var userToDelete = await _uow.UserRepository.GetUserByIdAsync(id, true);
+            if (userToDelete == null) throw new KeyNotFoundException($"{id} not found.");
+            _uow.UserRepository.Delete(userToDelete);
+
+            await _uow.CompleteAsync();
+        }
     }
 }

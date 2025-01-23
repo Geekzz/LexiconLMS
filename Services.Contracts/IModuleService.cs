@@ -9,5 +9,6 @@ namespace Services.Contracts
         Task<ModuleDto> GetModuleByIdAsync(int moduleId);
         Task<ModuleDto> CreateModuleAsync(ModuleCreateDto dto);
         Task<ModuleDto> PutModuleAsync(int id, ModuleUpdateDto moduleUpdateDto);
+        Task DeleteModuleAsync(int id);
     }
 }

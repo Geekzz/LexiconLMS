@@ -48,7 +48,16 @@ public class ClientApiService(IHttpClientFactory httpClientFactory, NavigationMa
         );
     }
 
-    private async Task<TResponse?> CallApiAsync<TRequest, TResponse>(string endpoint, HttpMethod httpMethod, TRequest? dto)
+	public async Task<TResponse?> DeleteAsync<TResponse>(string endpoint)
+	{
+		return await CallApiAsync<object?, TResponse>(
+			endpoint,
+			HttpMethod.Delete,
+			null
+		);
+	}
+
+	private async Task<TResponse?> CallApiAsync<TRequest, TResponse>(string endpoint, HttpMethod httpMethod, TRequest? dto)
     {
         var request = new HttpRequestMessage(httpMethod, $"proxy-endpoint/{endpoint}");
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

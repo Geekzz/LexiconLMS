@@ -1,4 +1,5 @@
-﻿@using LMS.Shared.DTOs.Read
+﻿@using LMS.Blazor.Client.Services
+@using LMS.Shared.DTOs.Read
 
 @if (Users == null || !Users.Any())
 {
@@ -33,6 +34,9 @@ else
                                     <td class="align-middle">@(user.Role == "Teacher" ? "Lärare" : "Student")</td>
                                     <td class="d-flex justify-content-center align-items-center">
                                         <a href="/edit-user/@user.Id" class="btn lexicon-button-tiny button-fontsize-tiny">Redigera</a>
+                                        <a class="btn lexicon-button-delete button-fontsize-tiny ms-2" @onclick="(() => DeleteUser(user.Id))">
+                                            <img src="Images/bin.png" />
+                                        </a>
                                     </td>
                                 </tr>
                             }
@@ -44,6 +48,21 @@ else
     </div>
 }
 @code {
+    [Inject]
+    private IApiService _apiService { get; set; } = default!;
     [Parameter]
     public List<UserDto> Users { get; set; } = new();
+
+    private async Task DeleteUser(string id)
+    {
+        try
+        {
+            await _apiService.DeleteAsync<UserDto>($"users/{id}");
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error while fetching courses: {ex.Message}");
+        }
+    }
 }
