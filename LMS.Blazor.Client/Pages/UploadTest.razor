@@ -135,11 +135,7 @@ else
 
         try
         {
-            // Call the PostFileAsync method in the ClientApiService
-            // await _apiService.PostFileAsync(
-            //     $"files/upload?courseId={course.CourseId}",
-            //     file);
-            var response = await _apiService.PostFileAsync("files/upload", file, course.CourseId); // Replace "12345" with the actual courseId
+            var response = await _apiService.PostFileAsync("files/upload", file, course.CourseId); 
             if (response.IsSuccessStatusCode)
             {
                 Console.WriteLine("File uploaded successfully!");

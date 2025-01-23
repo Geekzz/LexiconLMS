@@ -97,9 +97,9 @@ public class ClientApiService(IHttpClientFactory httpClientFactory, NavigationMa
 
         // Create a MultipartFormDataContent to hold the file
         var content = new MultipartFormDataContent();
-        var fileStream = browserFile.OpenReadStream(maxAllowedSize: 10485760); // 10MB size limit (adjust as needed)
-        byte[] buffer = new byte[1024];
-        //var fileStream = await browserFile.OpenReadStream(maxAllowedSize: 10485760).ReadAsync(buffer);
+        //var fileStream = browserFile.OpenReadStream(maxAllowedSize: 10485760); // 10MB size limit (adjust as needed)
+        var buffer = new byte[1024 * 10];
+        var fileStream = await browserFile.OpenReadStream(maxAllowedSize: 10485760).ReadAsync(buffer);
         // Check if the file stream is valid
         if (fileStream == null)
         {
