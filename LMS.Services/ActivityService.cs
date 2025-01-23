@@ -7,6 +7,7 @@ using AutoMapper;
 using Domain.Contracts;
 using Domain.Models.Entities;
 using LMS.Shared.DTOs.Read;
+using LMS.Shared.DTOs.Update;
 using Services.Contracts;
 
 namespace LMS.Services
@@ -26,6 +27,21 @@ namespace LMS.Services
         {
             Activity? activity = await _uow.ActivityRepository.GetActivityByIdAsync(activityId);
             return _mapper.Map<ActivityDto>(activity);
+        }
+
+        public async Task<ActivityDto> PutActivityAsync(int id, ActivityUpdateDto activity)
+        {
+            var activityToUpdate = await _uow.ActivityRepository.GetActivityByIdAsync(id, true);
+            if (activityToUpdate == null) throw new KeyNotFoundException($"{id} not found.");
+
+            activityToUpdate.Name = activity.Name;
+            activityToUpdate.Description = activity.Description;
+            activityToUpdate.StartDate = activity.StartDate;
+            activityToUpdate.EndDate = activity.EndDate;
+
+            await _uow.CompleteAsync();
+
+            return _mapper.Map<ActivityDto>(activityToUpdate);
         }
 
     }
