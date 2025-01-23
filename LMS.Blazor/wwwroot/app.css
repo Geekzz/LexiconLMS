@@ -104,6 +104,36 @@ h1:focus {
     width: auto;
 }
 
+.lexicon-button-circle {
+    border-radius: 50%;
+    background-color: #D60000;
+    color: white !important;
+    height: 50px;
+    width: 50px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.1s ease-in-out;
+    border: none !important;
+}
+
+lexicon-list-item {
+    border-radius: 50%;
+    background-color: #D60000;
+    color: white !important;
+    height: 150px;
+    width: 150px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.1s ease-in-out;
+    border: none !important;
+}
+
+lexicon-circle
+
 .lexicon-button-tiny {
     background-color: #D60000;
     color: white !important;
@@ -129,9 +159,9 @@ h1:focus {
     padding: 25px 20px !important;
 }
 
-.lexicon-nav:hover {
-    background: #cfcfcf;
-}
+    .lexicon-nav:hover {
+        background: #cfcfcf;
+    }
 
 .navbar-nav {
     align-items: center;

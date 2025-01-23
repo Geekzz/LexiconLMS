@@ -13,6 +13,6 @@ namespace LMS.Shared.DTOs.Create
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        public ActivityTypeCreateDto ActivityType { get; set; }
+        public int ActivityTypeId { get; set; }
     }
 }

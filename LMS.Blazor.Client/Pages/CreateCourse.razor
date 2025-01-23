@@ -7,7 +7,7 @@
 
 
 <!-- Modal för att lägga till ny modul -->
-@if (isModalVisible)
+@if (showModal)
 {
 	<div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0, 0, 0, 0.5);" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered lexicon-rounded">
@@ -35,8 +35,58 @@
 					</div>
 				</div>
 				<div class="modal-footer d-flex justify-content-end">
+					<button type="button" class="btn lexicon-button-circle button-fontsize" @onclick="ToggleActivityFormVisibility">Lägg till aktivitet</button>
 					<button type="button" class="btn lexicon-button button-fontsize" @onclick="AddModule">Registrera modul</button>
 				</div>
+
+				<div>
+					<ul>
+						@foreach (var activity in NewModule.Activities)
+						{
+							<li>@activity.Name</li>
+						}
+					</ul>
+				</div>
+
+				<!-- AktivitetsForm -->
+				@if (showActivityForm)
+				{
+
+					<div class="modal-header">
+						<h4 class="modal-title">Aktivitet</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group mb-3">
+							<label for="activityName" class="form-label">Namn</label>
+							<input type="text" id="activityName" class="form-control" @bind="NewActivity.Name" required />
+						</div>
+						<div class="form-group mb-3">
+							<label for="activityDescription" class="form-label">Beskrivning</label>
+							<textarea id="activityDescription" class="form-control" @bind="NewActivity.Description" required></textarea>
+						</div>
+						<div class="form-group mb-3">
+							<label for="startDate" class="form-label">Startdatum</label>
+							<input type="date" id="startDate" class="form-control" @bind="NewActivity.StartDate" required />
+						</div>
+						<div class="form-group mb-3">
+							<label for="endDate" class="form-label">Slutdatum</label>
+							<input type="date" id="endDate" class="form-control" @bind="NewActivity.EndDate" required />
+						</div>
+					</div>
+					<div class="row mb-3">
+						<label for="activityType" class="col-form-label col-md-3">Aktivitet: </label>
+						<div class="col-md-8">
+							<InputSelect id="activityType" class="form-control" @bind-Value="NewActivity.ActivityTypeId">
+								<option value="">Typ av aktivitet</option>
+								@foreach (var activityType in ActivityTypes)
+								{
+									<option value="@activityType.ActivityTypeId">@activityType.Type</option>
+								}
+							</InputSelect>
+						</div>
+					</div>
+					<button type="button" class="btn lexicon-button button-fontsize" @onclick="AddActivity">Lägg till aktivitet</button>
+				}
 			</div>
 		</div>
 	</div>
@@ -77,9 +127,11 @@
 
 
 				<div class="d-flex justify-content-center flex-column	">
-					<button type="button" class="btn lexicon-button button-fontsize" @onclick="ToggleModalVisibility">
-						Lägg till ny modul
-					</button>
+					<div class="d-flex justify-content-center align-items-center">
+						<button type="button" class="lexicon-button-circle" @onclick="ToggleModalVisibility"></button> 
+						<p>Lägg till ny modul</p>
+					</div>
+
 					<div>
 						<ul>
 							@foreach (ModuleCreateDto module in NewCourse.Modules)
@@ -104,40 +156,78 @@
 	[Inject]
 	private IApiService _apiService { get; set; } = default!;
 
-	[Parameter]
-	public int CourseId { get; set; }
+	private List<ActivityTypeDto> ActivityTypes { get; set; } = new();
 
 	private CourseCreateDto NewCourse { get; set; } = new CourseCreateDto
 		{
 			Modules = new List<ModuleCreateDto>()
 		};
 
-	private ModuleCreateDto NewModule { get; set; } = new ModuleCreateDto();
+	private ModuleCreateDto NewModule { get; set; } = new();
+	private ActivityCreateDto NewActivity { get; set; } = new();
 
-	private bool isModalVisible = false;
+	private bool showModal = false;
+	private bool showActivityForm = false;
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			ActivityTypes = (await _apiService.GetAsync<List<ActivityTypeDto>>("activities/types")).ToList();
+
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Error: {ex.Message}");
+		}
+	}
 
 	private void ToggleModalVisibility()
 	{
-		isModalVisible = !isModalVisible;
+		showModal = !showModal;
 	}
 
-	private void ResetModal()
+	private void ResetModuleForm()
 	{
 		NewModule = new ModuleCreateDto();
 		NewModule.StartDate = DateTime.Now;
 		NewModule.EndDate = DateTime.Now;
 	}
 
+	private void ResetActivityForm()
+	{
+		NewActivity = new ActivityCreateDto();
+		NewActivity.StartDate = DateTime.Now;
+		NewActivity.EndDate = DateTime.Now;
+	}
+
+
 	private void AddModule()
 	{
 		NewCourse.Modules.Add(NewModule);
 
-		ResetModal();
-		isModalVisible = false;
+		ResetModuleForm();
+		showModal = false;
+	}
+
+
+	private void ToggleActivityFormVisibility()
+	{
+		showActivityForm = !showActivityForm;
+	}
+
+	private void AddActivity()
+	{
+		NewModule.Activities.Add(NewActivity);
+
+		ResetActivityForm();
+		showActivityForm = false;
 	}
 
 	private async Task AddCourse()
 	{
+		ResetModuleForm();
+		ResetActivityForm();
 		try
 		{
 			await _apiService.PostAsync<CourseCreateDto, CourseCreateDto>($"courses", NewCourse);
@@ -149,4 +239,5 @@
 
 		// NavigationManager.NavigateTo("/admin");
 	}
+
 }
