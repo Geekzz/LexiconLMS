@@ -28,7 +28,6 @@
                                     <td>@activity.Description</td>
                                     <td>@activity.StartDate.ToString("yyyy-MM-dd HH:mm")</td>
                                     <td>@activity.EndDate.ToString("yyyy-MM-dd HH:mm")</td>
-                                    <td><a href="javascript:void(0)" @onclick="HandleDocuments">Filer</a></td>
                                 </tr>
                             }
                         </tbody>
@@ -47,8 +46,4 @@
     [Parameter]
     public ModuleDto? SelectedModule { get; set; }
 
-    private void HandleDocuments()
-    {
-        //
-    }
 }

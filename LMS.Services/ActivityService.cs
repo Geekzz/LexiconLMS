@@ -28,5 +28,11 @@ namespace LMS.Services
             return _mapper.Map<ActivityDto>(activity);
         }
 
+        public async Task<IEnumerable<ActivityTypeDto>> GetAllActivityTypes()
+        {
+            var activityTypes =  await _uow.ActivityTypeRepository.GetAllActivityTypesAsync();
+            return _mapper.Map<IEnumerable<ActivityTypeDto>>(activityTypes);
+        }
+
     }
 }

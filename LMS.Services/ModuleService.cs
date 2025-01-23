@@ -9,6 +9,7 @@ using Domain.Models.Entities;
 using Services.Contracts;
 using LMS.Shared.DTOs.Read;
 using LMS.Shared.DTOs.Create;
+using LMS.Shared.DTOs.Update;
 
 namespace LMS.Services
 {
@@ -38,6 +39,23 @@ namespace LMS.Services
             await _uow.CompleteAsync();
 
             return _mapper.Map<ModuleDto>(module);
+        }
+
+        public async Task<ModuleDto> PutModuleAsync(int id, ModuleUpdateDto moduleUpdateDto)
+        {
+            var moduleToUpdate = await _uow.ModuleRepository.GetModuleByIdAsync(id, true);
+
+            if (moduleToUpdate == null)
+                throw new KeyNotFoundException($"Module with ID {id} not found.");
+
+            moduleToUpdate.Name = moduleUpdateDto.Name;
+            moduleToUpdate.Description = moduleUpdateDto.Description;
+            moduleToUpdate.StartDate = moduleUpdateDto.StartDate;
+            moduleToUpdate.EndDate = moduleUpdateDto.EndDate;
+
+            await _uow.CompleteAsync();
+
+            return _mapper.Map<ModuleDto>(moduleToUpdate);
         }
     }
 }
