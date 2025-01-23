@@ -12,49 +12,46 @@
 
 @if (course == null)
 {
-    <div class="d-flex w-100 h-100 justify-content-center align-items-center">
+    <div class="d-flex w-100 h-100 justify-content-center align-items-center lexicon-subpage-height">
         <div class="loader"></div>
     </div>
 }
 else
 {
-    <div class="d-flex justify-content-center align-items-center vh-100">
-        <div class="col-md-6">
-            <div class="card lexicon-rounded p-4">
-                <div class="card-body text-center">
-                    <h4 class="mb-4">Course id: @CourseId</h4>
-
-                    <EditForm Model="course" OnValidSubmit="SaveCourse">
-                        <DataAnnotationsValidator />
-
-                        <div class="form-group mb-4 text-start">
-                            <label for="courseName" class="form-label">Namn</label>
-                            <InputText id="courseName" class="form-control" @bind-Value="course.Name" />
-                            <ValidationMessage For="() => course.Name" />
-                        </div>
-
-                        <div class="form-group mb-4 text-start">
-                            <label for="courseDescription" class="form-label">Beskrivning</label>
-                            <InputTextArea id="courseDescription" class="form-control" @bind-Value="course.Description" />
-                            <ValidationMessage For="() => course.Description" />
-                        </div>
-
-                        <div class="form-group mb-4 text-start">
-                            <label for="startDate" class="form-label">Start datum</label>
-                            <InputDate id="startDate" class="form-control" @bind-Value="course.StartDate" />
-                            <ValidationMessage For="() => course.StartDate" />
-                        </div>
-
-                        <div class="form-group mb-4 text-start">
-                            <label for="endDate" class="form-label">Slut datum</label>
-                            <InputDate id="endDate" class="form-control" @bind-Value="course.EndDate" />
-                            <ValidationMessage For="() => course.EndDate" />
-                        </div>
-
-                        <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn lexicon-button button-fontsize">Redigera</button>
-                        </div>
-                    </EditForm>
+    <div class="no-padding container-fluid w-100 h-100 d-flex justify-content-center align-items-center lexicon-subpage-height">
+        <div class="lexicon-primary px-4 py-5 m-4 d-flex justify-content-center align-items-center flex-column lexicon-rounded-large col-md-6 login-width-mobile">
+            <h1 class="px-2 text-center">REDIGERA KURS</h1>
+            <div class="row d-flex justify-content-center align-items-center col-md-10 login-info">
+                <div class="col-md-8">
+                    <section>
+                        <EditForm Model="course" OnValidSubmit="SaveCourse">
+                            <DataAnnotationsValidator />
+                            <hr />
+                            <div class="form-floating mb-3">
+                                <InputText id="courseName" class="form-control" aria-required="true" @bind-Value="course.Name" placeholder="Kurs namn" />
+                                <label for="courseName">Kurs namn</label>
+                                    <ValidationMessage For="() => course.Name" class="text-danger" />
+                            </div>
+                            <div class="form-floating mb-3">
+                                <InputTextArea id="courseDescription" class="form-control" aria-required="true" @bind-Value="course.Description"  placeholder="Beskrivning" />
+                                <label for="courseDescription">Beskrivning</label>
+                                <ValidationMessage For="() => course.Description" class="text-danger" />
+                            </div>
+                            <div class="form-floating mb-3">
+                                <InputDate id="startDate" class="form-control" aria-required="true" @bind-Value="course.StartDate"  placeholder="Startdatum" />
+                                <label for="startDate">Startdatum</label>
+                                <ValidationMessage For="() => course.StartDate" class="text-danger" />
+                            </div>
+                            <div class="form-floating mb-3">
+                                <InputDate id="endDate" class="form-control" aria-required="true" @bind-Value="course.EndDate"  placeholder="Slutdatum" />
+                                <label for="endDate">Slutdatum</label>
+                                <ValidationMessage For="() => course.EndDate" class="text-danger" />
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <button type="submit" class="btn lexicon-button button-fontsize">Redigera</button>
+                            </div>
+                        </EditForm>
+                    </section>
                 </div>
             </div>
         </div>
@@ -119,5 +116,4 @@ else
             }
         }
     }
-
 }
