@@ -1,9 +1,12 @@
-﻿namespace Domain.Contracts;
+﻿using LMS.Infrastructure.Repositories;
+
+namespace Domain.Contracts;
 
 public interface IUnitOfWork
 {
     IActivityRepository ActivityRepository { get; }
-    ICourseRepository CourseRepository { get; } 
+    IActivityTypeRepository ActivityTypeRepository { get; }
+    ICourseRepository CourseRepository { get; }
     IModuleRepository ModuleRepository { get; }
     IUserRepository UserRepository { get; }
     IFileRepository FileRepository { get; }
