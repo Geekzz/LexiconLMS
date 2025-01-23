@@ -1,6 +1,7 @@
 ﻿@page "/create-activity/{ModuleId:int}"
 @using LMS.Blazor.Client.Services
 @using LMS.Shared.DTOs.Create
+@using LMS.Shared.DTOs.Read
 @rendermode InteractiveWebAssembly
 @inject NavigationManager NavigationManager
 
@@ -36,6 +37,17 @@
                     <ValidationMessage For="@(() => NewActivity.EndDate)" />
                 </div>
 
+                <div class="mb-3">
+                    <label for="activityType" class="form-label">Activity Type</label>
+                    <InputSelect id="activityType" class="form-control" @bind-Value="NewActivity.ActivityTypeId">
+                        @foreach (var activityType in ActivityTypes)
+                        {
+                            <option value="@activityType.ActivityTypeId">@activityType.Type</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => NewActivity.ActivityTypeId)" />
+                </div>
+
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn lexicon-button button-fontsize">Create Activity</button>
                 </div>
@@ -52,21 +64,38 @@
     private IApiService _apiService { get; set; } = default!;
 
     private ActivityCreateDto NewActivity { get; set; } = new ActivityCreateDto();
+    private List<ActivityTypeDto> ActivityTypes { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
-        NewActivity.ModuleId = ModuleId;
-        NewActivity.StartDate = DateTime.Now;
-        NewActivity.EndDate = DateTime.Now;
+        try
+        {
+            // Fetch activity types
+            ActivityTypes = await _apiService.GetAsync<List<ActivityTypeDto>>("activities/types") ?? new List<ActivityTypeDto>();
+
+            // Initialize the new activity
+            NewActivity.ModuleId = ModuleId;
+            NewActivity.StartDate = DateTime.Now;
+            NewActivity.EndDate = DateTime.Now;
+
+            // Set the default ActivityTypeId to the first type (if any exist)
+            if (ActivityTypes.Any())
+            {
+                NewActivity.ActivityTypeId = ActivityTypes.First().ActivityTypeId;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error while initializing: {ex.Message}");
+        }
     }
 
     private async Task AddActivity()
     {
         try
         {
-            NewActivity = await _apiService.PostAsync<ActivityCreateDto, ActivityCreateDto>($"activities", NewActivity);
-            // NavigationManager.NavigateTo("/module-completed");
-            // allt borde vara med nu. men activity create fungerar inte riktigt dock
+            var createdActivity = await _apiService.PostAsync<ActivityCreateDto, ActivityCreateDto>("activities", NewActivity);
+            NavigationManager.NavigateTo("/admin");
         }
         catch (Exception ex)
         {
