@@ -89,15 +89,31 @@ public class ClientApiService(IHttpClientFactory httpClientFactory, NavigationMa
     public async Task<HttpResponseMessage> PostFileAsync(string endpoint, IBrowserFile browserFile, int courseId)
     {
         Console.WriteLine($"Calling PostFileAsync with endpoint: {endpoint} and courseId: {courseId}");
+        // Log file details
+        Console.WriteLine($"File Name: {browserFile.Name}");
+        Console.WriteLine($"File Size: {browserFile.Size}");
+        Console.WriteLine($"File Content Type: {browserFile.ContentType}");
 
         // Create a MultipartFormDataContent to hold the file
         var content = new MultipartFormDataContent();
         var fileStream = browserFile.OpenReadStream(maxAllowedSize: 10485760); // 10MB size limit (adjust as needed)
+        
+        // Check if the file stream is valid
+        if (fileStream == null)
+        {
+            throw new InvalidOperationException("Failed to open file stream.");
+        }
 
         // Add the file to the MultipartFormDataContent
         var fileContent = new StreamContent(fileStream);
         fileContent.Headers.ContentType = new MediaTypeHeaderValue(browserFile.ContentType);
+        fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+        {
+            Name = "file",
+            FileName = browserFile.Name
+        };
         content.Add(fileContent, "file", browserFile.Name);
+        Console.WriteLine($"File Content Headers: {string.Join(", ", fileContent.Headers.Select(h => $"{h.Key}: {string.Join(", ", h.Value)}"))}");
 
         // Construct the full endpoint URL with query parameter
         var urlWithQuery = $"proxy-endpoint/{endpoint}?courseId={courseId}";
@@ -108,8 +124,18 @@ public class ClientApiService(IHttpClientFactory httpClientFactory, NavigationMa
             Content = content
         };
 
+        // Log the request details
+        Console.WriteLine($"Request URL: {request.RequestUri}");
+        Console.WriteLine($"Request Method: {request.Method}");
+        Console.WriteLine($"Request Headers: {string.Join(", ", request.Headers.Select(h => $"{h.Key}: {string.Join(", ", h.Value)}"))}");
+        Console.WriteLine($"Request Content Headers: {string.Join(", ", request.Content.Headers.Select(h => $"{h.Key}: {string.Join(", ", h.Value)}"))}");
+
         // Send the request
         var response = await httpClient.SendAsync(request);
+
+        // Log the response details
+        Console.WriteLine($"Response Status Code: {response.StatusCode}");
+        Console.WriteLine($"Response Headers: {response.Headers}");
 
         // Handle errors
         if (response.StatusCode == System.Net.HttpStatusCode.Forbidden
