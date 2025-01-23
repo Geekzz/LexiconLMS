@@ -77,6 +77,7 @@ namespace LMS.Presentation.Controllers
             var updatedCourse = await _serviceManager.CourseService.PutCourseAsync(id, courseUpdateDto);
             return Ok(updatedCourse);
         }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCourse(int id)
         {

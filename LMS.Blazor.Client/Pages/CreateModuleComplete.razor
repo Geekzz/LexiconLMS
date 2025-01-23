@@ -1,0 +1,22 @@
+﻿@page "/module-completed"
+@rendermode InteractiveWebAssembly
+@inject NavigationManager NavigationManager
+
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card lexicon-rounded p-6">
+        <div class="card-body text-center">
+            <h4 class="card-title text-success">Create Module Successfully!</h4>
+            <p class="card-text">The module has been created successfully.</p>
+            <div class="d-flex justify-content-center">
+                <a class="btn lexicon-button-tiny mt-3" @onclick="NavigateToAdmin">Back</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private void NavigateToAdmin()
+    {
+        NavigationManager.NavigateTo("/admin");
+    }
+}

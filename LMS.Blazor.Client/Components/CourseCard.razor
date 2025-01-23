@@ -1,4 +1,6 @@
-﻿@using LMS.Shared.DTOs.Read
+﻿@using LMS.Blazor.Client.Components.Home
+@using LMS.Shared.DTOs.Read
+@inject NavigationManager NavigationManager
 
 <h2 class="text-center">KURSER</h2>
 <div class="d-flex justify-content-center flex-column">
@@ -58,7 +60,7 @@
                                             <td class="align-middle">@module.Description</td>
                                             <td class="align-middle">@module.ModuleId</td>
                                             <td class="d-flex justify-content-center align-items-center">
-                                                <a class="btn lexicon-button-tiny button-fontsize-tiny">Redigera</a>
+                                                <a class="btn lexicon-button-tiny button-fontsize-tiny" href="/edit-module/@module.ModuleId">Redigera</a>
                                             </td>
                                         </tr>
 
@@ -96,9 +98,11 @@
                         </table>
                     </div>
 
+                    <!-- Buttons for Ny aktivitet and Ny modul -->
                     <div class="d-flex justify-content-center align-items-center flex-column mt-4">
                         <a class="btn lexicon-button mb-2 button-fontsize">Ny aktivitet</a>
-                        <a class="btn lexicon-button button-fontsize">Ny modul</a>
+                        @* <ModuleModal CourseId=@Course.CourseId /> *@
+                        <a class="btn lexicon-button button-fontsize" @onclick="NavigateToCreateModule">Ny modul</a>
                     </div>
                 </div>
             </div>
@@ -109,4 +113,20 @@
 @code {
     [Parameter]
     public CourseDto Course { get; set; } = default!;
+
+    private void HandleModuleAdded(ModuleDto newModule)
+    {
+        if (Course.Modules == null)
+        {
+            Course.Modules = new List<ModuleDto>();
+        }
+
+        Course.Modules.Add(newModule);
+    }
+
+    private void NavigateToCreateModule()
+    {
+        // Redirect to the new module page with the CourseId as a parameter
+        NavigationManager.NavigateTo($"/create-module/{Course.CourseId}");
+    }
 }
