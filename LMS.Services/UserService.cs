@@ -31,6 +31,7 @@ namespace LMS.Services
             var userToUpdate = await _uow.UserRepository.GetUserByIdAsync(id, true);
             if (userToUpdate == null) throw new KeyNotFoundException($"{id} not found.");
 
+            userToUpdate.CourseId = userUpdateDto.CourseId;
             userToUpdate.Email = userUpdateDto.Email;
             userToUpdate.FirstName = userUpdateDto.FirstName;
             userToUpdate.LastName = userUpdateDto.LastName;
