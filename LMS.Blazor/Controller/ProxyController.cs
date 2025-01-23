@@ -13,11 +13,13 @@ public class ProxyController : ControllerBase
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly ITokenStorage _tokenService;
+    private readonly ILogger<ProxyController> _logger;
 
-    public ProxyController(IHttpClientFactory httpClientFactory, ITokenStorage tokenService)
+    public ProxyController(IHttpClientFactory httpClientFactory, ITokenStorage tokenService, ILogger<ProxyController> logger)
     {
         _httpClientFactory = httpClientFactory;
         _tokenService = tokenService;
+        _logger = logger;
     }
 
 
@@ -32,7 +34,6 @@ public class ProxyController : ControllerBase
 
         string endpoint = $"api/{resource}";
 
-        var accessToken = await _tokenService.GetAccessTokenAsync(userId);
         if (resource == "courseForUser")
         {
             endpoint = "api/courses/user";
@@ -43,6 +44,7 @@ public class ProxyController : ControllerBase
             endpoint = $"api/users/{userId}";
         }
 
+        var accessToken = await _tokenService.GetAccessTokenAsync(userId);
         //ToDo: Before continue look for expired accesstoken and call refresh enpoint instead.
         //Better with delegatinghandler or separate service to extract this logic!
 
@@ -57,15 +59,25 @@ public class ProxyController : ControllerBase
         var method = new HttpMethod(Request.Method);
         var requestMessage = new HttpRequestMessage(method, targetUri);
 
-        if (method != HttpMethod.Get && Request.ContentLength > 0)
+        // Add Console.WriteLine to log Content-Type and Content-Length
+        Console.WriteLine($"Content-Type: {Request.ContentType}");
+        Console.WriteLine($"Content-Length: {Request.ContentLength}");
+        
+        // Log the target URI
+        _logger.LogInformation("Sending request to {TargetUri} with method {Method}", targetUri, method);
+        
+        // Handle multipart/form-data (file uploads)
+        if (Request.ContentType != null && Request.ContentType.Contains("multipart/form-data"))
         {
-
             requestMessage.Content = new StreamContent(Request.Body);
-
+            requestMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data");
+        }
+        else if (Request.ContentLength > 0)
+        {
+            requestMessage.Content = new StreamContent(Request.Body);
             if (!string.IsNullOrWhiteSpace(Request.ContentType))
             {
-                requestMessage.Content.Headers.ContentType
-                    = MediaTypeHeaderValue.Parse(Request.ContentType);
+                requestMessage.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(Request.ContentType);
             }
         }
 
@@ -77,10 +89,33 @@ public class ProxyController : ControllerBase
             }
         }
 
+        //if (method != HttpMethod.Get && Request.ContentLength > 0)
+        //{
+
+        //    requestMessage.Content = new StreamContent(Request.Body);
+
+        //    if (!string.IsNullOrWhiteSpace(Request.ContentType))
+        //    {
+        //        requestMessage.Content.Headers.ContentType
+        //            = MediaTypeHeaderValue.Parse(Request.ContentType);
+        //    }
+        //}
+
+        //foreach (var header in Request.Headers)
+        //{
+        //    if (!header.Key.Equals("Host", StringComparison.OrdinalIgnoreCase))
+        //    {
+        //        requestMessage.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
+        //    }
+        //}
+
         var response = await client.SendAsync(requestMessage);
 
         if (!response.IsSuccessStatusCode)
-            return Unauthorized(); //ToDo pass correct statuscode to caller
+        {
+            _logger.LogError("Received non-success status code {StatusCode} from {TargetUri}", response.StatusCode, targetUri);
+            return StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
+        }
 
         // Copy all response headers from the proxied response to the current response
         foreach (var header in response.Headers)

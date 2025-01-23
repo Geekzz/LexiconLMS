@@ -1,6 +1,8 @@
 ﻿using LMS.Blazor.Client.Models;
 using LMS.Shared.DTOs;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -82,6 +84,87 @@ public class ClientApiService(IHttpClientFactory httpClientFactory, NavigationMa
         response.EnsureSuccessStatusCode();
         return response;
     }
+
+
+    public async Task<HttpResponseMessage> PostFileAsync(string endpoint, IBrowserFile browserFile, int courseId)
+    {
+        Console.WriteLine($"Calling PostFileAsync with endpoint: {endpoint} and courseId: {courseId}");
+
+        // Create a MultipartFormDataContent to hold the file
+        var content = new MultipartFormDataContent();
+        var fileStream = browserFile.OpenReadStream(maxAllowedSize: 10485760); // 10MB size limit (adjust as needed)
+
+        // Add the file to the MultipartFormDataContent
+        var fileContent = new StreamContent(fileStream);
+        fileContent.Headers.ContentType = new MediaTypeHeaderValue(browserFile.ContentType);
+        content.Add(fileContent, "file", browserFile.Name);
+
+        // Construct the full endpoint URL with query parameter
+        var urlWithQuery = $"proxy-endpoint/{endpoint}?courseId={courseId}";
+
+        // Create the request
+        var request = new HttpRequestMessage(HttpMethod.Post, urlWithQuery)
+        {
+            Content = content
+        };
+
+        // Send the request
+        var response = await httpClient.SendAsync(request);
+
+        // Handle errors
+        if (response.StatusCode == System.Net.HttpStatusCode.Forbidden
+           || response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        {
+            navigationManager.NavigateTo("AccessDenied");
+        }
+
+        response.EnsureSuccessStatusCode(); // Throws an exception if the status code is not successful.
+        return response;
+    }
+
+    //public async Task PostFileAsync(string endpoint, IBrowserFile file, IDictionary<string, string>? additionalData = null)
+    //{
+    //    if (file == null || file.Size == 0)
+    //        throw new ArgumentException("File is null or empty.", nameof(file));
+
+    //    using var content = new MultipartFormDataContent();
+
+    //    // Add the file content
+    //    var fileStream = file.OpenReadStream(10_000_000); // 10 MB
+    //    var fileContent = new StreamContent(fileStream);
+    //    fileContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+
+    //    // Set Content-Disposition header
+    //    fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+    //    {
+    //        FileName = file.Name,
+    //        DispositionType = "attachment"
+    //    };
+
+    //    content.Add(fileContent, "file", file.Name);
+
+    //    //content.Add(new StreamContent(fileStream));
+
+
+    //    // Add any additional form fields if needed
+    //    if (additionalData != null)
+    //    {
+    //        foreach (var (key, value) in additionalData)
+    //        {
+    //            content.Add(new StringContent(value), key);
+    //        }
+    //    }
+
+    //    var response = await httpClient.PostAsync($"proxy-endpoint/{endpoint}", content);
+
+    //    if (response.StatusCode == HttpStatusCode.Forbidden || response.StatusCode == HttpStatusCode.Unauthorized)
+    //    {
+    //        navigationManager.NavigateTo("AccessDenied");
+    //        return;
+    //    }
+
+    //    response.EnsureSuccessStatusCode();
+    //}
 
 
     private async Task<TResponse?> CallApiAsync<TRequest, TResponse>(string endpoint, HttpMethod httpMethod, TRequest? dto)

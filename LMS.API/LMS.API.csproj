@@ -31,4 +31,8 @@
     <ProjectReference Include="..\Services.Contracts\Services.Contracts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="APPData\Files\" />
+  </ItemGroup>
+
 </Project>

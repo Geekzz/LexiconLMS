@@ -1,5 +1,7 @@
 ﻿using LMS.Blazor.Client.Models;
 using LMS.Shared.DTOs;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Http;
 
 namespace LMS.Blazor.Client.Services;
 
@@ -11,4 +13,5 @@ public interface IApiService
     Task<bool> PutAsync<TRequest>(string endpoint, TRequest? dto);
     Task PostAsync(string endpoint, HttpContent content);
     Task<HttpResponseMessage> GetFileAsync(string endpoint);
+    Task<HttpResponseMessage> PostFileAsync(string endpoint, IBrowserFile browserFile, int courseId);
 }

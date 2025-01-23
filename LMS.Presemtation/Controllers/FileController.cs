@@ -26,7 +26,7 @@ namespace LMS.Presentation.Controllers
         [Authorize]
         public async Task<IActionResult> UploadFile(IFormFile file, [FromQuery] int? courseId)
         {
-            //ToDo : Check if the user is authorized to upload the file, check roles and owner
+            //ToDo : Check if the user is authorized to upload the file, check if user is in course or is a techer
             //ToDo : Check if the course, module or activity exists
             //ToDo : Add module and activity id to the query parameters
             if (file == null || file.Length == 0)
@@ -70,7 +70,7 @@ namespace LMS.Presentation.Controllers
         [Authorize]
         public async Task<IActionResult> DownloadFile(Guid fileId)
         {
-            //ToDo : Check if the user is authorized to download the file, check role and owner
+            //ToDo : Check if the user is authorized to download the file, check owner or if shared with user
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null) return Unauthorized();
 
@@ -101,7 +101,7 @@ namespace LMS.Presentation.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteFile(Guid fileId)
         {
-            // ToDo : Check if the user is authorized to delete the file, check role and owner
+            // ToDo : Check if the user is authorized to delete the file, check owner or if admin
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null) return Unauthorized();
 
