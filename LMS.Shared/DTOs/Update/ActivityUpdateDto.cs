@@ -10,15 +10,20 @@ namespace LMS.Shared.DTOs.Update
     public class ActivityUpdateDto
     {
         [Required]
-        public string Name { get; init; }
+        public string Name { get; set; }
 
         [Required]
-        public string Description { get; init; }
+        public string Description { get; set; }
 
         [Required]
-        public DateTime StartDate { get; init; }
+        public DateTime StartDate { get; set; }
 
         [Required]
-        public DateTime EndDate { get; init; }
+        public DateTime EndDate { get; set; }
+
+        [Required]
+        public int ActivityTypeId { get; set; }
+
+
     }
 }
