@@ -26,7 +26,6 @@
                                 <td>@module.Description</td>
                                 <td>@module.StartDate.ToString("yyyy-MM-dd")</td>
                                 <td>@module.EndDate.ToString("yyyy-MM-dd")</td>
-                                <td><a href="javascript:void(0)" @onclick="HandleDocuments">Filer</a></td>
                             </tr>
                         }
                     </tbody>
@@ -43,8 +42,4 @@
     [Parameter]
     public EventCallback<ModuleDto> OnModuleSelected { get; set; }
 
-    private void HandleDocuments()
-    {
-        //
-    }
 }
