@@ -3,6 +3,7 @@ using LMS.Shared.DTOs;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Http;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -97,7 +98,8 @@ public class ClientApiService(IHttpClientFactory httpClientFactory, NavigationMa
         // Create a MultipartFormDataContent to hold the file
         var content = new MultipartFormDataContent();
         var fileStream = browserFile.OpenReadStream(maxAllowedSize: 10485760); // 10MB size limit (adjust as needed)
-        
+        byte[] buffer = new byte[1024];
+        //var fileStream = await browserFile.OpenReadStream(maxAllowedSize: 10485760).ReadAsync(buffer);
         // Check if the file stream is valid
         if (fileStream == null)
         {
