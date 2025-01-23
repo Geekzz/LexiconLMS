@@ -100,6 +100,17 @@ p, .button-fontsize-tiny {
 }
 
 /* Lexicon standard CSS */
+.vertical-hr {
+    border: none;
+    border-left: 1px solid grey;
+    height: 100% !important;
+    width: 0px;
+    padding: 0px;
+    margin: 0px;
+    color: black;
+    opacity: .25;
+}
+
 .lexicon-page-height {
     min-height: 100vh;
     padding-top: 86px !important;
@@ -203,10 +214,17 @@ nav {
     align-items: center;
     padding: 25px 20px !important;
     color: black;
+    text-decoration: none;
 }
 
     .lexicon-nav:hover {
         background: #cfcfcf;
+        color: black !important;
+    }
+
+    .lexicon-nav:active {
+        background: #cfcfcf;
+        color: black !important;
     }
 
 .lexicon-nav-helper {
@@ -335,6 +353,42 @@ nav {
     .lexicon-home-box .lexicon-image-home-box {
         width: 100%;
         height: auto;
+    }
+}
+
+/* Lexicon Profile Page */
+@media (max-width:780px) {
+    .profile-flex {
+        flex-direction: column !important;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem !important;
+    }
+
+    .profile-flex-button {
+        margin-top: 20px;
+    }
+
+    .vertical-hr {
+        justify-self: center;
+        align-self: center;
+        height: 1px !important;
+        width: 70px;
+        margin: 1rem 0;
+        border: 0;
+    }
+
+    .profile-row {
+        flex-direction: column;
+    }
+
+    .profile-name {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 }
 
