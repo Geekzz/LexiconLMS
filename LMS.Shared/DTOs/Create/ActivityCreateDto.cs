@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,11 +9,16 @@ namespace LMS.Shared.DTOs.Create
 {
     public class ActivityCreateDto
     {
-        public string Name { get; init; }
-        public string Description { get; init; }
-        public DateTime StartDate { get; init; }
-        public DateTime EndDate { get; init; }
+        [Required]
+        public int ModuleId { get; set; }
+        [Required]
+        public string Name { get; set; }
+        public string Description { get; set; }
+        [Required]
+        public DateTime StartDate { get; set; }
+        [Required]
+        public DateTime EndDate { get; set; }
+        public ActivityTypeCreateDto ActivityType { get; set; }
 
-        public ActivityTypeCreateDto ActivityType { get; init; }
     }
 }
