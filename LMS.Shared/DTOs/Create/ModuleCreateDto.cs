@@ -23,5 +23,6 @@ namespace LMS.Shared.DTOs.Create
         [Required]
         public DateTime EndDate { get; set; }
 
+        public List<ActivityCreateDto> Activities { get; set; } = new();
     }
 }

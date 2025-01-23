@@ -5,5 +5,6 @@ namespace Services.Contracts
     public interface IActivityService
     {
         Task<ActivityDto> GetActivityAsync(int activityId);
+        Task<IEnumerable<ActivityTypeDto>> GetAllActivityTypes();
     }
 }

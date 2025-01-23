@@ -7,6 +7,7 @@ using LMS.Shared.DTOs.Read;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using Microsoft.AspNetCore.JsonPatch;
+using Domain.Models.Entities;
 
 
 namespace LMS.Presentation.Controllers
@@ -27,6 +28,13 @@ namespace LMS.Presentation.Controllers
         {
             var activityDto = await _serviceManager.ActivityService.GetActivityAsync(id);
             return Ok(activityDto);
+        }
+
+        [HttpGet("types")]
+        public async Task<ActionResult<List<ActivityTypeDto>>> GetAllActivityTypes()
+        {
+            var activityTypeDtos = await _serviceManager.ActivityService.GetAllActivityTypes();
+            return Ok(activityTypeDtos);
         }
     }
 }
