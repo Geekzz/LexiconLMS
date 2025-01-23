@@ -2,15 +2,10 @@
 @rendermode InteractiveWebAssembly
 @inject NavigationManager NavigationManager
 
-<div class="d-flex justify-content-center align-items-center vh-100">
-    <div class="card lexicon-rounded p-6">
-        <div class="card-body text-center">
-            <h4 class="card-title text-success">Create Module Successfully!</h4>
-            <p class="card-text">The module has been created successfully.</p>
-            <div class="d-flex justify-content-center">
-                <a class="btn lexicon-button-tiny mt-3" @onclick="NavigateToAdmin">Back</a>
-            </div>
-        </div>
+<div class="no-padding container-fluid w-100 h-100 d-flex justify-content-center align-items-center lexicon-subpage-height">
+    <div class="lexicon-primary p-5 m-4 d-flex justify-content-center align-items-center flex-column lexicon-rounded-large">
+        <h1 class="special-margin text-center">MODUL SKAPAD!</h1>
+        <a class="nav-link btn nav-button lexicon-button button-fontsize special-margin-button" @onclick="NavigateToAdmin">FORTSÄTT</a>
     </div>
 </div>
 
