@@ -1,3 +1,4 @@
+/* Built in base CSS */
 html, body {
     font-family: "system-ui", Inter, Arial, 'Helvetica Neue', Helvetica, sans-serif;
 }
@@ -50,13 +51,83 @@ h1:focus {
     border-color: #929292;
 }
 
+/* Force remove padding */
 .no-padding {
     padding: 0px !important;
 }
 
-.lexicon-logo {
-    max-height: 66px;
-    margin: 0px 20px;
+.home-padding {
+    padding: 3rem 3rem 3rem 3rem;
+}
+
+@media (max-width: 510px) {
+    .home-padding {
+        padding: 3rem 1.5rem 3rem 1.5rem !important;
+    }
+}
+
+.special-margin {
+    margin: 1.5rem !important;
+}
+
+@media (max-width: 690px) {
+    .special-margin {
+        margin: 0px 0px 0px 0px !important;
+    }
+}
+
+/* Lexicon Fonts*/
+h1 {
+    font-size: clamp(2em, 10vw, 4.5em);
+    font-weight: 700;
+}
+
+h2 {
+    font-size: 3.0em;
+}
+
+h3, .button-fontsize {
+    font-size: 1.5em;
+    font-weight: 700;
+}
+
+h4 {
+    font-size: 1.25em;
+}
+
+p, .button-fontsize-tiny {
+    font-size: 1.0em;
+}
+
+/* Lexicon standard CSS */
+.vertical-hr {
+    border: none;
+    border-left: 1px solid grey;
+    height: 100% !important;
+    width: 0px;
+    padding: 0px;
+    margin: 0px;
+    color: black;
+    opacity: .25;
+}
+
+.lexicon-page-height {
+    min-height: 100vh;
+    padding-top: 86px !important;
+}
+
+.lexicon-subpage-height {
+    min-height: calc(100vh - 86px);
+}
+
+@media (max-width: 600px) {
+    .lexicon-page-height {
+        padding-top: 66px !important;
+    }
+
+    .lexicon-subpage-height {
+        min-height: calc(100vh - 66px);
+    }
 }
 
 .lexicon-background {
@@ -65,11 +136,12 @@ h1:focus {
     flex-direction: column;
 }
 
-.lexicon-landing-image {
-    background-image: url(Images/classroom.jpg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+.lexicon-primary {
+    background-color: #FFFFFF;
+}
+
+.lexicon-text {
+    color: #5F5F5F;
 }
 
 .lexicon-rounded {
@@ -78,13 +150,6 @@ h1:focus {
 
 .lexicon-rounded-large {
     border-radius: 40px;
-}
-
-.lexicon-image-home {
-    border-radius: 20px;
-    width: 300px;
-    height: 300px;
-    margin-right: 3rem !important;
 }
 
 .lexicon-button {
@@ -147,9 +212,30 @@ lexicon-circle
     border: none !important;
 }
 
-.lexicon-button:hover, .lexicon-button-tiny:hover {
-    transform: scale(1.05);
-    transition: 0.1s ease-in-out;
+    .lexicon-button:hover, .lexicon-button-tiny:hover {
+        transform: scale(1.05);
+        transition: 0.1s ease-in-out;
+    }
+
+/* Lexicon navbar*/
+nav {
+    width: 100%;
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    background-color: white;
+    z-index: 1;
+}
+
+.lexicon-logo {
+    max-height: 66px;
+    margin: 0px 20px;
+}
+
+@media (max-width: 600px) {
+    .lexicon-logo {
+        max-height: 46px;
+    }
 }
 
 .lexicon-nav {
@@ -157,14 +243,48 @@ lexicon-circle
     justify-content: center;
     align-items: center;
     padding: 25px 20px !important;
+    color: black;
+    text-decoration: none;
 }
 
     .lexicon-nav:hover {
         background: #cfcfcf;
+        color: black !important;
     }
+
+    .lexicon-nav:active {
+        background: #cfcfcf;
+        color: black !important;
+    }
+
+.lexicon-nav-helper {
+    flex-basis: auto;
+    flex-grow: 0;
+}
 
 .navbar-nav {
     align-items: center;
+}
+
+@media (max-width: 900px) {
+    .lexicon-nav-helper {
+        flex-basis: 100%;
+        flex-grow: 1;
+    }
+
+    .navbar-expand ul {
+        flex-direction: column !important;
+    }
+
+    .nav-item {
+        width: 100%;
+    }
+
+    .nav-button-helper {
+        display: flex;
+        padding-bottom: 25px;
+        padding-top: 25px;
+    }
 }
 
 .navbar-brand {
@@ -176,12 +296,72 @@ lexicon-circle
     margin: 0px 20px;
 }
 
-.lexicon-primary {
-    background-color: #FFFFFF;
+/* Lexicon Landing Page */
+.lexicon-landing-image {
+    background-image: url(Images/classroom.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
-.lexicon-text {
-    color: #5F5F5F;
+.special-margin-button {
+    margin: 1.5rem !important;
+}
+
+@media (max-width: 690px) {
+    .special-margin-button {
+        margin: 1.5rem 0px 0px 0px !important;
+    }
+}
+
+/* Lexicon Login Page */
+@media (max-width: 850px) {
+    .login-width-mobile {
+        width: 80% !important;
+    }
+
+    .login-width-mobile .login-info {
+        width: 100% !important;
+    }
+}
+
+/* Lexicon Home Page*/
+.lexicon-image-home-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    width: 300px;
+    height: 300px;
+    margin-right: 3rem !important;
+}
+
+.lexicon-image-home {
+    width: 100%;
+    height: auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.lexicon-image-home-reversed {
+    height: 100%;
+    width: auto;
+}
+
+.home-card-info {
+    width: 300px;
+}
+
+@media (max-width: 510px) {
+    .lexicon-image-home {
+        width: 100%;
+        height: 100%;
+    }
+
+    .home-card-info {
+        width: auto;
+    }
 }
 
 .lexicon-home-box {
@@ -193,34 +373,110 @@ lexicon-circle
         flex-direction: column !important;
     }
 
-    .lexicon-image-home {
+    .lexicon-image-home-box {
         margin-right: 0rem !important;
+        margin-bottom: 1rem !important;
     }
 }
 
-h1 {
-    font-size: clamp(2em, 12vw, 4.5em);
-    font-weight: 700;
+@media (max-width: 510px) {
+    .lexicon-home-box .lexicon-image-home-box {
+        width: 100%;
+        height: auto;
+    }
 }
 
-h2 {
-    font-size: 3.0em;
+/* Lexicon Profile Page */
+@media (max-width:780px) {
+    .profile-flex {
+        flex-direction: column !important;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem !important;
+    }
+
+    .profile-flex-button {
+        margin-top: 20px;
+    }
+
+    .vertical-hr {
+        justify-self: center;
+        align-self: center;
+        height: 1px !important;
+        width: 70px;
+        margin: 1rem 0;
+        border: 0;
+    }
+
+    .profile-row {
+        flex-direction: column;
+    }
+
+    .profile-name {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
-h3, .button-fontsize {
-    font-size: 1.5em;
-    font-weight: 700;
+/* Lexicon Admin Page */
+@media (max-width: 676px) {
+    .hide-stuff {
+        display: none;
+    }
 }
 
-h4 {
-    font-size: 1.25em;
+.lexicon-dropup {
+    background-color: #D60000;
+    color: white !important;
+    border-radius: 9999px !important;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.1s ease-in-out;
+    border: none !important;
+    box-shadow: 5px 5px darkgrey;
 }
 
-p, .button-fontsize-tiny {
-    font-size: 1.0em;
+.lexicon-dropup:active {
+    box-shadow: 5px 5px darkgrey;
 }
 
-.loader {
+    .lexicon-dropup p {
+        font-size: 60px;
+    }
+
+    .lexicon-dropup img {
+        height: 40px;
+        width: 40px;
+    }
+
+.dropdown-helper{
+    background-color: transparent;
+    border: none;
+    min-width: 0px;
+}
+
+.tiny-padding {
+    margin-bottom: 8px !important;
+}
+
+.lexicon-card-header {
+    padding: 1rem;
+    margin-bottom: 0;
+}
+
+    .lexicon-card-header[aria-expanded="true"] {
+        border-bottom: 1px solid rgba(0, 0, 0, .125);
+    }
+
+/* Loader Anim CSS*/
+    .loader {
     width: 40px;
     aspect-ratio: 1;
     position: relative;
@@ -278,5 +534,66 @@ p, .button-fontsize-tiny {
 
     100% {
         transform: rotate(0.5turn) scale(1)
+    }
+}
+
+/* Mobile header */
+.navbar-toggler {
+    display: none;
+    box-shadow: none !important;
+}
+
+@media (max-width: 900px) {
+    .navbar-toggler {
+        display: block;
+    }
+}
+
+.navbar-toggler hr {
+    -webkit-transition: 0.4s ease-in-out;
+    -o-transition: 0.4s ease-in-out;
+    transition: 0.4s ease-in-out;
+    width: 50px;
+    height: 5px;
+    margin: 5px 0px;
+    border-radius: 9999px;
+    background-color: black;
+    border: none;
+    opacity: 1;
+}
+
+    .navbar-toggler[aria-expanded="true"] hr:first-child {
+        -webkit-transition: 0.4s ease-in-out;
+        -o-transition: 0.4s ease-in-out;
+        transition: 0.4s ease-in-out;
+        transform: rotate(45deg) translate(0px, 15px);
+    }
+
+    .navbar-toggler[aria-expanded="true"] hr:nth-child(2) {
+        -webkit-transition: 0.4s ease-in-out;
+        -o-transition: 0.4s ease-in-out;
+        transition: 0.4s ease-in-out;
+        opacity: 0;
+        width: 0px;
+    }
+
+    .navbar-toggler[aria-expanded="true"] hr:last-child {
+        -webkit-transition: 0.4s ease-in-out;
+        -o-transition: 0.4s ease-in-out;
+        transition: 0.4s ease-in-out;
+        transform: rotate(-45deg) translate(0px, -15px);
+    }
+
+.navbar-toggler-helper[aria-expanded="false"] ~ .collapse {
+    display: flex !important;
+}
+
+@media (max-width: 900px) {
+    .navbar-toggler-helper[aria-expanded="false"] ~ .collapse {
+        display: none !important;
+    }
+
+    .navbar-toggler-helper[aria-expanded="true"] ~ .collapse {
+        display: block !important;
     }
 }

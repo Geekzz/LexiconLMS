@@ -2,109 +2,118 @@
 @using LMS.Shared.DTOs.Read
 @inject NavigationManager NavigationManager
 
-<h2 class="text-center">KURSER</h2>
-<div class="d-flex justify-content-center flex-column">
-    <div class="col-md-8 mb-4 align-self-center w-100">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center"
-                 data-bs-toggle="collapse"
-                 data-bs-target="#courseDetailsCollapse"
-                 aria-expanded="false"
-                 aria-controls="courseDetailsCollapse"
-                 style="cursor: pointer;">
-                <h4 class="mb-0">@Course.Name</h4>
-                <a class="d-flex align-items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708" />
-                    </svg>
-                </a>
-            </div>
-            <div class="collapse" id="courseDetailsCollapse">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-borderless">
-                            <thead class="table-light">
+<div class="card overflow-auto mb-2 lexicon-rounded">
+    <div class="lexicon-card-header d-flex justify-content-between align-items-center"
+            data-bs-toggle="collapse"
+            data-bs-target="@fullIdHashtag"
+            aria-expanded="false"
+            aria-controls="@fullId"
+            style="cursor: pointer;">
+        <h3 class="mb-0">@Course.Name</h3>
+        <a class="d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708" />
+            </svg>
+        </a>
+    </div>
+    <div class="collapse" id="@fullId">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-borderless">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="align-middle">Typ</th>
+                            <th class="align-middle">Namn</th>
+                            <th class="align-middle">Startdatum</th>
+                            <th class="align-middle">Slutdatum</th>
+                            <th class="align-middle"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="align-middle"><strong>Kurs</strong></td>
+                            <td class="align-middle">@Course.Name</td>
+                            <td class="align-middle">@Course.StartDate.ToString("yyyy-MM-dd")</td>
+                            <td class="align-middle">@Course.EndDate.ToString("yyyy-MM-dd")</td>
+                            <td class="d-flex justify-content-center align-items-center">
+                                <a href="/edit-course/@Course.CourseId" class="btn lexicon-button-tiny button-fontsize-tiny">Redigera</a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="5">
+                                <hr class="my-1 border-secondary">
+                            </td>
+                        </tr>
+
+                        @if (Course.Modules != null && Course.Modules.Any())
+                        {
+                            @foreach (var module in Course.Modules)
+                            {
+                                <!-- Module Row -->
                                 <tr>
-                                    <th class="align-middle">Type</th>
-                                    <th class="align-middle">Name</th>
-                                    <th class="align-middle">Description</th>
-                                    <th class="align-middle">ID</th>
-                                    <th class="align-middle"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="align-middle"><strong>Course</strong></td>
-                                    <td class="align-middle">@Course.Name</td>
-                                    <td class="align-middle">@Course.Description</td>
-                                    <td class="align-middle">@Course.CourseId</td>
+                                    <td class="align-middle"><strong>Modul</strong></td>
+                                    <td class="align-middle">@module.Name</td>
+                                    <td class="align-middle">@module.StartDate.ToString("yyyy-MM-dd")</td>
+                                    <td class="align-middle">@module.EndDate.ToString("yyyy-MM-dd")</td>
                                     <td class="d-flex justify-content-center align-items-center">
-                                        <a href="/edit-course/@Course.CourseId" class="btn lexicon-button-tiny button-fontsize-tiny">Redigera</a>
+                                        <a class="btn lexicon-button-tiny button-fontsize-tiny" href="/edit-module/@module.ModuleId">Redigera</a>
                                     </td>
                                 </tr>
+
+                                <!-- Activity Rows -->
+                                @if (module.Activities != null && module.Activities.Any())
+                                {
+                                    @foreach (var activity in module.Activities)
+                                    {
+                                        <tr>
+                                            <td class="align-middle">Aktivitet</td>
+                                            <td class="align-middle">@activity.Name</td>
+                                            <td class="align-middle">@activity.StartDate.ToString("yyyy-MM-dd")</td>
+                                            <td class="align-middle">@activity.EndDate.ToString("yyyy-MM-dd")</td>
+                                            <td class="d-flex justify-content-center align-items-center">
+                                                <a class="btn lexicon-button-tiny button-fontsize-tiny">Redigera</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td class="align-center" colspan="5">
+                                            <a class="btn lexicon-button lexicon-button-special mb-2 button-fontsize" style="justify-self: center; align-self: center;">NY AKTIVITET</a>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-center align-middle">No activities available</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-center" colspan="5">
+                                            <a class="btn lexicon-button lexicon-button-special mb-2 button-fontsize" style="justify-self: center; align-self: center;">NY AKTIVITET</a>
+                                        </td>
+                                    </tr>
+                                }
 
                                 <tr>
                                     <td colspan="5">
                                         <hr class="my-1 border-secondary">
                                     </td>
                                 </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center align-middle">No modules available</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
 
-                                @if (Course.Modules != null && Course.Modules.Any())
-                                {
-                                    @foreach (var module in Course.Modules)
-                                    {
-                                        <!-- Module Row -->
-                                        <tr>
-                                            <td class="align-middle"><strong>Module</strong></td>
-                                            <td class="align-middle">@module.Name</td>
-                                            <td class="align-middle">@module.Description</td>
-                                            <td class="align-middle">@module.ModuleId</td>
-                                            <td class="d-flex justify-content-center align-items-center">
-                                                <a class="btn lexicon-button-tiny button-fontsize-tiny" href="/edit-module/@module.ModuleId">Redigera</a>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Activity Rows -->
-                                        @if (module.Activities != null && module.Activities.Any())
-                                        {
-                                            @foreach (var activity in module.Activities)
-                                            {
-                                                <tr>
-                                                    <td class="align-middle">Activity</td>
-                                                    <td class="align-middle">@activity.Name</td>
-                                                    <td class="align-middle">@activity.Description</td>
-                                                    <td class="align-middle">@activity.ActivityId</td>
-                                                    <td class="d-flex justify-content-center align-items-center">
-                                                        <a class="btn lexicon-button-tiny button-fontsize-tiny">Redigera</a>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        }
-                                        else
-                                        {
-                                            <tr>
-                                                <td colspan="5" class="text-center align-middle">No activities available</td>
-                                            </tr>
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    <tr>
-                                        <td colspan="5" class="text-center align-middle">No modules available</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Buttons for Ny aktivitet and Ny modul -->
-                    <div class="d-flex justify-content-center align-items-center flex-column mt-4">
-                        <a class="btn lexicon-button mb-2 button-fontsize">Ny aktivitet</a>
-                        @* <ModuleModal CourseId=@Course.CourseId /> *@
-                        <a class="btn lexicon-button button-fontsize" @onclick="NavigateToCreateModule">Ny modul</a>
-                    </div>
-                </div>
+            <!-- Buttons for Ny aktivitet and Ny modul -->
+            <div class="d-flex justify-content-center align-items-center flex-column">
+                <a class="btn lexicon-button lexicon-button-special button-fontsize" @onclick="NavigateToCreateModule">NY MODUL</a>
             </div>
         </div>
     </div>
@@ -113,6 +122,20 @@
 @code {
     [Parameter]
     public CourseDto Course { get; set; } = default!;
+    [Parameter]
+    public int SendId { get; set; } = default!;
+    [Parameter] 
+    public Action ParentMethod { get; set; } = default!;
+
+    private string fullId { get; set; } = "";
+    private string fullIdHashtag { get; set; } = "";
+
+    protected async override Task OnInitializedAsync()
+    {
+        fullId = $"courseDetailsCollapse{SendId}";
+        fullIdHashtag = $"#courseDetailsCollapse{SendId}";
+        ParentMethod?.Invoke();
+    }
 
     private void HandleModuleAdded(ModuleDto newModule)
     {

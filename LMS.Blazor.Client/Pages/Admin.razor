@@ -26,21 +26,34 @@
 			else
 			{
 				<div class="d-flex justify-content-center">
-					<div class="flex-grow-1">
-						<div class="row justify-content-center">
-							@foreach (var course in courses)
-							{
-								<CourseCard Course="course" />
-							}
-						</div>
-						<div class="row justify-content-center">
-							<UserCard Users="users" />
+					<div class="flex-grow-1 d-flex flex-column align-items-center w-100">
+						<div class="row justify-content-center w-100">
+							<h2 class="text-center">KURSER</h2>
+								<div class="d-flex justify-content-center flex-column">
+									<div class="col-md-8 mb-4 align-self-center w-100">
+									@foreach (var course in courses)
+									{
+										<p style="display: none;">@(sendId++)</p>
+										<CourseCard Course="course" SendId=@sendId/>
+									}
+									</div>
+								</div>
+							</div>
+						<div class="row justify-content-center w-100">
+							<UserCard Users="users"/>
 						</div>
 					</div>
 
-                    <div class="position-fixed" style="top: 50%; right: 20px;">
-                        <a class="btn lexicon-button mb-2 button-fontsize">Ny kurs</a>
-                        <a class="btn lexicon-button button-fontsize" href="Account/Register">Ny användare</a>
+                    <div class="position-fixed" style="bottom: 50px; right: 50px">
+						<div class="btn-group dropup">
+							<button type="button" class="btn lexicon-dropup" data-bs-toggle="dropdown" aria-expanded="false">
+								<p>+</p>
+							</button>
+							<ul class="dropdown-menu dropdown-helper">
+								<a class="btn lexicon-dropup tiny-padding"><img src="Images/addCourse.png" /></a>
+								<a class="btn lexicon-dropup" href="register"><img src="Images/addUser.png" /></a>
+							</ul>
+						</div>
                     </div>
                 </div>
             }
@@ -61,6 +74,12 @@
 
 	private List<CourseDto>? courses;
 	private List<UserDto>? users;
+	private int sendId = 0;
+
+	private void AddToId()
+	{
+		sendId++;
+	}
 
 	protected override async Task OnInitializedAsync()
 	{
