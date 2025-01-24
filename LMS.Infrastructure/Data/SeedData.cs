@@ -28,7 +28,8 @@ public static class SeedData
 
             try
             {
-                await CreateRolesAsync([adminRole]);
+                var roleNames = new[] { adminRole, studentRole };
+                await CreateRolesAsync(roleNames);
                 await GenerateUsersAsync(5);
                 await db.SaveChangesAsync();
             }
@@ -60,6 +61,7 @@ public static class SeedData
             e.FirstName = f.Person.FirstName;
             e.LastName = f.Person.LastName;
             e.CourseId = 1;
+            e.Role = "Student";
         });
 
         var users = faker.Generate(nrOfUsers);
@@ -67,12 +69,37 @@ public static class SeedData
         //ToDo: Add to user.secrets
         var passWord = "BytMig123!";
         if (string.IsNullOrEmpty(passWord))
-            throw new Exception("password nor found");
+            throw new Exception("password not found");
 
         foreach (var user in users)
         {
             var result = await userManager.CreateAsync(user, passWord);
             if (!result.Succeeded) throw new Exception(string.Join("\n", result.Errors));
+        }
+
+        for (var i = 0; i < users.Count; i++)
+        {
+            IdentityResult result;
+            if (i == 0)
+            {
+                result = await userManager.AddToRoleAsync(users[i], adminRole);
+                // Show that the first user is a teacher
+                users[i].Role = "Teacher";
+            }
+            else
+            {
+                result = await userManager.AddToRoleAsync(users[i], studentRole);
+            }
+            if (!result.Succeeded) throw new Exception(string.Join("\n", result.Errors));
+        }
+    }
+
+    private static async Task AddUserToRoleAsync(ApplicationUser user, string roleName)
+    {
+        if (!await userManager.IsInRoleAsync(user, roleName))
+        {
+            var result = await userManager.AddToRoleAsync(user, roleName);
+            if (!result.Succeeded) throw new Exception(string.Join(", ", result.Errors.Select(x => "Code " + x.Code + " Description" + x.Description)));
         }
     }
 }

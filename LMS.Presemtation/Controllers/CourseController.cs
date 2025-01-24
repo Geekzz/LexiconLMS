@@ -67,7 +67,17 @@ namespace LMS.Presentation.Controllers
             var updatedCourse = await _serviceManager.CourseService.UpdateCourseAsync(id, patchDocument);
 
             return Ok(updatedCourse);
+        } 
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> PutCourse(int id, CourseUpdateDto courseUpdateDto)
+        {
+            if (courseUpdateDto is null) return BadRequest();
+
+            var updatedCourse = await _serviceManager.CourseService.PutCourseAsync(id, courseUpdateDto);
+            return Ok(updatedCourse);
         }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCourse(int id)
         {

@@ -8,6 +8,7 @@ namespace LMS.Shared.DTOs.Read
 {
     public class ActivityDto
     {
+        public int ModuleId { get; set; }
         public int ActivityId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

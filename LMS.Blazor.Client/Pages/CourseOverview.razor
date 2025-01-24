@@ -7,71 +7,36 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using LMS.Blazor.Client.Components
+@using System.ComponentModel.DataAnnotations
 
 @attribute [Authorize]
 
 <PageTitle>Course Overview</PageTitle>
 <div class="row mb-1">
-    <h3>Course Overview</h3>
+    <h3>Kursöversikt</h3>
 </div>
 
 @if (course == null)
 {
-    <p>Loading course details...</p>
+    <div class="d-flex w-100 h-100 justify-content-center align-items-center">
+        <div class="loader"></div>
+    </div>
 }
 else
 {
     <div class="row">
         <Course CourseData="course" />
-        @* <Modules CourseData="course"/> *@
-    </div>
+        <CourseStudents CourseData="course"/>
 
+    </div>
 
     <div class="row">
-   @*      <SelectedModule CourseData="course" /> *@
-        <Modules CourseData="course" />
-        <Activities CourseData="course" />
+        <Modules CourseData="course" OnModuleSelected="HandleModuleSelected" />
+        <Activities SelectedModule="SelectedModule"   />
     </div>
 
-@*     <div class="row">
-        <SelectedActivity CourseData="course" />
-    </div> *@
 }
 
-
-
-@* <button class="btn btn-primary" @onclick="CallAPIAsync">Call API</button> *@
-
-@if (course == null)
-{
-    <p>API not called yet</p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>@course.Name</td>
-                <td>@course.Description</td>
-            </tr>
-@*             <tr>
-                @foreach (var user in course.Users)
-                {
-                    <td>@user.FirstName</td>
-                    <td>@user.LastName</td>
-                })
-            </tr> *@
-        </tbody>
-    </table>
-
-
-}
 
 
 @code {
@@ -81,6 +46,7 @@ else
     private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
 
     private CourseDto? course;
+    private ModuleDto? SelectedModule { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -90,7 +56,7 @@ else
             {
                 if (_apiService != null)
                 {
-                    course = await _apiService.CallApiGetAsync<CourseDto>("courseForUser");
+                    course = await _apiService.GetAsync<CourseDto>("courseForUser");
                     StateHasChanged(); // Trigger UI update after fetching data
                 }
                 else
@@ -105,8 +71,10 @@ else
         }
     }
 
-    // private async Task CallAPIAsync()
-    // {
-    //     course = (await _apiService.CallApiGetAsync<CourseDto>("courseForUser"));
-    // }
+    private void HandleModuleSelected(ModuleDto selectedModule)
+    {
+        SelectedModule = selectedModule;
+    }
+
+    
 }

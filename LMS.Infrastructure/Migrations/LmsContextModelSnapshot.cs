@@ -63,21 +63,71 @@ namespace LMS.Infrastructure.Migrations
                         {
                             ActivityId = 1,
                             ActivityTypeId = 1,
-                            Description = "Asp.Net",
-                            EndDate = new DateTime(2025, 1, 9, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                            EndDate = new DateTime(2025, 1, 22, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             ModuleId = 1,
                             Name = "Föreläsning - C#",
-                            StartDate = new DateTime(2025, 1, 9, 11, 0, 0, 0, DateTimeKind.Unspecified)
+                            StartDate = new DateTime(2025, 1, 22, 11, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             ActivityId = 2,
                             ActivityTypeId = 1,
-                            Description = "Spring Boot",
-                            EndDate = new DateTime(2025, 1, 10, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                            EndDate = new DateTime(2025, 1, 25, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             ModuleId = 1,
-                            Name = "Föreläsning - Java",
-                            StartDate = new DateTime(2025, 1, 10, 11, 0, 0, 0, DateTimeKind.Unspecified)
+                            Name = "Föreläsning - Blazor",
+                            StartDate = new DateTime(2025, 1, 23, 11, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ActivityId = 3,
+                            ActivityTypeId = 1,
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                            EndDate = new DateTime(2025, 1, 23, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModuleId = 2,
+                            Name = "Föreläsning - HTML",
+                            StartDate = new DateTime(2025, 1, 22, 11, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ActivityId = 4,
+                            ActivityTypeId = 1,
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                            EndDate = new DateTime(2025, 1, 26, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModuleId = 2,
+                            Name = "Föreläsning - CSS",
+                            StartDate = new DateTime(2025, 1, 24, 11, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ActivityId = 5,
+                            ActivityTypeId = 1,
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                            EndDate = new DateTime(2025, 1, 29, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModuleId = 2,
+                            Name = "Föreläsning - JavaScript",
+                            StartDate = new DateTime(2025, 1, 27, 11, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ActivityId = 6,
+                            ActivityTypeId = 1,
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                            EndDate = new DateTime(2025, 1, 29, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModuleId = 3,
+                            Name = "Föreläsning - Blazor",
+                            StartDate = new DateTime(2025, 1, 27, 11, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ActivityId = 7,
+                            ActivityTypeId = 2,
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                            EndDate = new DateTime(2025, 1, 25, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModuleId = 3,
+                            Name = "Övning - Blazor",
+                            StartDate = new DateTime(2025, 1, 23, 11, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -137,6 +187,21 @@ namespace LMS.Infrastructure.Migrations
                         {
                             ActivityTypeId = 1,
                             Type = "Föreläsning"
+                        },
+                        new
+                        {
+                            ActivityTypeId = 2,
+                            Type = "Övning"
+                        },
+                        new
+                        {
+                            ActivityTypeId = 3,
+                            Type = "Inlämning"
+                        },
+                        new
+                        {
+                            ActivityTypeId = 4,
+                            Type = "Gruppuppgift"
                         });
                 });
 
@@ -199,6 +264,10 @@ namespace LMS.Infrastructure.Migrations
                     b.Property<DateTime>("RefreshTokenExpireTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -254,9 +323,17 @@ namespace LMS.Infrastructure.Migrations
                         new
                         {
                             CourseId = 1,
-                            Description = "Lorem ipsum odor amet.",
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
                             EndDate = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Fullstack.NET 2025",
+                            StartDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            CourseId = 2,
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                            EndDate = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Frontend 2025",
                             StartDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
@@ -332,10 +409,28 @@ namespace LMS.Infrastructure.Migrations
                         {
                             ModuleId = 1,
                             CourseId = 1,
-                            Description = "C# module",
-                            EndDate = new DateTime(2025, 1, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "C#-basics",
-                            StartDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                            EndDate = new DateTime(2025, 1, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "C# - basics",
+                            StartDate = new DateTime(2025, 1, 22, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ModuleId = 2,
+                            CourseId = 2,
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                            EndDate = new DateTime(2025, 1, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "HTML - basics",
+                            StartDate = new DateTime(2025, 1, 22, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ModuleId = 3,
+                            CourseId = 2,
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                            EndDate = new DateTime(2025, 1, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Blazor - basics",
+                            StartDate = new DateTime(2025, 1, 27, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -548,7 +643,7 @@ namespace LMS.Infrastructure.Migrations
             modelBuilder.Entity("Domain.Models.Entities.ApplicationUser", b =>
                 {
                     b.HasOne("Domain.Models.Entities.Course", "Course")
-                        .WithMany()
+                        .WithMany("Users")
                         .HasForeignKey("CourseId");
 
                     b.Navigation("Course");
@@ -664,6 +759,8 @@ namespace LMS.Infrastructure.Migrations
                     b.Navigation("CourseDocuments");
 
                     b.Navigation("Modules");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.Module", b =>

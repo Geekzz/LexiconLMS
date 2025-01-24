@@ -10,15 +10,16 @@ namespace LMS.Shared.DTOs.Update
     public class CourseUpdateDto
     {
         [Required]
-        public string Name { get; init; }
+        [StringLength(100, MinimumLength = 2, ErrorMessage = "The course name must be between 2 and 100 characters.")]
+        public string Name { get; set; }
 
         [Required]
-        public string Description { get; init; }
+        public string Description { get; set; }
 
         [Required]
-        public DateTime StartDate { get; init; }
+        public DateTime StartDate { get; set; }
 
         [Required]
-        public DateTime EndDate { get; init; }
+        public DateTime EndDate { get; set; }
     }
 }
