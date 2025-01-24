@@ -140,7 +140,10 @@ else
             {
                 Console.WriteLine("File uploaded successfully!");
             }
-            Console.WriteLine("File uploaded successfully.");
+            else
+            {
+                Console.Error.WriteLine("Failed to upload file.");
+            }
         }
         catch (Exception ex)
         {
