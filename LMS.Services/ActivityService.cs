@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Contracts;
 using Domain.Models.Entities;
+using LMS.Shared.DTOs.Create;
 using LMS.Shared.DTOs.Read;
+using LMS.Shared.DTOs.Update;
 using Services.Contracts;
 
 namespace LMS.Services
@@ -34,5 +36,32 @@ namespace LMS.Services
             return _mapper.Map<IEnumerable<ActivityTypeDto>>(activityTypes);
         }
 
+        public async Task<ActivityDto> PutActivityAsync(int id, ActivityUpdateDto activity)
+        {
+            var activityToUpdate = await _uow.ActivityRepository.GetActivityByIdAsync(id, true);
+            if (activityToUpdate == null) throw new KeyNotFoundException($"{id} not found.");
+
+            activityToUpdate.Name = activity.Name;
+            activityToUpdate.Description = activity.Description;
+            activityToUpdate.StartDate = activity.StartDate;
+            activityToUpdate.EndDate = activity.EndDate; 
+            activityToUpdate.ActivityTypeId = activity.ActivityTypeId;
+
+            await _uow.CompleteAsync();
+
+            return _mapper.Map<ActivityDto>(activityToUpdate);
+        }
+
+        public async Task<ActivityDto> CreateActivityAsync(ActivityCreateDto dto)
+        {
+            // detta la jag till, så en activity kan skapas som kopplas t moduleid
+            Activity activity = _mapper.Map<Activity>(dto);
+
+            _uow.ActivityRepository.Create(activity);
+
+            await _uow.CompleteAsync();
+
+            return _mapper.Map<ActivityDto>(activity);
+        }
     }
 }

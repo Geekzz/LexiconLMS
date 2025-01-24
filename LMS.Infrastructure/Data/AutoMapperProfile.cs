@@ -20,7 +20,7 @@ public class AutoMapperProfile : Profile
 
         CreateMap<CourseCreateDto, Course>().ReverseMap();
         CreateMap<ModuleCreateDto, Module>().ReverseMap();
-        CreateMap<ActivityCreateDto, Activity>();
+        CreateMap<ActivityCreateDto, Activity>().ReverseMap();
 
         CreateMap<ActivityTypeCreateDto, ActivityType>();
         //CreateMap<CourseDto, CourseCreateDto>().ReverseMap();   
