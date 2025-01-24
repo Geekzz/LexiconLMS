@@ -68,8 +68,8 @@
                     }
                 </ul>
 
-                <h6>Ladda upp fil. (Max 10 MB)</h6>
-                <InputFile OnChange="HandleFileUpload" MaxFileSize="10485760" />
+@*                 <h6>Ladda upp fil. (Max 10 MB)</h6>
+                <InputFile OnChange="HandleFileUpload" MaxFileSize="10485760" /> *@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" @onclick="HideFileModal">Stäng</button>
@@ -147,21 +147,23 @@
 
         try
         {
-            // Call the PostFileAsync method in the ClientApiService
-            await _apiService.PostFileAsync(
-                $"files/upload?courseId={CourseData.CourseId}",
-                file);
-
-            // Provide user feedback (e.g., toast or modal)
+            var response = await _apiService.PostFileAsync("files/upload", file, CourseData.CourseId);
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("File uploaded successfully!");
+            }
+            else
+            {
+                Console.Error.WriteLine("Failed to upload file.");
+            }
             ShowFileModal();
-            Console.WriteLine("File uploaded successfully.");
         }
         catch (Exception ex)
         {
-            // Handle upload errors (e.g., network issues, validation failures)
             Console.Error.WriteLine($"Error uploading file: {ex.Message}");
         }
     }
+
 
     private async Task DownloadFile(Guid fileId)
     {
