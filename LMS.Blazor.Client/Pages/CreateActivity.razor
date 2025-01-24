@@ -78,8 +78,7 @@
             NewActivity.StartDate = DateTime.Now;
             NewActivity.EndDate = DateTime.Now;
 
-            // Set the default ActivityTypeId to the first type (if any exist), 
-            // efter create så tar man antingne en activity som användare har valt eller sätt firt() som default
+            // Set the default ActivityTypeId to the first type (if any exist)
             if (ActivityTypes.Any())
             {
                 NewActivity.ActivityTypeId = ActivityTypes.First().ActivityTypeId;

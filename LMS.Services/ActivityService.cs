@@ -45,7 +45,7 @@ namespace LMS.Services
             activityToUpdate.Description = activity.Description;
             activityToUpdate.StartDate = activity.StartDate;
             activityToUpdate.EndDate = activity.EndDate; 
-            activityToUpdate.ActivityTypeId = activity.ActivityTypeId; // här kanske jesus
+            activityToUpdate.ActivityTypeId = activity.ActivityTypeId;
 
             await _uow.CompleteAsync();
 

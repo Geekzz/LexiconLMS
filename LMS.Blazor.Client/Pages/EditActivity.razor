@@ -23,7 +23,6 @@ else
 
 					<EditForm Model="activity" OnValidSubmit="SaveActivity">
 
-						<!--  -->
 						<div class="row mb-3">
 							<label for="activityType" class="col-form-label col-md-3">Aktivitet: </label>
 							<div class="col-md-8">
@@ -117,7 +116,6 @@ else
 		{
 			try
 			{
-				// finns det activity type update här nåsntas
 				var updatedActivity = await _apiService.PutAsync<ActivityUpdateDto, ActivityUpdateDto>($"activities/{ActivityId}", activity);
 
 				if (updatedActivity != null) // Check if the activity was successfully updated
