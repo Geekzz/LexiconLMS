@@ -3,7 +3,10 @@
 @using LMS.Blazor.Client.Services
 @using LMS.Shared.DTOs.Create
 @using LMS.Shared.DTOs.Read
+@using Microsoft.AspNetCore.Authorization
 @inject NavigationManager NavigationManager
+
+@attribute [Authorize(Roles = "Teacher")]
 
 <!-- Modal för att lägga till ny modul -->
 @if (showModal)

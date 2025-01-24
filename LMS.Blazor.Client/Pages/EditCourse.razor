@@ -10,6 +10,8 @@
 @using LMS.Blazor.Client.Components.Home
 @inject NavigationManager NavigationManager
 
+@attribute [Authorize(Roles = "Teacher")]
+
 @if (course == null)
 {
     <div class="d-flex w-100 h-100 justify-content-center align-items-center lexicon-subpage-height">

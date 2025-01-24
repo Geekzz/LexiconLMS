@@ -2,8 +2,11 @@
 @using LMS.Blazor.Client.Services
 @using LMS.Shared.DTOs.Create
 @using LMS.Shared.DTOs.Read
+@using Microsoft.AspNetCore.Authorization
 @rendermode InteractiveWebAssembly
 @inject NavigationManager NavigationManager
+
+@attribute [Authorize(Roles = "Teacher")]
 
 <div class="no-padding container-fluid w-100 h-100 d-flex justify-content-center align-items-center lexicon-subpage-height">
     <div class="lexicon-primary px-4 py-5 m-4 d-flex justify-content-center align-items-center flex-column lexicon-rounded-large col-md-6 login-width-mobile">
@@ -94,7 +97,7 @@
         try
         {
             var createdActivity = await _apiService.PostAsync<ActivityCreateDto, ActivityCreateDto>("activities", NewActivity);
-            NavigationManager.NavigateTo("/admin");
+            NavigationManager.NavigateTo("/create-activity-success");
         }
         catch (Exception ex)
         {

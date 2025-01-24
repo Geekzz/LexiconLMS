@@ -3,8 +3,11 @@
 @using LMS.Shared.DTOs.Update
 @using LMS.Shared.DTOs.Create
 @using LMS.Shared.DTOs.Read
+@using Microsoft.AspNetCore.Authorization
 @rendermode InteractiveWebAssembly
 @inject NavigationManager NavigationManager
+
+@attribute [Authorize(Roles = "Teacher")]
 
 @if (activity == null)
 {

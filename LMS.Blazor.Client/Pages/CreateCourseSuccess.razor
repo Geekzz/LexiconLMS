@@ -1,4 +1,7 @@
 ﻿@page "/create-course-success"
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize(Roles = "Teacher")]
 
 <PageTitle>Created Course</PageTitle>
 

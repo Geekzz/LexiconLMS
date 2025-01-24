@@ -12,6 +12,8 @@
 
 @inject NavigationManager NavigationManager
 
+@attribute [Authorize(Roles = "Teacher")]
+
 <PageTitle>Edit User</PageTitle>
 
 @if (user == null && courses == null)

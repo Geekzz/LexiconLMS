@@ -7,11 +7,14 @@
 @using LMS.Blazor.Client.Services
 @using LMS.Shared.DTOs.Create
 @using LMS.Shared.DTOs.Read
+@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Identity
 
 @inject IHttpClientFactory HttpClientFactory
 @inject NavigationManager NavigationManager
+
+@attribute [Authorize(Roles = "Teacher")]
 
 <PageTitle>Registrera</PageTitle>
 

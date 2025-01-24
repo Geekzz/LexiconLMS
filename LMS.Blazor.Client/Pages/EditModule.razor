@@ -2,7 +2,10 @@
 @rendermode InteractiveWebAssembly
 @using LMS.Blazor.Client.Services
 @using LMS.Shared.DTOs.Update
+@using Microsoft.AspNetCore.Authorization
 @inject NavigationManager NavigationManager
+
+@attribute [Authorize(Roles = "Teacher")]
 
 @if (module == null)
 {

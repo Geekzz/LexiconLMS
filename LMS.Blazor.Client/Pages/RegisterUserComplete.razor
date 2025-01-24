@@ -1,4 +1,7 @@
 ﻿@page "/register-user-complete"
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize(Roles = "Teacher")]
 
 <PageTitle>Registed User</PageTitle>
 
