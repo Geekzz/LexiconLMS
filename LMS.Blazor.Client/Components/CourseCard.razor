@@ -170,12 +170,12 @@
         try
         {
             await _apiService.DeleteAsync<CourseDto>($"courses/{id}");
-            StateHasChanged();
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error while fetching courses: {ex.Message}");
         }
+        NavigationManager.NavigateTo(NavigationManager.Uri, true);
     }
 
     private async Task DeleteModule(int id)
