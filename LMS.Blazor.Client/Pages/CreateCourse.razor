@@ -3,44 +3,51 @@
 @using LMS.Blazor.Client.Services
 @using LMS.Shared.DTOs.Create
 @using LMS.Shared.DTOs.Read
+@using Microsoft.AspNetCore.Authorization
+@inject NavigationManager NavigationManager
 
-
+@attribute [Authorize(Roles = "Teacher")]
 
 <!-- Modal för att lägga till ny modul -->
 @if (showModal)
 {
 	<div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0, 0, 0, 0.5);" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered lexicon-rounded">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Registrera ny modul</h4>
-					<button type="button" class="btn-close" @onclick="ToggleModalVisibility" aria-label="Close"></button>
+		<div class="no-padding container-fluid w-100 d-flex justify-content-center align-items-center lexicon-subpage-height">
+			<div class="lexicon-primary px-4 py-2 m-4 d-flex justify-content-center align-items-center flex-column lexicon-rounded-large col-md-6 login-width-mobile">
+				<div class="modal-header" style="width: 100%;">
+					<h2 class="px-2 text-center m-0">SKAPA MODUL</h2>
+					<button type="button" class="btn-close" @onclick="ToggleModalVisibility" aria-label="Close" style="transform: scale(1.5);"></button>
 				</div>
-				<div class="modal-body">
-					<div class="form-group mb-3">
-						<label for="moduleName" class="form-label">Namn</label>
-						<input type="text" id="moduleName" class="form-control" @bind="NewModule.Name" required />
-					</div>
-					<div class="form-group mb-3">
-						<label for="moduleDescription" class="form-label">Beskrivning</label>
-						<textarea id="moduleDescription" class="form-control" @bind="NewModule.Description" required></textarea>
-					</div>
-					<div class="form-group mb-3">
-						<label for="startDate" class="form-label">Startdatum</label>
-						<input type="date" id="startDate" class="form-control" @bind="NewModule.StartDate" required />
-					</div>
-					<div class="form-group mb-3">
-						<label for="endDate" class="form-label">Slutdatum</label>
-						<input type="date" id="endDate" class="form-control" @bind="NewModule.EndDate" required />
+				<div class="row d-flex justify-content-center align-items-center col-md-10 login-info pt-4">
+					<div class="col-md-8">
+						<div class="form-floating mb-3">
+							<input type="text" id="moduleName" class="form-control" aria-required="true" placeholder="Modul namn" @bind="NewModule.Name" required />
+							<label for="moduleName">Modul namn</label>
+						</div>
+						<div class="form-floating mb-3">
+							<textarea id="moduleDescription" class="form-control" aria-required="true" placeholder="Beskrivning" @bind="NewModule.Description" required></textarea>
+							<label for="moduleDescription">Beskrivning</label>
+						</div>
+						<div class="form-floating mb-3">
+							<input type="date" id="startDate" class="form-control" aria-required="true" placeholder="Startdatum" @bind="NewModule.StartDate" required />
+							<label for="startDate">Startdatum</label>
+						</div>
+						<div class="form-floating mb-3">
+							<input type="date" id="endDate" class="form-control" aria-required="true" placeholder="Slutdatum" @bind="NewModule.EndDate" required />
+							<label for="endDate">Slutdatum</label>
+						</div>
 					</div>
 				</div>
-				<div class="modal-footer d-flex justify-content-end">
-					<button type="button" class="btn lexicon-button-circle button-fontsize" @onclick="ToggleActivityFormVisibility">Lägg till aktivitet</button>
-					<button type="button" class="btn lexicon-button button-fontsize" @onclick="AddModule">Registrera modul</button>
+				<div class="modal-footer d-flex justify-content-end" style="border: none;">
+					<div class="d-flex justify-content-start align-items-center">
+						<button type="button" class="btn lexicon-plus" @onclick="ToggleActivityFormVisibility">
+							<p class="mb-2">+</p>
+						</button>
+						<h4 class="m-0 ms-2">Lägg till aktivitet</h4>
+					</div>
 				</div>
-
 				<div>
-					<ul>
+					<ul class="lexicon-list">
 						@foreach (var activity in NewModule.Activities)
 						{
 							<li>@activity.Name</li>
@@ -51,102 +58,98 @@
 				<!-- AktivitetsForm -->
 				@if (showActivityForm)
 				{
-
-					<div class="modal-header">
-						<h4 class="modal-title">Aktivitet</h4>
+					<div class="modal-header" style="width: 100%;">
+						<h2 class="px-2 text-center m-0">AKTIVITET</h2>
 					</div>
-					<div class="modal-body">
-						<div class="form-group mb-3">
-							<label for="activityName" class="form-label">Namn</label>
-							<input type="text" id="activityName" class="form-control" @bind="NewActivity.Name" required />
-						</div>
-						<div class="form-group mb-3">
-							<label for="activityDescription" class="form-label">Beskrivning</label>
-							<textarea id="activityDescription" class="form-control" @bind="NewActivity.Description" required></textarea>
-						</div>
-						<div class="form-group mb-3">
-							<label for="startDate" class="form-label">Startdatum</label>
-							<input type="date" id="startDate" class="form-control" @bind="NewActivity.StartDate" required />
-						</div>
-						<div class="form-group mb-3">
-							<label for="endDate" class="form-label">Slutdatum</label>
-							<input type="date" id="endDate" class="form-control" @bind="NewActivity.EndDate" required />
-						</div>
-					</div>
-					<div class="row mb-3">
-						<label for="activityType" class="col-form-label col-md-3">Aktivitet: </label>
+					<div class="row d-flex justify-content-center align-items-center col-md-10 login-info pt-4">
 						<div class="col-md-8">
-							<InputSelect id="activityType" class="form-control" @bind-Value="NewActivity.ActivityTypeId">
-								<option value="">Typ av aktivitet</option>
-								@foreach (var activityType in ActivityTypes)
-								{
-									<option value="@activityType.ActivityTypeId">@activityType.Type</option>
-								}
-							</InputSelect>
+							<div class="form-floating mb-3">
+								<input type="text" id="activityName" class="form-control" aria-required="true" placeholder="Aktivitets namn" @bind="NewActivity.Name" required />
+								<label for="activityName">Aktivitets namn</label>
+							</div>
+							<div class="form-floating mb-3">
+								<textarea id="activityDescription" class="form-control" aria-required="true" placeholder="Beskrivning" @bind="NewActivity.Description" required></textarea>
+								<label for="activityDescription">Beskrivning</label>
+							</div>
+							<div class="form-floating mb-3">
+								<input type="date" id="startDate" class="form-control" aria-required="true" placeholder="Startdatum" @bind="NewActivity.StartDate" required />
+								<label for="startDate">Startdatum</label>
+							</div>
+							<div class="form-floating mb-3">
+								<input type="date" id="endDate" class="form-control" aria-required="true" placeholder="Slutdatum" @bind="NewActivity.EndDate" required />
+								<label for="endDate">Slutdatum</label>
+							</div>
+							<div class="form-floating mb-3 mt-2">
+								<InputSelect id="activityType" class="form-select pt-0 pb-0" aria-label="Select Activity" @bind-Value="NewActivity.ActivityTypeId">
+									<option value="0" selected="selected">Välj typ...</option>
+									@foreach (var activityType in ActivityTypes)
+									{
+										<option value="@activityType.ActivityTypeId">@activityType.Type</option>
+									}
+								</InputSelect>
+							</div>
 						</div>
 					</div>
-					<button type="button" class="btn lexicon-button button-fontsize" @onclick="AddActivity">Lägg till aktivitet</button>
+					<button type="button" class="btn lexicon-button button-fontsize" @onclick="AddActivity">LÄGG TILL</button>
 				}
+				<button type="button" class="btn lexicon-button button-fontsize my-4" @onclick="AddModule">SKAPA</button>
 			</div>
 		</div>
 	</div>
 }
 
-<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
-	<div class="card lexicon-rounded">
-		<div class="card-body">
-			<h4 class="card-title">Registrera ny kurs</h4>
-			<EditForm Model="NewCourse" OnValidSubmit="AddCourse" FormName="createModuleForm">
-				<DataAnnotationsValidator />
-				<ValidationSummary />
-
-				<div class="mb-3">
-					<label for="courseName" class="form-label">Namn</label>
-					<InputText id="courseName" class="form-control" @bind-Value="NewCourse.Name" />
-					<ValidationMessage For="@(() => NewCourse.Name)" />
-				</div>
-
-				<div class="mb-3">
-					<label for="courseDescription" class="form-label">Beskrivning</label>
-					<InputTextArea id="courseDescription" class="form-control" @bind-Value="NewCourse.Description" />
-					<ValidationMessage For="@(() => NewCourse.Description)" />
-				</div>
-
-				<div class="mb-3">
-					<label for="startDate" class="form-label">Startdatum</label>
-					<InputDate id="startDate" class="form-control" @bind-Value="NewCourse.StartDate" />
-					<ValidationMessage For="@(() => NewCourse.StartDate)" />
-				</div>
-
-				<div class="mb-3">
-					<label for="endDate" class="form-label">End Date</label>
-					<InputDate id="endDate" class="form-control" @bind-Value="NewCourse.EndDate" />
-					<ValidationMessage For="@(() => NewCourse.EndDate)" />
-				</div>
-
-
-
-				<div class="d-flex justify-content-center flex-column	">
-					<div class="d-flex justify-content-center align-items-center">
-						<button type="button" class="lexicon-button-circle" @onclick="ToggleModalVisibility"></button> 
-						<p>Lägg till ny modul</p>
-					</div>
-
-					<div>
-						<ul>
-							@foreach (ModuleCreateDto module in NewCourse.Modules)
-							{
-								<li>@module.Name</li>
-							}
-						</ul>
-					</div>
-
-				</div>
-				<button type="submit" class="btn lexicon-button button-fontsize">
-					Registrera Kurs
-				</button>
-
-			</EditForm>
+<div class="no-padding container-fluid w-100 h-100 d-flex justify-content-center align-items-center lexicon-subpage-height">
+    <div class="lexicon-primary px-4 py-5 m-4 d-flex justify-content-center align-items-center flex-column lexicon-rounded-large col-md-6 login-width-mobile">
+        <h1 class="px-2 text-center">NY KURS</h1>
+        <div class="row d-flex justify-content-center align-items-center col-md-10 login-info">
+            <div class="col-md-8">
+                <section>
+					<EditForm Model="NewCourse" OnValidSubmit="AddCourse" FormName="createModuleForm">
+						<DataAnnotationsValidator />
+						<hr />
+						<ValidationSummary />
+						<div class="form-floating mb-3">
+							<InputText id="courseName" class="form-control" aria-required="true" placeholder="Kurs namn" @bind-Value="NewCourse.Name" />
+							<label for="courseName">Kurs namn</label>
+							<ValidationMessage For="@(() => NewCourse.Name)" class="text-danger" />
+						</div>
+						<div class="form-floating mb-3">
+							<InputTextArea id="courseDescription" class="form-control" aria-required="true" placeholder="Kurs namn" @bind-Value="NewCourse.Description" />
+							<label for="courseDescription">Beskrivning</label>
+							<ValidationMessage For="@(() => NewCourse.Description)" class="text-danger" />
+						</div>
+						<div class="form-floating mb-3">
+							<InputDate id="startDate" class="form-control" aria-required="true" placeholder="Kurs namn" @bind-Value="NewCourse.StartDate" />
+							<label for="startDate">Startdatum</label>
+							<ValidationMessage For="@(() => NewCourse.StartDate)" class="text-danger" />
+						</div>
+						<div class="form-floating mb-3">
+							<InputDate id="endDate" class="form-control" aria-required="true" placeholder="Kurs namn" @bind-Value="NewCourse.EndDate" />
+							<label for="endDate">End Date</label>
+							<ValidationMessage For="@(() => NewCourse.EndDate)" class="text-danger" />
+						</div>
+						<div class="d-flex flex-column align-items-center">
+							<div class="d-flex justify-content-center align-items-center">
+								<button type="button" class="btn lexicon-plus" @onclick="ToggleModalVisibility">
+									<p class="mb-2">+</p>
+								</button>
+								<h4 class="m-0 ms-2">Lägg till modul</h4>
+							</div>
+							<div>
+								<ul class="lexicon-list">
+									@foreach (ModuleCreateDto module in NewCourse.Modules)
+									{
+										<li>@module.Name</li>
+									}
+								</ul>
+							</div>
+							<button type="submit" class="btn lexicon-button button-fontsize mt-4">
+								SKAPA
+							</button>
+						</div>
+					</EditForm>
+				</section>
+			</div>
 		</div>
 	</div>
 </div>
@@ -159,10 +162,9 @@
 	private List<ActivityTypeDto> ActivityTypes { get; set; } = new();
 
 	private CourseCreateDto NewCourse { get; set; } = new CourseCreateDto
-		{
-			Modules = new List<ModuleCreateDto>()
-		};
-
+	{
+		Modules = new List<ModuleCreateDto>()
+	};
 	private ModuleCreateDto NewModule { get; set; } = new();
 	private ActivityCreateDto NewActivity { get; set; } = new();
 
@@ -174,7 +176,12 @@
 		try
 		{
 			ActivityTypes = (await _apiService.GetAsync<List<ActivityTypeDto>>("activities/types")).ToList();
-
+			NewCourse.StartDate = DateTime.Now;
+			NewCourse.EndDate = DateTime.Now;
+			NewModule.StartDate = DateTime.Now;
+			NewModule.EndDate = DateTime.Now;
+			NewActivity.StartDate = DateTime.Now;
+			NewActivity.EndDate = DateTime.Now;
 		}
 		catch (Exception ex)
 		{
@@ -231,13 +238,11 @@
 		try
 		{
 			await _apiService.PostAsync<CourseCreateDto, CourseCreateDto>($"courses", NewCourse);
+			NavigationManager.NavigateTo("/create-course-success");
 		}
 		catch (Exception ex)
 		{
 			Console.WriteLine($"Error: {ex.Message}");
 		}
-
-		// NavigationManager.NavigateTo("/admin");
 	}
-
 }

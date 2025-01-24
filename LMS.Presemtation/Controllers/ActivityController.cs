@@ -39,6 +39,13 @@ namespace LMS.Presentation.Controllers
             return Ok(activityTypeDtos);
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteActivity(int id)
+        {
+            await _serviceManager.ActivityService.DeleteActivityAsync(id);
+            return NoContent();
+        }
+
         [HttpPut("{id}")]
         public async Task<ActionResult> PutActivity(int id, ActivityUpdateDto activityUpdateDto)
         {

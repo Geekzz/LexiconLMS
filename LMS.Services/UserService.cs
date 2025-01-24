@@ -31,6 +31,7 @@ namespace LMS.Services
             var userToUpdate = await _uow.UserRepository.GetUserByIdAsync(id, true);
             if (userToUpdate == null) throw new KeyNotFoundException($"{id} not found.");
 
+            userToUpdate.CourseId = userUpdateDto.CourseId;
             userToUpdate.Email = userUpdateDto.Email;
             userToUpdate.FirstName = userUpdateDto.FirstName;
             userToUpdate.LastName = userUpdateDto.LastName;
@@ -43,6 +44,15 @@ namespace LMS.Services
             await _uow.CompleteAsync();
 
             return _mapper.Map<UserDto>(userToUpdate);
+        }
+
+        public async Task DeleteUserAsync(string id)
+        {
+            var userToDelete = await _uow.UserRepository.GetUserByIdAsync(id, true);
+            if (userToDelete == null) throw new KeyNotFoundException($"{id} not found.");
+            _uow.UserRepository.Delete(userToDelete);
+
+            await _uow.CompleteAsync();
         }
     }
 }

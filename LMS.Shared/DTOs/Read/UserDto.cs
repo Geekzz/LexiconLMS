@@ -21,6 +21,8 @@ namespace LMS.Shared.DTOs.Read
 
         public string LastName { get; set; }
 
+        public int CourseId { get; set; }
+
         public CourseDto Course { get; set; }
 
         public string Role { get; set; }

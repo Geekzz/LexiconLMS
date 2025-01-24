@@ -10,5 +10,6 @@ namespace Domain.Contracts
     public interface IUserRepository
     {
         Task<ApplicationUser?> GetUserByIdAsync(string userId, bool trackChanges = false);
+        void Delete(ApplicationUser entity);
     }
 }

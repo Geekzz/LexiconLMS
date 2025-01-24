@@ -1,4 +1,5 @@
 ﻿@using LMS.Blazor.Client.Components.Home
+@using LMS.Blazor.Client.Services
 @using LMS.Shared.DTOs.Read
 @inject NavigationManager NavigationManager
 
@@ -37,6 +38,9 @@
                             <td class="align-middle">@Course.EndDate.ToString("yyyy-MM-dd")</td>
                             <td class="d-flex justify-content-center align-items-center">
                                 <a href="/edit-course/@Course.CourseId" class="btn lexicon-button-tiny button-fontsize-tiny">Redigera</a>
+                                <a class="btn lexicon-button-delete button-fontsize-tiny ms-2" @onclick="(() => DeleteCourse(Course.CourseId))">
+                                    <img src="Images/bin.png" />
+                                </a>
                             </td>
                         </tr>
 
@@ -58,6 +62,9 @@
                                     <td class="align-middle">@module.EndDate.ToString("yyyy-MM-dd")</td>
                                     <td class="d-flex justify-content-center align-items-center">
                                         <a class="btn lexicon-button-tiny button-fontsize-tiny" href="/edit-module/@module.ModuleId">Redigera</a>
+                                        <a class="btn lexicon-button-delete button-fontsize-tiny ms-2" @onclick="(() => DeleteModule(module.ModuleId))">
+                                            <img src="Images/bin.png" />
+                                        </a>
                                     </td>
                                 </tr>
 
@@ -73,6 +80,9 @@
                                             <td class="align-middle">@activity.EndDate.ToString("yyyy-MM-dd")</td>
                                             <td class="d-flex justify-content-center align-items-center">
                                                 <a class="btn lexicon-button-tiny button-fontsize-tiny" href="/edit-activity/@activity.ActivityId">Redigera</a>
+                                                <a class="btn lexicon-button-delete button-fontsize-tiny ms-2" @onclick="(() => DeleteActivity(activity.ActivityId))">
+                                                    <img src="Images/bin.png" />
+                                                </a>
                                             </td>
                                         </tr>
                                     }
@@ -85,7 +95,7 @@
                                 else
                                 {
                                     <tr>
-                                        <td colspan="5" class="text-center align-middle">No activities available</td>
+                                        <td colspan="5" class="text-center align-middle">Inga aktiviteter tillgängliga.</td>
                                     </tr>
                                     <tr>
                                         <td class="align-center" colspan="5">
@@ -104,7 +114,7 @@
                         else
                         {
                             <tr>
-                                <td colspan="5" class="text-center align-middle">No modules available</td>
+                                <td colspan="5" class="text-center align-middle">Inga moduler tillgängliga.</td>
                             </tr>
                         }
                     </tbody>
@@ -120,6 +130,8 @@
 </div>
 
 @code {
+    [Inject]
+    private IApiService _apiService { get; set; } = default!;
     [Parameter]
     public CourseDto Course { get; set; } = default!;
     [Parameter]
@@ -151,5 +163,44 @@
     {
         // Redirect to the new module page with the CourseId as a parameter
         NavigationManager.NavigateTo($"/create-module/{Course.CourseId}");
+    }
+
+    private async Task DeleteCourse(int id)
+    {
+        try
+        {
+            await _apiService.DeleteAsync<CourseDto>($"courses/{id}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error while fetching courses: {ex.Message}");
+        }
+        NavigationManager.NavigateTo(NavigationManager.Uri, true);
+    }
+
+    private async Task DeleteModule(int id)
+    {
+        try
+        {
+            await _apiService.DeleteAsync<ModuleDto>($"modules/{id}");
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error while fetching courses: {ex.Message}");
+        }
+    }
+
+    private async Task DeleteActivity(int id)
+    {
+        try
+        {
+            await _apiService.DeleteAsync<ActivityDto>($"activities/{id}");
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error while fetching courses: {ex.Message}");
+        }
     }
 }

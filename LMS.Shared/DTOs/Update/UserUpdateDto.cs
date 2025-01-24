@@ -8,6 +8,8 @@ namespace LMS.Shared.DTOs.Update
 {
     public class UserUpdateDto
     {
+        public int CourseId { get; init; }
+
         public string Email { get; init; }
 
         public string FirstName { get; init; }

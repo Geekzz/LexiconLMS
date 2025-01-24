@@ -62,6 +62,13 @@ namespace LMS.Presentation.Controllers
             return Ok(updatedUser);
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteUser(string id)
+        {
+            await _serviceManager.UserService.DeleteUserAsync(id);
+            return NoContent();
+        }
+
         //[HttpGet(]
         //[Authorize]
         //public async Task<IActionResult> GetOneUser([FromQuery] string targetId)

@@ -2,8 +2,11 @@
 @rendermode InteractiveWebAssembly
 @using LMS.Blazor.Client.Services
 @using LMS.Shared.DTOs.Read
+@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using System.Security.Claims
+
+@attribute [Authorize]
 
 @if (course == null && user == null)
 {

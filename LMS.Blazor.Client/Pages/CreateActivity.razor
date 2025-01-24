@@ -2,56 +2,58 @@
 @using LMS.Blazor.Client.Services
 @using LMS.Shared.DTOs.Create
 @using LMS.Shared.DTOs.Read
+@using Microsoft.AspNetCore.Authorization
 @rendermode InteractiveWebAssembly
 @inject NavigationManager NavigationManager
 
-<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
-    <div class="card lexicon-rounded">
-        <div class="card-body">
-            <h4 class="card-title">Create New Activity for Module ID: @ModuleId</h4>
-            <EditForm Model="NewActivity" OnValidSubmit="AddActivity" FormName="createActivityForm">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
+@attribute [Authorize(Roles = "Teacher")]
 
-                <div class="mb-3">
-                    <label for="activityName" class="form-label">Activity Name</label>
-                    <InputText id="activityName" class="form-control" @bind-Value="NewActivity.Name" />
-                    <ValidationMessage For="@(() => NewActivity.Name)" />
-                </div>
-
-                <div class="mb-3">
-                    <label for="activityDescription" class="form-label">Description</label>
-                    <InputTextArea id="activityDescription" class="form-control" @bind-Value="NewActivity.Description" />
-                    <ValidationMessage For="@(() => NewActivity.Description)" />
-                </div>
-
-                <div class="mb-3">
-                    <label for="startDate" class="form-label">Start Date</label>
-                    <InputDate id="startDate" class="form-control" @bind-Value="NewActivity.StartDate" />
-                    <ValidationMessage For="@(() => NewActivity.StartDate)" />
-                </div>
-
-                <div class="mb-3">
-                    <label for="endDate" class="form-label">End Date</label>
-                    <InputDate id="endDate" class="form-control" @bind-Value="NewActivity.EndDate" />
-                    <ValidationMessage For="@(() => NewActivity.EndDate)" />
-                </div>
-
-                <div class="mb-3">
-                    <label for="activityType" class="form-label">Activity Type</label>
-                    <InputSelect id="activityType" class="form-control" @bind-Value="NewActivity.ActivityTypeId">
-                        @foreach (var activityType in ActivityTypes)
-                        {
-                            <option value="@activityType.ActivityTypeId">@activityType.Type</option>
-                        }
-                    </InputSelect>
-                    <ValidationMessage For="@(() => NewActivity.ActivityTypeId)" />
-                </div>
-
-                <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn lexicon-button button-fontsize">Create Activity</button>
-                </div>
-            </EditForm>
+<div class="no-padding container-fluid w-100 h-100 d-flex justify-content-center align-items-center lexicon-subpage-height">
+    <div class="lexicon-primary px-4 py-5 m-4 d-flex justify-content-center align-items-center flex-column lexicon-rounded-large col-md-6 login-width-mobile">
+        <h1 class="px-2 text-center">NY AKTIVITET</h1>
+        <div class="row d-flex justify-content-center align-items-center col-md-10 login-info">
+            <div class="col-md-8">
+                <section>
+                    <EditForm Model="NewActivity" OnValidSubmit="AddActivity" FormName="createActivityForm">
+                        <DataAnnotationsValidator />
+                        <hr />
+                        <ValidationSummary />
+                        <div class="form-floating mb-3">
+                            <InputText id="activityName" class="form-control" aria-required="true" placeholder="Aktivitets namn" @bind-Value="NewActivity.Name" />
+                            <label for="activityName">Aktivitets namn</label>
+                            <ValidationMessage For="@(() => NewActivity.Name)" class="text-danger" />
+                        </div>
+                        <div class="form-floating mb-3">
+                            <InputTextArea id="activityDescription" class="form-control" aria-required="true" placeholder="Beskrivning" @bind-Value="NewActivity.Description" />
+                            <label for="activityDescription">Beskrivning</label>
+                            <ValidationMessage For="@(() => NewActivity.Description)" class="text-danger" />
+                        </div>
+                        <div class="form-floating mb-3">
+                            <InputDate id="startDate" class="form-control" aria-required="true" placeholder="Startdatum" @bind-Value="NewActivity.StartDate" />
+                            <label for="startDate">Startdatum</label>
+                            <ValidationMessage For="@(() => NewActivity.StartDate)" class="text-danger" />
+                        </div>
+                        <div class="form-floating mb-3">
+                            <InputDate id="endDate" class="form-control" aria-required="true" placeholder="Slutdatum" @bind-Value="NewActivity.EndDate" />
+                            <label for="endDate">Slutdatum</label>
+                            <ValidationMessage For="@(() => NewActivity.EndDate)" class="text-danger" />
+                        </div>
+                        <div class="form-floating mb-3 mt-2">
+                            <InputSelect id="activityType" class="form-control" aria-label="Select Activity Type" @bind-Value="NewActivity.ActivityTypeId">
+                                @foreach (var activityType in ActivityTypes)
+                                {
+                                    <option value="@activityType.ActivityTypeId">@activityType.Type</option>
+                                }
+                            </InputSelect>
+                            <label for="endDate">Välj aktivitets typ</label>
+                            <ValidationMessage For="@(() => NewActivity.ActivityTypeId)" class="text-danger" />
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn lexicon-button button-fontsize">SKAPA</button>
+                        </div>
+                    </EditForm>
+                </section>
+            </div>
         </div>
     </div>
 </div>
@@ -95,7 +97,7 @@
         try
         {
             var createdActivity = await _apiService.PostAsync<ActivityCreateDto, ActivityCreateDto>("activities", NewActivity);
-            NavigationManager.NavigateTo("/admin");
+            NavigationManager.NavigateTo("/create-activity-success");
         }
         catch (Exception ex)
         {

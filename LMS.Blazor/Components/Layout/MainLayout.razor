@@ -11,25 +11,28 @@
                 <hr />
                 <hr />
             </button>
-            <AuthorizeView>
-                <Authorized>
-                    <div class="navbar-expand collapse navbar-collapse lexicon-nav-helper" id="navbarSupportedContent">
-                        <ul class="navbar-nav">
+            
+            <div class="navbar-expand collapse navbar-collapse lexicon-nav-helper" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                    <AuthorizeView>
+                        <Authorized>
                             <li class="nav-item">
                                 <a class="lexicon-nav button-fontsize" href="home">HEM</a>
                             </li>
-                            @* <li class="nav-item">
-                                <a class="lexicon-nav button-fontsize" href="register">REGISTER</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="lexicon-nav button-fontsize" href="courseoverview">KURSÖVERSIKT</a>
-                            </li> *@
                             <li class="nav-item">
                                 <a class="lexicon-nav button-fontsize" href="profile">PROFIL</a>
                             </li>
+                        </Authorized>
+                    </AuthorizeView>
+                    <AuthorizeView Roles="Teacher">
+                        <Authorized>
                             <li class="nav-item">
                                 <a class="lexicon-nav button-fontsize" href="admin">ADMIN</a>
                             </li>
+                        </Authorized>
+                    </AuthorizeView>
+                    <AuthorizeView>
+                        <Authorized>
                             <li class="nav nav-button-helper">
                                 <form action="Account/Logout" method="post">
                                     <AntiforgeryToken />
@@ -39,10 +42,10 @@
                                     </button>
                                 </form>
                             </li>
-                        </ul>
-                    </div>
-                </Authorized>
-            </AuthorizeView>
+                        </Authorized>
+                    </AuthorizeView>
+                </ul>
+            </div>
         </nav>
 
         <section class="lexicon-page-height no-padding">
@@ -62,17 +65,5 @@
     protected override void OnInitialized()
     {
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
-        // NavigationManager.LocationChanged += OnLocationChanged;
     }
-
-    // private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
-    // {
-    //     currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
-    //     StateHasChanged();
-    // }
-
-    // public void Dispose()
-    // {
-    //     NavigationManager.LocationChanged -= OnLocationChanged;
-    // }
 }

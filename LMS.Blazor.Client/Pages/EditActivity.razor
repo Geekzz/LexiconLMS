@@ -3,67 +3,63 @@
 @using LMS.Shared.DTOs.Update
 @using LMS.Shared.DTOs.Create
 @using LMS.Shared.DTOs.Read
+@using Microsoft.AspNetCore.Authorization
 @rendermode InteractiveWebAssembly
 @inject NavigationManager NavigationManager
 
+@attribute [Authorize(Roles = "Teacher")]
+
 @if (activity == null)
 {
-	<div class="d-flex w-100 h-100 justify-content-center align-items-center">
+	<div class="d-flex w-100 h-100 justify-content-center align-items-center lexicon-subpage-height">
 		<div class="loader"></div>
 	</div>
 }
 else
 {
-	<div class="d-flex justify-content-center align-items-center vh-100">
-		<div class="col-md-6">
-			<div class="card lexicon-rounded p-4">
-				<div class="card-body text-center">
-					<h4 class="mb-4">Activity ID: @ActivityId</h4>
-
-
-					<EditForm Model="activity" OnValidSubmit="SaveActivity">
-
-						<div class="row mb-3">
-							<label for="activityType" class="col-form-label col-md-3">Aktivitet: </label>
-							<div class="col-md-8">
-								<InputSelect id="activityType" class="form-control" @bind-Value="activity.ActivityTypeId">
-									<option value="">Typ av aktivitet</option>
+	<div class="no-padding container-fluid w-100 h-100 d-flex justify-content-center align-items-center lexicon-subpage-height">
+        <div class="lexicon-primary px-4 py-5 m-4 d-flex justify-content-center align-items-center flex-column lexicon-rounded-large col-md-6 login-width-mobile">
+            <h1 class="px-2 text-center">REDIGERA AKTIVITET</h1>
+            <div class="row d-flex justify-content-center align-items-center col-md-10 login-info">
+                <div class="col-md-8">
+                    <section>
+						<EditForm Model="activity" OnValidSubmit="SaveActivity">
+							<DataAnnotationsValidator />
+							<hr />
+							<div class="form-floating mb-3">
+								<InputText id="activityName" class="form-control" aria-required="true" placeholder="Aktivitets namn" @bind-Value="activity.Name" />
+								<label for="activityName">Aktivitets namn</label>
+								<ValidationMessage For="() => activity.Name" class="text-danger" />
+							</div>
+							<div class="form-floating mb-3">
+								<InputTextArea id="activityDescription" class="form-control" aria-required="true" placeholder="Beskrivning" @bind-Value="activity.Description" />
+								<label for="activityDescription">Beskrivning</label>
+								<ValidationMessage For="() => activity.Description" class="text-danger" />
+							</div>
+							<div class="form-floating mb-3">
+								<InputDate id="startDate" class="form-control" aria-required="true" placeholder="Startdatum" @bind-Value="activity.StartDate" />
+								<label for="startDate">Startdatum</label>
+								<ValidationMessage For="() => activity.StartDate" class="text-danger" />
+							</div>
+							<div class="form-floating mb-3">
+								<InputDate id="endDate" class="form-control" aria-required="true" placeholder="Slutdatum" @bind-Value="activity.EndDate" />
+								<label for="endDate">Slutdatum</label>
+								<ValidationMessage For="() => activity.EndDate" class="text-danger" />
+							</div>
+							<div class="form-floating mb-3 mt-2">
+								<InputSelect id="activityType" class="form-control" aria-label="Select Activity Type" @bind-Value="activity.ActivityTypeId">
 									@foreach (var activityType in ActivityTypes)
 									{
 										<option value="@activityType.ActivityTypeId">@activityType.Type</option>
 									}
 								</InputSelect>
+								<label for="activityType">Välj aktivitets typ</label>
 							</div>
-						</div>
-
-						<div class="form-group mb-4 text-start">
-							<label for="activityName" class="form-label">Namn</label>
-							<InputText id="activityName" class="form-control" @bind-Value="activity.Name" />
-							<ValidationMessage For="() => activity.Name" />
-						</div>
-
-						<div class="form-group mb-4 text-start">
-							<label for="activityDescription" class="form-label">Beskrivning</label>
-							<InputTextArea id="activityDescription" class="form-control" @bind-Value="activity.Description" />
-							<ValidationMessage For="() => activity.Description" />
-						</div>
-
-						<div class="form-group mb-4 text-start">
-							<label for="startDate" class="form-label">Start datum</label>
-							<InputDate id="startDate" class="form-control" @bind-Value="activity.StartDate" />
-							<ValidationMessage For="() => activity.StartDate" />
-						</div>
-
-						<div class="form-group mb-4 text-start">
-							<label for="endDate" class="form-label">Slut datum</label>
-							<InputDate id="endDate" class="form-control" @bind-Value="activity.EndDate" />
-							<ValidationMessage For="() => activity.EndDate" />
-						</div>
-
-						<div class="d-flex justify-content-center">
-							<button type="submit" class="btn lexicon-button button-fontsize">Redigera</button>
-						</div>
-					</EditForm>
+							<div class="d-flex justify-content-center">
+								<button type="submit" class="btn lexicon-button button-fontsize">REDIGERA</button>
+							</div>
+						</EditForm>
+					</section>
 				</div>
 			</div>
 		</div>

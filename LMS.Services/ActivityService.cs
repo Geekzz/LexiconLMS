@@ -36,6 +36,14 @@ namespace LMS.Services
             return _mapper.Map<IEnumerable<ActivityTypeDto>>(activityTypes);
         }
 
+        public async Task DeleteActivityAsync(int id)
+        {
+            var courseToDelete = await _uow.ActivityRepository.GetActivityByIdAsync(id, true);
+            if (courseToDelete == null) throw new KeyNotFoundException($"{id} not found.");
+            _uow.ActivityRepository.Delete(courseToDelete);
+
+            await _uow.CompleteAsync();
+        }
         public async Task<ActivityDto> PutActivityAsync(int id, ActivityUpdateDto activity)
         {
             var activityToUpdate = await _uow.ActivityRepository.GetActivityByIdAsync(id, true);

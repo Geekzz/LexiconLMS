@@ -12,80 +12,94 @@
 
 @inject NavigationManager NavigationManager
 
+@attribute [Authorize(Roles = "Teacher")]
+
 <PageTitle>Edit User</PageTitle>
 
-@if (user == null)
+@if (user == null && courses == null)
 {
-    <div class="d-flex w-100 h-100 justify-content-center align-items-center">
+    <div class="d-flex w-100 h-100 justify-content-center align-items-center lexicon-subpage-height">
         <div class="loader"></div>
     </div>
 }
 else
 {
-    <div class="d-flex justify-content-center align-items-center vh-100">
-        <div class="col-md-6">
-            <div class="card lexicon-rounded p-4">
-                <div class="card-body text-center">
-                    <h4 class="mb-4">Användar id: @targetId</h4>
+    <div class="no-padding container-fluid w-100 h-100 d-flex justify-content-center align-items-center lexicon-subpage-height">
+        <div class="lexicon-primary px-4 py-5 m-4 d-flex justify-content-center align-items-center flex-column lexicon-rounded-large col-md-6 login-width-mobile">
+            <h1 class="px-2 text-center">REDIGERA</h1>
+            <div class="row d-flex justify-content-center align-items-center col-md-10 login-info">
+                <div class="col-md-8">
+                    <section>
+                        <EditForm Model="user" OnValidSubmit="SaveUser">
+                            <DataAnnotationsValidator />
+                            <hr />
+                            @if (user.Role == "Student"){
+                                <div class="dropwdown-wrapper d-flex flex-column">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="roleNumber" id="roleNumber1" checked @onchange="(() => UpdateRole(1))">
+                                        <label class="form-check-label" for="roleNumber1">
+                                            Student
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="roleNumber" id="roleNumber2" @onchange="(() => UpdateRole(2))">
+                                        <label class="form-check-label" for="roleNumber2">
+                                            Lärare
+                                        </label>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="dropwdown-wrapper d-flex flex-column">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="roleNumber" id="roleNumber1" @onchange="(() => UpdateRole(1))">
+                                        <label class="form-check-label" for="roleNumber1">
+                                            Student
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="roleNumber" id="roleNumber2" checked @onchange="(() => UpdateRole(2))">
+                                        <label class="form-check-label" for="roleNumber2">
+                                            Lärare
+                                        </label>
+                                    </div>
+                                </div>
+                            }
 
-                    <EditForm Model="user" OnValidSubmit="SaveUser">
-                        <DataAnnotationsValidator />
-                        @if (user.Role == "Student"){
-                            <div class="dropwdown-wrapper d-flex flex-column">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="roleNumber" id="roleNumber1" checked @onchange="(() => UpdateRole(1))">
-                                    <label class="form-check-label" for="roleNumber1">
-                                        Student
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="roleNumber" id="roleNumber2" @onchange="(() => UpdateRole(2))">
-                                    <label class="form-check-label" for="roleNumber2">
-                                        Lärare
-                                    </label>
-                                </div>
+                            <div class="form-floating mb-3 mt-2">
+                                <select class="form-select pt-0 pb-0" aria-label="Select Course" @bind="user.CourseId">
+                                    <option value="0" selected>Välj kurs...</option>
+                                    @foreach (var course in courses)
+                                    {
+                                        <option value="@course.CourseId">@course.Name</option>
+                                    }
+                                </select>
                             </div>
-                        }
-                        else
-                        {
-                            <div class="dropwdown-wrapper d-flex flex-column">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="roleNumber" id="roleNumber1" @onchange="(() => UpdateRole(1))">
-                                    <label class="form-check-label" for="roleNumber1">
-                                        Student
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="roleNumber" id="roleNumber2" checked @onchange="(() => UpdateRole(2))">
-                                    <label class="form-check-label" for="roleNumber2">
-                                        Lärare
-                                    </label>
-                                </div>
+
+                            <div class="form-floating mb-3">
+                                <InputText id="userEmail" autocomplete="email" class="form-control" aria-required="true" placeholder="name@example.com" @bind-Value="user.Email" />
+                                <label for="userEmail">E-post</label>
+                                <ValidationMessage For="() => user.Email" class="text-danger" />
                             </div>
-                        }
 
-                        <div class="form-group mb-4 text-start">
-                            <label for="userEmail" class="form-label">E-post</label>
-                            <InputText id="userEmail" class="form-control" @bind-Value="user.Email" />
-                            <ValidationMessage For="() => user.Email" />
-                        </div>
+                            <div class="form-floating mb-3">
+                                <InputText id="userFirstName" autocomplete="given-name" class="form-control" aria-required="true" @bind-Value="user.FirstName" />
+                                <label for="userFirstName">Förnamn</label>
+                                <ValidationMessage For="() => user.FirstName" class="text-danger" />
+                            </div>
 
-                        <div class="form-group mb-4 text-start">
-                            <label for="userFirstName" class="form-label">Förnamn</label>
-                            <InputText id="userFirstName" class="form-control" @bind-Value="user.FirstName" />
-                            <ValidationMessage For="() => user.FirstName" />
-                        </div>
+                            <div class="form-floating mb-3">
+                                <InputText id="userLastName" autocomplete="family-name" class="form-control" aria-required="true" @bind-Value="user.LastName" />
+                                <label for="userLastName">Efternamn</label>
+                                <ValidationMessage For="() => user.LastName" class="text-danger" />
+                            </div>
 
-                        <div class="form-group mb-4 text-start">
-                            <label for="userLastName" class="form-label">Efternamn</label>
-                            <InputText id="userLastName" class="form-control" @bind-Value="user.LastName" />
-                            <ValidationMessage For="() => user.LastName" />
-                        </div>
-
-                        <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn lexicon-button button-fontsize">Redigera</button>
-                        </div>
-                    </EditForm>
+                            <div class="d-flex justify-content-center">
+                                <button type="submit" class="btn lexicon-button button-fontsize">REDIGERA</button>
+                            </div>
+                        </EditForm>
+                    </section>
                 </div>
             </div>
         </div>
@@ -106,6 +120,7 @@ else
 
     private UserDto? user;
     private UserUpdateDto? updatedUser;
+    private List<CourseDto>? courses;
 
     // Fetch course details on render
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -117,6 +132,7 @@ else
                 if (_apiService != null)
                 {
                     user = await _apiService.GetAsync<UserDto>($"users/{targetId}");
+                    courses = (await _apiService.GetAsync<List<CourseDto>>("courses")).ToList();
 
                     if (user.Role == adminRole)
                     {

@@ -8,20 +8,20 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Teacher")]
 
 <AuthorizeView>
 	<Authorized>
 		<div class="container mx-auto mt-5">
 			@if (courses == null)
 			{
-				<div class="d-flex w-100 h-100 justify-content-center align-items-center">
+				<div class="d-flex w-100 h-100 justify-content-center align-items-center lexicon-subpage-height">
 					<div class="loader"></div>
 				</div>
 			}
 			else if (!courses.Any())
 			{
-				<p>No courses available.</p>
+				<p>Inga kurser tillgängliga.</p>
 			}
 			else
 			{
@@ -50,7 +50,7 @@
 								<p>+</p>
 							</button>
 							<ul class="dropdown-menu dropdown-helper">
-								<a class="btn lexicon-dropup tiny-padding"><img src="Images/addCourse.png" /></a>
+								<a class="btn lexicon-dropup tiny-padding" href="create-course"><img src="Images/addCourse.png" /></a>
 								<a class="btn lexicon-dropup" href="register"><img src="Images/addUser.png" /></a>
 							</ul>
 						</div>
@@ -61,7 +61,7 @@
     </Authorized>
     <NotAuthorized>
         <div class="container text-center mt-5">
-            <p>You are not authorized to view this page.</p>
+            <p>Du har inte rättigheter till den här sidan.</p>
         </div>
     </NotAuthorized>
 </AuthorizeView>
@@ -85,6 +85,7 @@
 	{
 		await FetchCoursesAsync();
 	}
+
 	private async Task FetchCoursesAsync()
 	{
 		try
