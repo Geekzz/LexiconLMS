@@ -66,9 +66,6 @@ public static class SeedData
 
         var users = faker.Generate(nrOfUsers);
 
-        // Show that the first user is a teacher
-        users[1].Role = "Teacher";
-
         //ToDo: Add to user.secrets
         var passWord = "BytMig123!";
         if (string.IsNullOrEmpty(passWord))
@@ -86,6 +83,8 @@ public static class SeedData
             if (i == 0)
             {
                 result = await userManager.AddToRoleAsync(users[i], adminRole);
+                // Show that the first user is a teacher
+                users[i].Role = "Teacher";
             }
             else
             {
