@@ -117,6 +117,7 @@ else
 		{
 			try
 			{
+				// finns det activity type update här nåsntas
 				var updatedActivity = await _apiService.PutAsync<ActivityUpdateDto, ActivityUpdateDto>($"activities/{ActivityId}", activity);
 
 				if (updatedActivity != null) // Check if the activity was successfully updated
